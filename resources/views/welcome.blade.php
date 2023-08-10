@@ -8,7 +8,7 @@
 </head>
 
 <body>
-   <h1> PRUEBA 3 </h1>
+   <h1> MULTI - API </h1>
    <a href="https://api.gomezpalacio.gob.mx/api/becas/schools" target="_blank"
       rel="noopener noreferrer">API-becas/escuelas</a>
 
