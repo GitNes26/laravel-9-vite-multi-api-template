@@ -6,7 +6,7 @@
     <title>Document</title>
 </head>
 <body>
-    <h1> PRUEBA 3 </h1>
+    <h1> MULTI - API </h1>
    
     <div style="border: 5px solid black" >
         <img src="https://www.ayuntamientogp.imagendigitalstudio.com/img/logo.png" style="display: block; width: 20%; margin: auto;" height="100" width="250" alt="">
