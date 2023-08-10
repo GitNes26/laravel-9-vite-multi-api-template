@@ -1,6 +1,7 @@
 <?php
 
-namespace App\Http\Controllers\Becas;
+namespace App\Http\Controllers\becas;
+use App\Models\becas\Role;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -10,6 +11,10 @@ use Illuminate\Support\Facades\DB;
 
 class SchoolController extends Controller
 {
+    public function __construct() {
+        Roles::on('mysql_becas')->get();
+    }
+    
     /**
      * Mostrar lista de todas las difficultades.
      *
@@ -17,7 +22,7 @@ class SchoolController extends Controller
      */
     public function index()
     {
-        $Schools = DB::connection('mysql_becas')->table('schools')->get();
+        $Schools = DB::connection('mysql_becas')->table('roles')->get();
 
         $response = ObjResponse::DefaultResponse();
         try {

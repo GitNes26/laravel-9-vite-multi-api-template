@@ -25,6 +25,7 @@ Route::get('pdf', function(){
 });
 
 Route::prefix('becas')->group(function () {
+    Route::get('/', function(){return 'becas' ;});
     // Route::middleware('auth:sanctum')->controller(DifficultController::class)->group(function () {
     Route::controller(SchoolController::class)->group(function () {
         Route::get('/schools','index');
@@ -34,6 +35,5 @@ Route::prefix('becas')->group(function () {
         Route::delete('/schools/{id}','destroy');
     });
     
-    Route::get('/', function(){return 'becas' ;});
     
 });

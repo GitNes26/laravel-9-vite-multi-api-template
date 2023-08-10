@@ -10,7 +10,7 @@
 <body>
    <h1> PRUEBA 3 </h1>
    <a href="https://api.gomezpalacio.gob.mx/api/becas/schools" target="_blank"
-      rel="noopener noreferrer">API-becas/escuelas</a>
+      rel="noopener noreferrer">API-becas/esc</a>
 
    <div style="border: 5px solid black">
       <img src="https://www.ayuntamientogp.imagendigitalstudio.com/img/logo.png"
