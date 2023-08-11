@@ -19,13 +19,15 @@ class RequisicionController extends Controller
     public function index()
     {
 
-    return Requisicion::join('Cat_Departamentos', 'Requisiciones.IDDepartamento', '=', 'Cat_Departamentos.IDDepartamento')
-                            ->leftjoin('Det_Notificaciones', 'Requisiciones.IDRequisicion', '=', 'Det_Notificaciones.idRequisicion')
-                            ->where("ejercicio",2023)->where("Status","OC")->orderBy('Requisiciones.IDRequisicion','desc')->get(['Requisiciones.IDRequisicion','Ejercicio','Status','Nombre_Departamento','Solicitante','Observaciones', 'Requisitor', 'FechaCotizacion','Det_Notificaciones.notificacion']);
+        return Requisicion::join('Cat_Departamentos', 'Requisiciones.IDDepartamento', '=', 'Cat_Departamentos.IDDepartamento')
+            ->leftjoin('Det_Notificaciones', 'Requisiciones.IDRequisicion', '=', 'Det_Notificaciones.idRequisicion')
+            ->where("ejercicio", 2023)->where("Status", "OC")->orderBy('Requisiciones.IDRequisicion', 'desc')->get(['Requisiciones.IDRequisicion', 'Ejercicio', 'Status', 'Nombre_Departamento', 'Solicitante', 'Observaciones', 'Requisitor', 'FechaCotizacion', 'Det_Notificaciones.notificacion']);
     }
 
     public function store(Request $request)
     {
+        $idDepartamento = $request->idDep;
+        error_log($idDepartamento);
         $notificacion = new Notificacion;
         $notificacion->idRequisicion = $request->idRequi;
         $notificacion->notificacion = 1;
@@ -41,11 +43,9 @@ class RequisicionController extends Controller
         // }
 
         Mail::to('samuel.garza29@hotmail.com')->send(new Correos($request));
-        
-
-        return 1 ;
 
 
+        return 1;
     }
 
     /**
@@ -54,9 +54,52 @@ class RequisicionController extends Controller
      * @param  \App\Models\Requisicion  $requisicion
      * @return \Illuminate\Http\Response
      */
-    public function show(Requisicion $requisicion)
+    public function show(Request $request, $requi)
     {
-        //
+        function consulta($idD){
+
+            return Requisicion::join('Cat_Departamentos', 'Requisiciones.IDDepartamento', '=', 'Cat_Departamentos.IDDepartamento')
+            ->leftjoin('Det_Notificaciones', 'Requisiciones.IDRequisicion', '=', 'Det_Notificaciones.idRequisicion')
+            ->where("ejercicio", 2023)
+            ->where("Status", "OC")
+            ->where("Requisiciones.IDDepartamento", "$idD")
+            ->orderBy('Requisiciones.IDRequisicion', 'desc')
+            ->get(['Requisiciones.IDDepartamento','Requisiciones.IDRequisicion', 'Ejercicio', 'Status', 'Nombre_Departamento', 'Solicitante', 'Observaciones', 'Requisitor', 'FechaCotizacion', 'Det_Notificaciones.notificacion']);
+
+        }
+        switch ($requi) {
+            case 35:
+                
+                return consulta("54");
+                break;
+            case 36:
+              
+                return consulta("53");
+                break;
+            case 37:
+
+                return consulta("64");
+                
+                break;
+            case 38:
+
+                return consulta("83");
+       
+                break;
+
+            default:
+            return Requisicion::join('Cat_Departamentos', 'Requisiciones.IDDepartamento', '=', 'Cat_Departamentos.IDDepartamento')
+            ->leftjoin('Det_Notificaciones', 'Requisiciones.IDRequisicion', '=', 'Det_Notificaciones.idRequisicion')
+            ->where("ejercicio", 2023)
+            ->where("Status", "OC")
+            ->orderBy('Requisiciones.IDRequisicion', 'desc')
+            ->get(['Requisiciones.IDDepartamento','Requisiciones.IDRequisicion', 'Ejercicio', 'Status', 'Nombre_Departamento', 'Solicitante', 'Observaciones', 'Requisitor', 'FechaCotizacion', 'Det_Notificaciones.notificacion']);
+                break;
+            
+        }
+
+
+    
     }
 
     /**
@@ -66,7 +109,7 @@ class RequisicionController extends Controller
      * @param  \App\Models\Requisicion  $requisicion
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Requisicion $requisicion)
+    public function update(Request $request)
     {
         //
     }
@@ -77,7 +120,7 @@ class RequisicionController extends Controller
      * @param  \App\Models\Requisicion  $requisicion
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Requisicion $requisicion)
+    public function destroy(Request $request)
     {
         //
     }
