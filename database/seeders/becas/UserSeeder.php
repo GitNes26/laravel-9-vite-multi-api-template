@@ -21,6 +21,7 @@ class UserSeeder extends Seeder
             'username' => 'admin',
             'password' => Hash::make('123'),
             'role_id' => 1, //SuperAdmin
+            'created_at' => now()
         ]);
     }
 }

@@ -13,6 +13,12 @@ class User extends Model
     use HasApiTokens, HasFactory, Notifiable;
 
     /**
+     * Especificar la conexion si no es la por default
+     * @var string
+     */
+    protected $connection = "mysql_becas";
+    
+    /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>

@@ -21,7 +21,8 @@ class RoleSeeder extends Seeder
             'read' => 'todas', 
             'create' => 'todas', 
             'update' => 'todas', 
-            'delete' => 'todas'
+            'delete' => 'todas',
+            'created_at' => now(),
         ]);
         DB::connection('mysql_becas')->table('roles')->insert([ 
             'role' => 'Administrador', 
@@ -29,11 +30,13 @@ class RoleSeeder extends Seeder
             'read' => 'todas', 
             'create' => 'todas', 
             'update' => 'todas', 
-            'delete' => 'todas'
+            'delete' => 'todas',
+            'created_at' => now(),
         ]);
         DB::connection('mysql_becas')->table('roles')->insert([ 
             'role' => 'Usuario',
             'description' => 'Rol dedicado para usuarios normales.', 
+            'created_at' => now(),
         ]);
     }
 }

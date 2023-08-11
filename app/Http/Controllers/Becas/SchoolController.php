@@ -8,12 +8,8 @@ use Illuminate\Http\Request;
 use App\Models\ObjResponse;
 use Illuminate\Support\Facades\DB;
 
-
 class SchoolController extends Controller
 {
-    public function __construct() {
-        Roles::on('mysql_becas')->get();
-    }
     
     /**
      * Mostrar lista de todas las difficultades.
@@ -22,12 +18,14 @@ class SchoolController extends Controller
      */
     public function index()
     {
-        $Schools = DB::connection('mysql_becas')->table('roles')->get();
+        // $Role = DB::connection('mysql_becas')->table('roles')->get();
+        // $Role = Role::on('mysql_becas')->get();
+        
 
         $response = ObjResponse::DefaultResponse();
         try {
             //OPCIOIN 1 - Query
-            // $lista = DB::select('SELECT * FROM users where active = 1');
+            // $list = DB::select('SELECT * FROM roles where active = 1');
             // $list = Difficult::select('difficult_id','difficult_name', 'difficult_score')
             // ->get();
             // $response = ObjResponse::CorrectResponse();
@@ -35,12 +33,13 @@ class SchoolController extends Controller
             // data_set($response,'data',$list);
 
             //OPCIOIN 2 - Eloquent
-            // $list = Difficult::whereNotNull('difficult_id')
-            // ->select('difficults.difficult_id','difficults.difficult_name', 'difficults.difficult_score')
-            // ->orderBy('difficults.difficult_name', 'asc')->get();
+            // $list = Role::where('read','todos');
+            $list = Role::whereNotNull('id');
+            // ->select('roles.id','roles.name', 'roles.score')
+            // ->orderBy('roles.role', 'asc')->get();
             $response = ObjResponse::CorrectResponse();
             data_set($response, 'message', 'Peticion satisfactoria | listado de escuelas.');
-            data_set($response, 'data', $Schools);
+            data_set($response, 'data', $list);
 
         } catch (\Exception $ex) {
             $response = ObjResponse::CatchResponse($ex->getMessage());
@@ -93,7 +92,7 @@ class SchoolController extends Controller
         $response = ObjResponse::DefaultResponse();
         try{
             $difficult = Difficult::where('difficult_id', $id)
-            ->select('difficults.difficult_id','difficults.difficult_name','difficults.difficult_score')
+            ->select('roles.difficult_id','roles.difficult_name','roles.difficult_score')
             ->get();
             
             $response = ObjResponse::CorrectResponse();
@@ -128,7 +127,7 @@ class SchoolController extends Controller
     {
         $response = ObjResponse::DefaultResponse();
         try{
-            $difficult = Difficult::where('difficults.difficult_id', $request->difficult_id)
+            $difficult = Difficult::where('roles.difficult_id', $request->difficult_id)
             ->update([
                 'difficult_name' => $request->difficult_name,
                 'difficult_score' => $request->difficult_score,

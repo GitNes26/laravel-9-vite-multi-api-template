@@ -8,6 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Role extends Model
 {
     use HasFactory;
+
+    /**
+     * Especificar la conexion si no es la por default
+     * @var string
+     */
+    protected $connection = "mysql_becas";
     
     /**
      * Los atributos que se pueden solicitar.
