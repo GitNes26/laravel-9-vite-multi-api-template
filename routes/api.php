@@ -9,7 +9,9 @@ use App\Http\Controllers\oficiosController;
 #region CONTROLLERS BECAS
 use App\Http\Controllers\becas\RoleBecasController;
 use App\Http\Controllers\becas\UserBecasController;
-use App\Http\Controllers\becas\SchoolController;
+use App\Http\Controllers\becas\CityBecasController;
+use App\Http\Controllers\becas\ColonyBecasController;
+use App\Http\Controllers\becas\SchoolBecasController;
 #endregion CONTROLLERS BECAS
 
 
@@ -32,6 +34,7 @@ Route::prefix('becas')->group(function () {
     Route::post('/signup', [UserBecasController::class,'signup']);
     
     // Route::middleware('auth:sanctum')->group(function () {
+        // Route::get('/getUser/{token}', [UserBecasController::class,'getUser']); //cerrar sesión (eliminar los tokens creados)
         Route::delete('/logout/{id}', [UserBecasController::class,'logout']); //cerrar sesión (eliminar los tokens creados)
 
         Route::controller(UserBecasController::class)->group(function () {
@@ -51,8 +54,26 @@ Route::prefix('becas')->group(function () {
             Route::put('/roles','update');
             Route::delete('/roles/{id}','destroy');
         });
+
+        Route::controller(CityBecasController::class)->group(function () {
+            Route::get('/cities','index');
+            Route::get('/cities/selectIndex','selectIndex');
+            Route::get('/cities/{id}','show');
+            Route::post('/cities','create');
+            Route::put('/cities','update');
+            Route::delete('/cities/{id}','destroy');
+        });
         
-        Route::controller(SchoolController::class)->group(function () {
+        Route::controller(ColonyBecasController::class)->group(function () {
+            Route::get('/colonies','index');
+            Route::get('/colonies/selectIndex','selectIndex');
+            Route::get('/colonies/{id}','show');
+            Route::post('/colonies','create');
+            Route::put('/colonies','update');
+            Route::delete('/colonies/{id}','destroy');
+        });
+        
+        Route::controller(SchoolBecasController::class)->group(function () {
             Route::get('/schools','index');
             Route::get('/schools/{id}','show');
             Route::post('/schools','create');

@@ -4,18 +4,16 @@ namespace App\Http\Controllers\becas;
 
 use App\Http\Controllers\Controller;
 use App\Models\ObjResponse;
-use App\Models\becas\Role;
+use App\Models\becas\City;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
 
-class RoleBecasController extends Controller
+class CityBecasController extends Controller
 {
     /**
-     * Mostrar lista de todos los roles activos.
+     * Mostrar lista de todos las ciudades activos.
      *
      * @return \Illuminate\Http\Response $response
      */
@@ -23,11 +21,11 @@ class RoleBecasController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $list = Role::where('active', true)
-            ->select('roles.id','roles.role', 'roles.active')
-            ->orderBy('roles.role', 'asc')->get();
+            $list = City::where('active', true)
+            ->select('cities.id','cities.code', 'cities.city', 'cities.location')
+            ->orderBy('cities.code', 'asc')->get();
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'Peticion satisfactoria. Lista de roles:';
+            $response->data["message"] = 'Peticion satisfactoria | Lista de ciudades.';
             $response->data["result"] = $list;
         }
         catch (\Exception $ex) {
@@ -45,11 +43,11 @@ class RoleBecasController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $list = Role::where('active', true)
-            ->select('roles.id as value', 'roles.role as text')
-            ->orderBy('roles.role', 'asc')->get();
+            $list = City::where('active', true)
+            ->select('cities.id as value', 'cities.city as text')
+            ->orderBy('cities.city', 'asc')->get();
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'Peticion satisfactoria. Lista de roles:';
+            $response->data["message"] = 'Peticion satisfactoria | Lista de ciudades';
             $response->data["result"] = $list;
         }
         catch (\Exception $ex) {
@@ -59,7 +57,7 @@ class RoleBecasController extends Controller
     }
 
     /**
-     * Crear un nuevo rol.
+     * Crear un nuevo ciudad.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response $response
@@ -68,12 +66,14 @@ class RoleBecasController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $new_role = Role::create([
-                'role' => $request->role,
+            $new_city = City::create([
+                'code' => $request->code,
+                'city' => $request->city,
+                'location' => $request->location,
             ]);
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'peticion satisfactoria | rol registrado.';
-            $response->data["alert_text"] = 'rol registrada';
+            $response->data["message"] = 'peticion satisfactoria | ciudad registrado.';
+            $response->data["alert_text"] = 'Ciudad registrada';
         }
         catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
@@ -82,7 +82,7 @@ class RoleBecasController extends Controller
     }
 
     /**
-     * Mostrar un rol especifico.
+     * Mostrar un ciudad especifico.
      *
      * @param   int $id
      * @return \Illuminate\Http\Response $response
@@ -91,13 +91,13 @@ class RoleBecasController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try{
-            $role = Role::where('id', $id)
-            ->select('roles.id','roles.role','roles.active')
+            $city = City::where('id', $id)
+            ->select('cities.id', 'cities.code', 'cities.city','cities.location')
             ->first();
             
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'peticion satisfactoria | rol encontrado.';
-            $response->data["data"] = $role;
+            $response->data["message"] = 'peticion satisfactoria | ciudad encontrado.';
+            $response->data["data"] = $city;
         }
         catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
@@ -106,7 +106,7 @@ class RoleBecasController extends Controller
     }
 
     /**
-     * Actualizar un rol especifico.
+     * Actualizar un ciudad especifico.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response $response
@@ -115,14 +115,16 @@ class RoleBecasController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $role = Role::where('id', $request->id)
+            $city = City::where('id', $request->id)
             ->update([
-                'role' => $request->role,
+                'code' => $request->code,
+                'city' => $request->city,
+                'location' => $request->location,
             ]);
 
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'peticion satisfactoria | rol actualizado.';
-            $response->data["alert_text"] = 'Rol actualizado';
+            $response->data["message"] = 'peticion satisfactoria | ciudad actualizada.';
+            $response->data["alert_text"] = 'Ciudad actualizada';
 
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
@@ -131,7 +133,7 @@ class RoleBecasController extends Controller
     }
 
     /**
-     * Eliminar (cambiar estado activo=false) un rol especidifco.
+     * Eliminar (cambiar estado activo=false) un ciudad especidifco.
      *
      * @param  int $id
      * @return \Illuminate\Http\Response $response
@@ -140,14 +142,14 @@ class RoleBecasController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            Role::where('id', $id)
+            City::where('id', $id)
             ->update([
                 'active' => false,
                 'deleted_at' => date('Y-m-d H:i:s'),
             ]);
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'peticion satisfactoria | rol eliminado.';
-            $response->data["alert_text"] ='Rol eliminado';
+            $response->data["message"] = 'peticion satisfactoria | ciudad eliminada.';
+            $response->data["alert_text"] ='Ciudad eliminada';
 
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());

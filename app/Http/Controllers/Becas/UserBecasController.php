@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
 class UserBecasController extends Controller
-{
+{   
     
     /**
      * Metodo para validar credenciales e
@@ -23,26 +23,34 @@ class UserBecasController extends Controller
      */
     public function login(Request $request, Response $response)
     {
+        $field = 'username';
+        $value = $request->username;        
+        if ($request->email) {
+            $field = 'email';
+            $value = $request->email;
+        } 
+
         $request->validate([
-            'username'=>'required',
+            $field=>'required',
             'password'=>'required'
         ]);
-
-        $user = User::where('username', $request->username)
-        ->first();
+        $user = User::where("$field", "$value")->first();
+        
 
         if(!$user || !Hash::check($request->password, $user->password)) {
 
             throw ValidationException::withMessages([
-                'message'=>['Credenciales incorrectas'],
-                'alert_title'=>['Credenciales incorrectas'],
-                'alert_text'=>['Credenciales incorrectas'],
+                'message'=>'Credenciales incorrectas',
+                'alert_title'=>'Credenciales incorrectas',
+                'alert_text'=>'Credenciales incorrectas',
+                'alert_icon'=>'error',
             ]);
         }
-        $token = $user->createToken($request->username, ['user'])->plainTextToken;
+        $token = $user->createToken($user->email, ['user'])->plainTextToken;
         $response->data = ObjResponse::CorrectResponse();
         $response->data["message"] = 'peticion satisfactoria | usuario logeado.';
         $response->data["result"]["token"] = $token;
+        $response->data["result"]["user_id"] = $user->id;
         return response()->json($response, $response->data["status_code"]);
     }
 
@@ -193,8 +201,8 @@ class UserBecasController extends Controller
             $user = User::where('users.id', $id)
             ->join('roles', 'users.role_id', '=', 'roles.id')
             ->select('users.*','roles.role')
-            ->get();
-
+            ->first();
+            
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'peticion satisfactoria | usuario encontrado.';
             $response->data["alert_text"] = "Usuario encontrado";
@@ -203,7 +211,7 @@ class UserBecasController extends Controller
         } catch (\Exception $ex) {
             $response = ObjResponse::CatchResponse($ex->getMessage());
         }
-        return response()->json($response,$response["status_code"]);
+        return response()->json($response, $response->data["status_code"]);
     }
     
     /**

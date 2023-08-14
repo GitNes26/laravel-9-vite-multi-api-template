@@ -4,18 +4,16 @@ namespace App\Http\Controllers\becas;
 
 use App\Http\Controllers\Controller;
 use App\Models\ObjResponse;
-use App\Models\becas\Role;
+use App\Models\becas\Colony;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
 
-class RoleBecasController extends Controller
+class ColonyBecasController extends Controller
 {
     /**
-     * Mostrar lista de todos los roles activos.
+     * Mostrar lista de todos las ciudades activos.
      *
      * @return \Illuminate\Http\Response $response
      */
@@ -23,11 +21,11 @@ class RoleBecasController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $list = Role::where('active', true)
-            ->select('roles.id','roles.role', 'roles.active')
-            ->orderBy('roles.role', 'asc')->get();
+            $list = Colony::where('active', true)
+            ->select('colonies.id','colonies.code', 'colonies.colony', 'colonies.cp', 'colonies.perimeter')
+            ->orderBy('colonies.code', 'asc')->get();
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'Peticion satisfactoria. Lista de roles:';
+            $response->data["message"] = 'Peticion satisfactoria | Lista de ciudades.';
             $response->data["result"] = $list;
         }
         catch (\Exception $ex) {
@@ -45,11 +43,11 @@ class RoleBecasController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $list = Role::where('active', true)
-            ->select('roles.id as value', 'roles.role as text')
-            ->orderBy('roles.role', 'asc')->get();
+            $list = Colony::where('active', true)
+            ->select('colonies.id as value', 'colonies.colony as text')
+            ->orderBy('colonies.colony', 'asc')->get();
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'Peticion satisfactoria. Lista de roles:';
+            $response->data["message"] = 'Peticion satisfactoria | Lista de ciudades';
             $response->data["result"] = $list;
         }
         catch (\Exception $ex) {
@@ -59,7 +57,7 @@ class RoleBecasController extends Controller
     }
 
     /**
-     * Crear un nuevo rol.
+     * Crear un nuevo colonia.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response $response
@@ -68,12 +66,15 @@ class RoleBecasController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $new_role = Role::create([
-                'role' => $request->role,
+            $new_colony = Colony::create([
+                'code' => $request->code,
+                'colony' => $request->colony,
+                'cp' => $request->cp,
+                'perimeter' => $request->perimeter,
             ]);
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'peticion satisfactoria | rol registrado.';
-            $response->data["alert_text"] = 'rol registrada';
+            $response->data["message"] = 'peticion satisfactoria | colonia registrado.';
+            $response->data["alert_text"] = 'Colonia registrada';
         }
         catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
@@ -82,7 +83,7 @@ class RoleBecasController extends Controller
     }
 
     /**
-     * Mostrar un rol especifico.
+     * Mostrar un colonia especifico.
      *
      * @param   int $id
      * @return \Illuminate\Http\Response $response
@@ -91,13 +92,13 @@ class RoleBecasController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try{
-            $role = Role::where('id', $id)
-            ->select('roles.id','roles.role','roles.active')
+            $colony = Colony::where('id', $id)
+            ->select('colonies.id', 'colonies.code', 'colonies.colony','colonies.cp', 'colonies.perimeter')
             ->first();
             
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'peticion satisfactoria | rol encontrado.';
-            $response->data["data"] = $role;
+            $response->data["message"] = 'peticion satisfactoria | colonia encontrado.';
+            $response->data["data"] = $colony;
         }
         catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
@@ -106,7 +107,7 @@ class RoleBecasController extends Controller
     }
 
     /**
-     * Actualizar un rol especifico.
+     * Actualizar un colonia especifico.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response $response
@@ -115,14 +116,17 @@ class RoleBecasController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $role = Role::where('id', $request->id)
+            $colony = Colony::where('id', $request->id)
             ->update([
-                'role' => $request->role,
+                'code' => $request->code,
+                'colony' => $request->colony,
+                'cp' => $request->cp,
+                'perimeter' => $request->perimeter,
             ]);
 
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'peticion satisfactoria | rol actualizado.';
-            $response->data["alert_text"] = 'Rol actualizado';
+            $response->data["message"] = 'peticion satisfactoria | colonia actualizada.';
+            $response->data["alert_text"] = 'Colonia actualizada';
 
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
@@ -131,7 +135,7 @@ class RoleBecasController extends Controller
     }
 
     /**
-     * Eliminar (cambiar estado activo=false) un rol especidifco.
+     * Eliminar (cambiar estado activo=false) un colonia especidifco.
      *
      * @param  int $id
      * @return \Illuminate\Http\Response $response
@@ -140,14 +144,14 @@ class RoleBecasController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            Role::where('id', $id)
+            Colony::where('id', $id)
             ->update([
                 'active' => false,
                 'deleted_at' => date('Y-m-d H:i:s'),
             ]);
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'peticion satisfactoria | rol eliminado.';
-            $response->data["alert_text"] ='Rol eliminado';
+            $response->data["message"] = 'peticion satisfactoria | colonia eliminada.';
+            $response->data["alert_text"] ='Colonia eliminada';
 
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());

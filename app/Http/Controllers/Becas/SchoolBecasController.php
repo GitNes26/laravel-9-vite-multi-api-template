@@ -4,18 +4,16 @@ namespace App\Http\Controllers\becas;
 
 use App\Http\Controllers\Controller;
 use App\Models\ObjResponse;
-use App\Models\becas\Role;
+use App\Models\becas\School;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
 
-class RoleBecasController extends Controller
+class SchoolBecasController extends Controller
 {
     /**
-     * Mostrar lista de todos los roles activos.
+     * Mostrar lista de todos las escuelas activas.
      *
      * @return \Illuminate\Http\Response $response
      */
@@ -23,11 +21,13 @@ class RoleBecasController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $list = Role::where('active', true)
-            ->select('roles.id','roles.role', 'roles.active')
-            ->orderBy('roles.role', 'asc')->get();
+            $list = School::where('schools.active', true)
+            ->join('cities', 'schools.city_id', '=', 'cities.id')
+            ->join('colonies', 'schools.colony_id', '=', 'colonies.id')
+            ->select('schools.*', 'cities.city', 'colonies.colony')
+            ->orderBy('schools.code', 'asc')->get();
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'Peticion satisfactoria. Lista de roles:';
+            $response->data["message"] = 'Peticion satisfactoria | Lista de escuelas.';
             $response->data["result"] = $list;
         }
         catch (\Exception $ex) {
@@ -45,11 +45,11 @@ class RoleBecasController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $list = Role::where('active', true)
-            ->select('roles.id as value', 'roles.role as text')
-            ->orderBy('roles.role', 'asc')->get();
+            $list = School::where('active', true)
+            ->select('schools.id as value', 'schools.school as text')
+            ->orderBy('schools.school', 'asc')->get();
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'Peticion satisfactoria. Lista de roles:';
+            $response->data["message"] = 'Peticion satisfactoria | Lista de escuelas';
             $response->data["result"] = $list;
         }
         catch (\Exception $ex) {
@@ -59,7 +59,7 @@ class RoleBecasController extends Controller
     }
 
     /**
-     * Crear un nuevo rol.
+     * Crear un nuevo escuela.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response $response
@@ -68,12 +68,21 @@ class RoleBecasController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $new_role = Role::create([
-                'role' => $request->role,
+            $new_colony = School::create([
+                'code' => $request->code,
+                'school' => $request->school,
+                'address' => $request->address,
+                'city_id' => $request->city_id,
+                'colony_id' => $request->colony_id,
+                'tel' => $request->tel ?? 'S/N',
+                'director' => $request->director,
+                // 'loc_for' => $request->loc_for,
+                'type' => $request->type,
+                // 'zona' => $request->zona,
             ]);
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'peticion satisfactoria | rol registrado.';
-            $response->data["alert_text"] = 'rol registrada';
+            $response->data["message"] = 'peticion satisfactoria | escuela registrado.';
+            $response->data["alert_text"] = 'Escuela registrada';
         }
         catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
@@ -82,7 +91,7 @@ class RoleBecasController extends Controller
     }
 
     /**
-     * Mostrar un rol especifico.
+     * Mostrar un escuela especifico.
      *
      * @param   int $id
      * @return \Illuminate\Http\Response $response
@@ -91,13 +100,15 @@ class RoleBecasController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try{
-            $role = Role::where('id', $id)
-            ->select('roles.id','roles.role','roles.active')
+            $colony = School::where('schools.id', $id)
+            ->join('cities', 'schools.city_id', '=', 'cities.id')
+            ->join('colonies', 'schools.colony_id', '=', 'colonies.id')
+            ->select('schools.*', 'cities.city', 'colonies.colony')
             ->first();
             
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'peticion satisfactoria | rol encontrado.';
-            $response->data["data"] = $role;
+            $response->data["message"] = 'peticion satisfactoria | escuela encontrado.';
+            $response->data["data"] = $colony;
         }
         catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
@@ -106,7 +117,7 @@ class RoleBecasController extends Controller
     }
 
     /**
-     * Actualizar un rol especifico.
+     * Actualizar un escuela especifico.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response $response
@@ -115,14 +126,23 @@ class RoleBecasController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $role = Role::where('id', $request->id)
+            $colony = School::where('id', $request->id)
             ->update([
-                'role' => $request->role,
+                'code' => $request->code,
+                'school' => $request->school,
+                'address' => $request->address,
+                'city_id' => $request->city_id,
+                'colony_id' => $request->colony_id,
+                'tel' => $request->tel ?? 'S/N',
+                'director' => $request->director,
+                // 'loc_for' => $request->loc_for,
+                'type' => $request->type,
+                // 'zona' => $request->zona,
             ]);
 
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'peticion satisfactoria | rol actualizado.';
-            $response->data["alert_text"] = 'Rol actualizado';
+            $response->data["message"] = 'peticion satisfactoria | escuela actualizada.';
+            $response->data["alert_text"] = 'Escuela actualizada';
 
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
@@ -131,7 +151,7 @@ class RoleBecasController extends Controller
     }
 
     /**
-     * Eliminar (cambiar estado activo=false) un rol especidifco.
+     * Eliminar (cambiar estado activo=false) un escuela especidifco.
      *
      * @param  int $id
      * @return \Illuminate\Http\Response $response
@@ -140,14 +160,14 @@ class RoleBecasController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            Role::where('id', $id)
+            School::where('id', $id)
             ->update([
                 'active' => false,
                 'deleted_at' => date('Y-m-d H:i:s'),
             ]);
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'peticion satisfactoria | rol eliminado.';
-            $response->data["alert_text"] ='Rol eliminado';
+            $response->data["message"] = 'peticion satisfactoria | escuela eliminada.';
+            $response->data["alert_text"] ='Escuela eliminada';
 
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
