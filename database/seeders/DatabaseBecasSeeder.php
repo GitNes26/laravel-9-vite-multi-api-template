@@ -5,7 +5,7 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class DatabaseSeeder extends Seeder
+class DatabaseBecasSeeder extends Seeder
 {
     /**
      * Seed the application's database.
@@ -14,14 +14,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call([
-            // RoleSeeder::class,
-            // becasUserSeeder::class,
-        // ]);
-
-
-
-        
+        $this->call([
+            becas\RoleSeeder::class,
+            becas\UserSeeder::class,
+            becas\CitySeeder::class,
+            becas\ColonySeeder::class,
+            becas\SchoolSeeder::class,
+        ]);
         // \App\Models\User::factory(10)->create();
 
         // \App\Models\User::factory()->create([

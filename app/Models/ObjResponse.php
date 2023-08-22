@@ -15,7 +15,8 @@ class ObjResponse extends Model
             "alert_icon" => "success",
             "alert_title" => "EXITO!",
             "alert_text" => "",
-            "data" => [],
+            "result" => [],
+            "toast"=> true, 
         ];
         return $response;
     }
@@ -28,7 +29,8 @@ class ObjResponse extends Model
             "alert_icon" => "informative",
             "alert_title" => "Lo sentimos.",
             "alert_text" => "Hay un problema con el servidor. Intenete más tarde.",
-            "data" => [],
+            "result" => [],
+            "toast"=> false, 
         ];
         return $response;
     }
@@ -43,7 +45,8 @@ class ObjResponse extends Model
             "alert_icon" => "error",
             "alert_title" => "Oppss!",
             "alert_text" => "Algo salio mal, verifica tus datos.",
-            "data" => [],
+            "result" => [],
+            "toast"=> false, 
         ];
         return $response;
     }

@@ -5,7 +5,7 @@ namespace App\Models\becas;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class School extends Model
+class City extends Model
 {
     use HasFactory;
 
@@ -22,15 +22,8 @@ class School extends Model
     protected $fillable = [
         'id',
         'code',
-        'school',
-        'address',
-        'city_id',
-        'colony_id',
-        'tel',
-        'director',
-        'loc_for',
-        'type',
-        'zona',
+        'city',
+        'location',
         'active',
         'deleted_at'
     ];
@@ -39,7 +32,7 @@ class School extends Model
      * Nombre de la tabla asociada al modelo.
      * @var string
      */
-    protected $table = 'schools';
+    protected $table = 'cities';
 
     /**
      * LlavePrimaria asociada a la tabla.
@@ -47,24 +40,6 @@ class School extends Model
      */
     protected $primaryKey = 'id';
 
-
-    /**
-     * Obtener ciudad asociada con la escuela.
-     */
-    public function city()
-    {   //primero se declara FK y despues la PK del modelo asociado
-        return $this->belongsTo(City::class,'city_id','id');
-    }
-
-    /**
-     * Obtener ciudad asociada con la escuela.
-     */
-    public function colony()
-    {   //primero se declara FK y despues la PK del modelo asociado
-        return $this->belongsTo(Colony::class,'colony_id','id');
-    }
-
-    
     /**
      * Obtener los usuarios relacionados a un rol.
      */
