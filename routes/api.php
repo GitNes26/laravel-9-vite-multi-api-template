@@ -9,8 +9,10 @@ use App\Http\Controllers\oficiosController;
 #region CONTROLLERS BECAS
 use App\Http\Controllers\becas\RoleBecasController;
 use App\Http\Controllers\becas\UserBecasController;
+use App\Http\Controllers\becas\PerimeterBecasController;
 use App\Http\Controllers\becas\CityBecasController;
 use App\Http\Controllers\becas\ColonyBecasController;
+use App\Http\Controllers\becas\LevelBecasController;
 use App\Http\Controllers\becas\SchoolBecasController;
 #endregion CONTROLLERS BECAS
 
@@ -55,6 +57,15 @@ Route::prefix('becas')->group(function () {
             Route::delete('/roles/{id}','destroy');
         });
 
+        Route::controller(PerimeterBecasController::class)->group(function () {
+            Route::get('/perimeters','index');
+            Route::get('/perimeters/selectIndex','selectIndex');
+            Route::get('/perimeters/{id}','show');
+            Route::post('/perimeters','create');
+            Route::put('/perimeters','update');
+            Route::delete('/perimeters/{id}','destroy');
+        });
+
         Route::controller(CityBecasController::class)->group(function () {
             Route::get('/cities','index');
             Route::get('/cities/selectIndex','selectIndex');
@@ -71,6 +82,15 @@ Route::prefix('becas')->group(function () {
             Route::post('/colonies','create');
             Route::put('/colonies','update');
             Route::delete('/colonies/{id}','destroy');
+        });
+
+        Route::controller(LevelBecasController::class)->group(function () {
+            Route::get('/levels','index');
+            Route::get('/levels/selectIndex','selectIndex');
+            Route::get('/levels/{id}','show');
+            Route::post('/levels','create');
+            Route::put('/levels','update');
+            Route::delete('/levels/{id}','destroy');
         });
         
         Route::controller(SchoolBecasController::class)->group(function () {

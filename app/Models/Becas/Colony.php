@@ -24,7 +24,7 @@ class Colony extends Model
         'code',
         'colony',
         'cp',
-        'perimeter',
+        'perimeter_id',
         'active',
         'deleted_at'
     ];
