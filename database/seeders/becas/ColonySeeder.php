@@ -19,48 +19,49 @@ class ColonySeeder extends Seeder
             'code' => '0', 
             'colony' => 'COL. EL REFUGIO', 
             'cp' => '35029', 
-            'perimeter' => 'URBANO', 
+            'perimeter_id' => '1', 
             'created_at' => now(),
         ]);
         DB::connection('mysql_becas')->table('colonies')->insert([ 
             'code' => '1', 
             'colony' => 'SIN COLONIA', 
             'cp' => '0',  
+            'perimeter_id' => '2', 
             'created_at' => now(),
         ]);
         DB::connection('mysql_becas')->table('colonies')->insert([ 
             'code' => '30', 
             'colony' => 'EJIDO LAS MASITAS', 
             'cp' => '35000', 
-            'perimeter' => 'SACRAMENTO', 
+            'perimeter_id' => '2', 
             'created_at' => now(),
         ]);
         DB::connection('mysql_becas')->table('colonies')->insert([ 
             'code' => '37', 
             'colony' => 'POBLADO BELLA UNION', 
             'cp' => '35000', 
-            'perimeter' => 'CENTRO', 
+            'perimeter_id' => '3', 
             'created_at' => now(),
         ]);
         DB::connection('mysql_becas')->table('colonies')->insert([ 
             'code' => '40', 
             'colony' => 'EJIDO BRITTINGHAM', 
             'cp' => '35000', 
-            'perimeter' => 'LAVIN', 
+            'perimeter_id' => '4', 
             'created_at' => now(),
         ]);
         DB::connection('mysql_becas')->table('colonies')->insert([ 
             'code' => '41', 
-            'colony' => 'EJIDO BUCARELI', 
+            'colony' => 'EJIDO BUCARELI',
             'cp' => '35000', 
-            'perimeter' => 'LAVIN', 
+            'perimeter_id' => '3', 
             'created_at' => now(),
         ]);
         DB::connection('mysql_becas')->table('colonies')->insert([ 
             'code' => '49', 
             'colony' => 'EJIDO COMPETENCIA', 
             'cp' => '35000', 
-            'perimeter' => 'LAVIN', 
+            'perimeter_id' => '2', 
             'created_at' => now(),
         ]);
     }

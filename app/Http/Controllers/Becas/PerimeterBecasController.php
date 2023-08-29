@@ -4,16 +4,16 @@ namespace App\Http\Controllers\becas;
 
 use App\Http\Controllers\Controller;
 use App\Models\ObjResponse;
-use App\Models\becas\Colony;
+use App\Models\becas\Perimeter;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 
-class ColonyBecasController extends Controller
+class PerimeterBecasController extends Controller
 {
     /**
-     * Mostrar lista de todos las ciudades activos.
+     * Mostrar lista de todos las perimetros activos.
      *
      * @return \Illuminate\Http\Response $response
      */
@@ -21,11 +21,11 @@ class ColonyBecasController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $list = Colony::where('active', true)
-            ->select('colonies.id','colonies.code', 'colonies.colony', 'colonies.cp', 'colonies.perimeter_id')
-            ->orderBy('colonies.code', 'asc')->get();
+            $list = Perimeter::where('active', true)
+            ->select('perimeters.id','perimeters.perimeter')
+            ->orderBy('perimeters.id', 'asc')->get();
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'Peticion satisfactoria | Lista de ciudades.';
+            $response->data["message"] = 'Peticion satisfactoria | Lista de perimetros.';
             $response->data["result"] = $list;
         }
         catch (\Exception $ex) {
@@ -43,11 +43,11 @@ class ColonyBecasController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $list = Colony::where('active', true)
-            ->select('colonies.id as value', 'colonies.colony as text')
-            ->orderBy('colonies.colony', 'asc')->get();
+            $list = Perimeter::where('active', true)
+            ->select('perimeters.id as value', 'perimeters.perimeter as text')
+            ->orderBy('perimeters.perimeter', 'asc')->get();
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'Peticion satisfactoria | Lista de ciudades';
+            $response->data["message"] = 'Peticion satisfactoria | Lista de perimetros';
             $response->data["result"] = $list;
         }
         catch (\Exception $ex) {
@@ -57,7 +57,7 @@ class ColonyBecasController extends Controller
     }
 
     /**
-     * Crear un nuevo colonia.
+     * Crear un nuevo perímetro.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response $response
@@ -66,15 +66,12 @@ class ColonyBecasController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $new_colony = Colony::create([
-                'code' => $request->code,
-                'colony' => $request->colony,
-                'cp' => $request->cp,
-                'perimeter_id' => $request->perimeter_id,
+            $new_perimeter = Perimeter::create([
+                'perimeter' => $request->perimeter,
             ]);
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'peticion satisfactoria | colonia registrado.';
-            $response->data["alert_text"] = 'Colonia registrada';
+            $response->data["message"] = 'peticion satisfactoria | perímetro registrado.';
+            $response->data["alert_text"] = 'Perímetro registrado';
         }
         catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
@@ -83,7 +80,7 @@ class ColonyBecasController extends Controller
     }
 
     /**
-     * Mostrar un colonia especifico.
+     * Mostrar un perímetro especifico.
      *
      * @param   int $id
      * @return \Illuminate\Http\Response $response
@@ -92,13 +89,13 @@ class ColonyBecasController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try{
-            $colony = Colony::where('id', $id)
-            ->select('colonies.id', 'colonies.code', 'colonies.colony','colonies.cp', 'colonies.perimeter_id')
+            $perimeter = Perimeter::where('id', $id)
+            ->select('perimeters.id', 'perimeters.perimeter')
             ->first();
             
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'peticion satisfactoria | colonia encontrado.';
-            $response->data["data"] = $colony;
+            $response->data["message"] = 'peticion satisfactoria | perímetro encontrado.';
+            $response->data["data"] = $perimeter;
         }
         catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
@@ -107,7 +104,7 @@ class ColonyBecasController extends Controller
     }
 
     /**
-     * Actualizar un colonia especifico.
+     * Actualizar un perímetro especifico.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response $response
@@ -116,17 +113,14 @@ class ColonyBecasController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $colony = Colony::where('id', $request->id)
+            $perimeter = Perimeter::where('id', $request->id)
             ->update([
-                'code' => $request->code,
-                'colony' => $request->colony,
-                'cp' => $request->cp,
-                'perimeter_id' => $request->perimeter_id,
+                'perimeter' => $request->perimeter,
             ]);
 
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'peticion satisfactoria | colonia actualizada.';
-            $response->data["alert_text"] = 'Colonia actualizada';
+            $response->data["message"] = 'peticion satisfactoria | perímetro actualizado.';
+            $response->data["alert_text"] = 'Perímetro actualizado';
 
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
@@ -135,7 +129,7 @@ class ColonyBecasController extends Controller
     }
 
     /**
-     * Eliminar (cambiar estado activo=false) un colonia especidifco.
+     * Eliminar (cambiar estado activo=false) un perímetro especidifco.
      *
      * @param  int $id
      * @return \Illuminate\Http\Response $response
@@ -144,14 +138,14 @@ class ColonyBecasController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            Colony::where('id', $id)
+            Perimeter::where('id', $id)
             ->update([
                 'active' => false,
                 'deleted_at' => date('Y-m-d H:i:s'),
             ]);
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'peticion satisfactoria | colonia eliminada.';
-            $response->data["alert_text"] ='Colonia eliminada';
+            $response->data["message"] = 'peticion satisfactoria | perímetro eliminado.';
+            $response->data["alert_text"] ='Perímetro eliminado';
 
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());

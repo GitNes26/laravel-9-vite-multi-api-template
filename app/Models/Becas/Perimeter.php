@@ -5,7 +5,7 @@ namespace App\Models\becas;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class City extends Model
+class Perimeter extends Model
 {
     use HasFactory;
 
@@ -21,9 +21,7 @@ class City extends Model
      */
     protected $fillable = [
         'id',
-        'code',
-        'city',
-        // 'location',
+        'perimeter',
         'active',
         'deleted_at'
     ];
@@ -32,7 +30,7 @@ class City extends Model
      * Nombre de la tabla asociada al modelo.
      * @var string
      */
-    protected $table = 'cities';
+    protected $table = 'perimeters';
 
     /**
      * LlavePrimaria asociada a la tabla.

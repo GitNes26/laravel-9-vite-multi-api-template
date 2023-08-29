@@ -22,7 +22,7 @@ class CityBecasController extends Controller
         $response->data = ObjResponse::DefaultResponse();
         try {
             $list = City::where('active', true)
-            ->select('cities.id','cities.code', 'cities.city', 'cities.location')
+            ->select('cities.id','cities.code', 'cities.city')
             ->orderBy('cities.code', 'asc')->get();
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'Peticion satisfactoria | Lista de ciudades.';
@@ -69,7 +69,6 @@ class CityBecasController extends Controller
             $new_city = City::create([
                 'code' => $request->code,
                 'city' => $request->city,
-                'location' => $request->location,
             ]);
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'peticion satisfactoria | ciudad registrado.';
@@ -92,7 +91,7 @@ class CityBecasController extends Controller
         $response->data = ObjResponse::DefaultResponse();
         try{
             $city = City::where('id', $id)
-            ->select('cities.id', 'cities.code', 'cities.city','cities.location')
+            ->select('cities.id', 'cities.code', 'cities.city')
             ->first();
             
             $response->data = ObjResponse::CorrectResponse();
@@ -119,7 +118,6 @@ class CityBecasController extends Controller
             ->update([
                 'code' => $request->code,
                 'city' => $request->city,
-                'location' => $request->location,
             ]);
 
             $response->data = ObjResponse::CorrectResponse();

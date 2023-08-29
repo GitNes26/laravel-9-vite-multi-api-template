@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('code');
             $table->string('city');
-            $table->string('location')->nullable()->comment('estado');
+            // $table->string('location')->nullable()->comment('algo asi como una dirección');
             $table->boolean('active')->default(true);
             $table->timestamps();
             $table->dateTime('deleted_at')->nullable();

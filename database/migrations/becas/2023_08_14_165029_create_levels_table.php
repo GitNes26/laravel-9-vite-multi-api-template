@@ -13,12 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::connection('mysql_becas')->create('colonies', function (Blueprint $table) {
+        Schema::connection("mysql_becas")->create('levels', function (Blueprint $table) {
             $table->id();
-            $table->string('code');
-            $table->string('colony');
-            $table->string('cp')->nullable();
-            $table->foreignId('perimeter_id')->constrained('perimeters','id');
+            $table->string('level');
             $table->boolean('active')->default(true);
             $table->timestamps();
             $table->dateTime('deleted_at')->nullable();
@@ -32,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::connection('mysql_becas')->dropIfExists('colonies');
+        Schema::connection('mysql_becas')->dropIfExists('levels');
     }
 };

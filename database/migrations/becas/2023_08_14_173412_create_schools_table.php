@@ -17,14 +17,13 @@ return new class extends Migration
             $table->id();
             $table->string('code');
             $table->string('school',100);
-            $table->string('address');
             $table->foreignId('city_id')->constrained('cities','id');
             $table->foreignId('colony_id')->constrained('colonies','id');
+            $table->string('address');
             $table->string('tel')->default('S/N');
             $table->string('director');
-            $table->binary('loc_for',1)->nullable();
-            $table->string('type',1)->nullable();
-            $table->string('zona',3)->nullable();
+            $table->binary('loc_for',1)->default(1)->comment("booleano para saber si la escuela es local=1 o foranea=0.");
+            $table->enum('zone',['U','R']);
             $table->boolean('active')->default(true);
             $table->timestamps();
             $table->dateTime('deleted_at')->nullable();

@@ -174,4 +174,65 @@ class SchoolBecasController extends Controller
         }
         return response()->json($response, $response->data["status_code"]);
     }
+
+    /**
+     * Validar que este disponible el dato.
+     *
+     * @param  
+     * @return \Illuminate\Http\Response $response
+     */
+    public function checkAvailableData(string $table, string $column, any $value, string $propTitle, string $input, int $id, any $secondTable=null) {
+
+		// if ($secondTable) {
+		// 	$query = "SELECT count(*) as duplicate FROM $table INNER JOIN $secondTable ON user_id=users.id WHERE $column='$value' AND active=1;";
+		// 	if ($id != null) $query = "SELECT count(*) as duplicate FROM $table t INNER JOIN $secondTable ON t.user_id=users.id WHERE t.$column='$value' AND active=1 AND t.id!=$id";
+		// } else {
+		// 	$query = "SELECT count(*) as duplicate FROM $table WHERE $column='$value' AND active=1";
+
+			
+		// 	if ($id != null) $query = "SELECT count(*) as duplicate FROM $table WHERE $column='$value' AND active=1 AND id!=$id";
+		// }
+
+		// $consulta = $this->Select($query,false);
+		// if ($consulta["duplicate"] > 0) {
+		// 	$response = array(
+		// 		"result" => true,
+		// 		"alert_icon" => 'warning',
+		// 		"alert_title" => "$propTitle no esta disponible!",
+		// 		"alert_text" => "<b>$value</b> ya existe, intenta con uno diferente.",
+		// 		"message" => "duplicado",
+		// 		"input" => $input
+		// 	);
+		// 	// $response = $this->duplicateResponse($propTitle, $value, $input);
+		// } else {
+		// 	$response = array(
+		// 		"result" => false,
+		// 	);
+		// }
+		// return $response;
+        
+        
+        
+        
+        // function validateAvailableData($cellphone, $id) {
+        //    // #VALIDACION DE DATOS REPETIDOS
+        //    $duplicate = $this->checkAvailableData('candidates', 'cellphone', $cellphone, 'El número celular', 'input_cellphone', $id, 'users');
+        //    if ($duplicate["result"] == true) die(json_encode($duplicate));
+        // }
+     
+        // function getIdByUserId($user_id, $private=true) {
+        //    $query = "SELECT id FROM candidates WHERE user_id=$user_id;";
+        //    $candidate = $this->Select($query, false);
+        //    if ($private) {
+        //       echo "ando privado";
+        //       if (!$candidate) return 0;
+        //       else return $candidate["id"]; 
+        //    } else {
+        //       echo "ando publico";
+        //       if (!$candidate) die(json_encode(array("data" => 0)));
+        //       else die(json_encode(array("data" => $candidate["id"]))); 
+        //    }
+        // }
+ 	}
+
 }

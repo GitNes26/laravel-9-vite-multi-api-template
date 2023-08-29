@@ -17,8 +17,10 @@ class DatabaseBecasSeeder extends Seeder
         $this->call([
             becas\RoleSeeder::class,
             becas\UserSeeder::class,
+            becas\PerimeterSeeder::class,
             becas\CitySeeder::class,
             becas\ColonySeeder::class,
+            becas\LevelSeeder::class,
             becas\SchoolSeeder::class,
         ]);
         // \App\Models\User::factory(10)->create();
