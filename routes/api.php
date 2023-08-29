@@ -15,6 +15,13 @@ use App\Http\Controllers\becas\SchoolBecasController;
 #endregion CONTROLLERS BECAS
 
 
+
+#region CONTROLLERS INGRESOS
+use App\Http\Controllers\Ingresos\SiditController;
+
+#endregion CONTROLLERS INGRESOS
+
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -83,4 +90,11 @@ Route::prefix('becas')->group(function () {
         
         
     // });
+});
+
+
+Route::prefix('sidit/tramites')->group(function () {
+    Route::get('/',[SiditController::class,'index']);
+    Route::post('/',[SiditController::class,'create']);
+   
 });
