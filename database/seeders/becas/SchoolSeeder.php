@@ -23,7 +23,7 @@ class SchoolSeeder extends Seeder
             'colony_id' => 1, 
             'tel' => '8717143002', 
             'director' => 'MARIA GUADALUPE VAZQUEZ RAMOS', 
-            'type' => 'U', 
+            'zone' => 'U', 
             'created_at' => now(),
         ]);
         DB::connection('mysql_becas')->table('schools')->insert([ 
@@ -34,7 +34,7 @@ class SchoolSeeder extends Seeder
             'colony_id' => 2, 
             'tel' => '8717141411', 
             'director' => 'MA. GUILLERMINA CISNEROS VALDEZ', 
-            'type' => 'U', 
+            'zone' => 'U', 
             'created_at' => now(),
         ]);
     }
