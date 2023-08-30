@@ -95,7 +95,7 @@ class LevelBecasController extends Controller
             
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'peticion satisfactoria | nivel encontrado.';
-            $response->data["data"] = $level;
+            $response->data["result"] = $level;
         }
         catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());

@@ -96,7 +96,7 @@ class CityBecasController extends Controller
             
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'peticion satisfactoria | ciudad encontrado.';
-            $response->data["data"] = $city;
+            $response->data["result"] = $city;
         }
         catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
