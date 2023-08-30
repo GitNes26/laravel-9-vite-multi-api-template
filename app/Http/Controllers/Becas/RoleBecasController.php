@@ -97,7 +97,7 @@ class RoleBecasController extends Controller
             
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'peticion satisfactoria | rol encontrado.';
-            $response->data["data"] = $role;
+            $response->data["result"] = $role;
         }
         catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());

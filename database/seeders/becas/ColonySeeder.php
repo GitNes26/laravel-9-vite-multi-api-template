@@ -17,14 +17,14 @@ class ColonySeeder extends Seeder
     {
         DB::connection('mysql_becas')->table('colonies')->insert([ 
             'code' => '0', 
-            'colony' => 'COL. EL REFUGIO', 
+            'colony' => 'SIN COLONIA', 
             'cp' => '35029', 
             'perimeter_id' => '1', 
             'created_at' => now(),
         ]);
         DB::connection('mysql_becas')->table('colonies')->insert([ 
             'code' => '1', 
-            'colony' => 'SIN COLONIA', 
+            'colony' => 'EL REFUGIO', 
             'cp' => '0',  
             'perimeter_id' => '2', 
             'created_at' => now(),

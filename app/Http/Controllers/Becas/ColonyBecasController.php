@@ -98,7 +98,7 @@ class ColonyBecasController extends Controller
             
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'peticion satisfactoria | colonia encontrado.';
-            $response->data["data"] = $colony;
+            $response->data["result"] = $colony;
         }
         catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
