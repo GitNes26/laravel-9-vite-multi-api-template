@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('address');
             $table->string('tel')->default('S/N');
             $table->string('director');
-            $table->binary('loc_for',1)->default(1)->comment("booleano para saber si la escuela es local=1 o foranea=0.");
+            $table->boolean('loc_for',1)->default(1)->comment("booleano para saber si la escuela es local=1 o foranea=0.");
             $table->enum('zone',['U','R']);
             $table->boolean('active')->default(true);
             $table->timestamps();

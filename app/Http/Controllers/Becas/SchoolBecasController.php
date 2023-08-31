@@ -71,14 +71,14 @@ class SchoolBecasController extends Controller
             $new_colony = School::create([
                 'code' => $request->code,
                 'school' => $request->school,
-                'address' => $request->address,
                 'city_id' => $request->city_id,
                 'colony_id' => $request->colony_id,
+                'address' => $request->address,
                 'tel' => $request->tel ?? 'S/N',
                 'director' => $request->director,
-                // 'loc_for' => $request->loc_for,
-                'type' => $request->type,
-                // 'zona' => $request->zona,
+                'loc_for' => $request->loc_for,
+                'zone' => $request->zone,
+                // 'type' => $request->type,
             ]);
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'peticion satisfactoria | escuela registrado.';
@@ -108,7 +108,7 @@ class SchoolBecasController extends Controller
             
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'peticion satisfactoria | escuela encontrado.';
-            $response->data["data"] = $colony;
+            $response->data["result"] = $colony;
         }
         catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
@@ -130,14 +130,14 @@ class SchoolBecasController extends Controller
             ->update([
                 'code' => $request->code,
                 'school' => $request->school,
-                'address' => $request->address,
                 'city_id' => $request->city_id,
                 'colony_id' => $request->colony_id,
+                'address' => $request->address,
                 'tel' => $request->tel ?? 'S/N',
                 'director' => $request->director,
-                // 'loc_for' => $request->loc_for,
-                'type' => $request->type,
-                // 'zona' => $request->zona,
+                'loc_for' => $request->loc_for,
+                'zone' => $request->zone,
+                // // 'type' => $request->type,
             ]);
 
             $response->data = ObjResponse::CorrectResponse();

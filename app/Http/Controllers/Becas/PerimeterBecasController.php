@@ -95,7 +95,7 @@ class PerimeterBecasController extends Controller
             
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'peticion satisfactoria | perímetro encontrado.';
-            $response->data["data"] = $perimeter;
+            $response->data["result"] = $perimeter;
         }
         catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
