@@ -22,13 +22,12 @@ class PerimeterBecasController extends Controller
         $response->data = ObjResponse::DefaultResponse();
         try {
             $list = Perimeter::where('active', true)
-            ->select('perimeters.id','perimeters.perimeter')
-            ->orderBy('perimeters.id', 'asc')->get();
+                ->select('perimeters.id', 'perimeters.perimeter')
+                ->orderBy('perimeters.id', 'asc')->get();
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'Peticion satisfactoria | Lista de perimetros.';
             $response->data["result"] = $list;
-        }
-        catch (\Exception $ex) {
+        } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
         return response()->json($response, $response->data["status_code"]);
@@ -44,13 +43,12 @@ class PerimeterBecasController extends Controller
         $response->data = ObjResponse::DefaultResponse();
         try {
             $list = Perimeter::where('active', true)
-            ->select('perimeters.id as value', 'perimeters.perimeter as text')
-            ->orderBy('perimeters.perimeter', 'asc')->get();
+                ->select('perimeters.id as value', 'perimeters.perimeter as text')
+                ->orderBy('perimeters.perimeter', 'asc')->get();
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'Peticion satisfactoria | Lista de perimetros';
             $response->data["result"] = $list;
-        }
-        catch (\Exception $ex) {
+        } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
         return response()->json($response, $response->data["status_code"]);
@@ -72,8 +70,7 @@ class PerimeterBecasController extends Controller
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'peticion satisfactoria | perímetro registrado.';
             $response->data["alert_text"] = 'Perímetro registrado';
-        }
-        catch (\Exception $ex) {
+        } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
         return response()->json($response, $response->data["status_code"]);
@@ -88,16 +85,15 @@ class PerimeterBecasController extends Controller
     public function show(int $id, Response $response)
     {
         $response->data = ObjResponse::DefaultResponse();
-        try{
+        try {
             $perimeter = Perimeter::where('id', $id)
-            ->select('perimeters.id', 'perimeters.perimeter')
-            ->first();
-            
+                ->select('perimeters.id', 'perimeters.perimeter')
+                ->first();
+
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'peticion satisfactoria | perímetro encontrado.';
             $response->data["result"] = $perimeter;
-        }
-        catch (\Exception $ex) {
+        } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
         return response()->json($response, $response->data["status_code"]);
@@ -114,14 +110,13 @@ class PerimeterBecasController extends Controller
         $response->data = ObjResponse::DefaultResponse();
         try {
             $perimeter = Perimeter::where('id', $request->id)
-            ->update([
-                'perimeter' => $request->perimeter,
-            ]);
+                ->update([
+                    'perimeter' => $request->perimeter,
+                ]);
 
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'peticion satisfactoria | perímetro actualizado.';
             $response->data["alert_text"] = 'Perímetro actualizado';
-
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
@@ -139,14 +134,13 @@ class PerimeterBecasController extends Controller
         $response->data = ObjResponse::DefaultResponse();
         try {
             Perimeter::where('id', $id)
-            ->update([
-                'active' => false,
-                'deleted_at' => date('Y-m-d H:i:s'),
-            ]);
+                ->update([
+                    'active' => false,
+                    'deleted_at' => date('Y-m-d H:i:s'),
+                ]);
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'peticion satisfactoria | perímetro eliminado.';
-            $response->data["alert_text"] ='Perímetro eliminado';
-
+            $response->data["alert_text"] = 'Perímetro eliminado';
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }

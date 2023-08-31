@@ -60,6 +60,7 @@ class SiditController extends Controller
                                                 'FolioSIDIT' => $item['FolioSIDIT'],
                                                 'RFC' => $item['RFC'],
                                                 'NombrePropietario' => $item['NombrePropietario'],
+                                                'idTramite' => $item['idTramite'],
                                                 'Direccion' => $item['Direccion'],
                                                 'ClaveCatastral' => $item['ClaveCatastral'],
                                                 'Descuento' => $item['Descuento'],
