@@ -69,7 +69,7 @@ class SiditController extends Controller
                                                 'FechaGeneracion' => $item["FechaGeneracionF"],
                                                 'FechaPago' => $item['FechaPago'],
                                                 'UsuarioSolicita' => $item['UsuarioSolicita'],
-                                                'Pagado' => $item['Pagado'],
+                                                'Estatus' => $item['Estatus'],
                                                 'ReciboOficial' => $item['ReciboOficial'],
                                                 'Observaciones' => $item['Observaciones'],                                  
                                             ];
@@ -84,7 +84,7 @@ class SiditController extends Controller
                                                 'MontoTotal' => $item['MontoTotal'],
                                                 'FechaGeneracion' => $item["FechaGeneracionF"],
                                                 'UsuarioSolicita' => $item['UsuarioSolicita'],
-                                                'Pagado' => $item['Pagado'],
+                                                'Estatus' => $item['Estatus'],
                                                 'PVGeneralID' => $item["PVGeneralID"],
                                                 'Unidades1' => $item["Unidades1"],
                                                 'Unidades2' => $item["Unidades2"],
