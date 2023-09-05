@@ -25,6 +25,6 @@ Route::get('pdf', function () {
 Route::prefix('becas')->group(function () {
     Route::get('/', function () {
         return 'becas';
-        });
+    });
     include_once "becas.routes.php";
 });
