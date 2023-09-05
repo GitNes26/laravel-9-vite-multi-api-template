@@ -35,3 +35,9 @@ Route::prefix('becas')->group(function () {
     })
    include_once "becas.routes.php";
 });
+
+Route::prefix('sidit/tramites')->group(function () {
+    Route::get('/',[SiditController::class,'index']);
+    Route::post('/',[SiditController::class,'create']);
+   
+});
