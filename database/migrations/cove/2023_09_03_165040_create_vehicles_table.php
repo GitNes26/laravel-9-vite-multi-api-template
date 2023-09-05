@@ -21,7 +21,7 @@ return new class extends Migration
             $table->integer('year');
             $table->date('registration_date');
             $table->string('description')->nullable();
-            $table->string('plates')->comment('placas asignadas al carro');
+            // $table->string('plates')->comment('placas asignadas al carro');
             $table->foreignId('vehicle_status_id')->constrained('vehicle_status','id');
             $table->string('img_path')->nullable();
             $table->string('description')->nullable();
