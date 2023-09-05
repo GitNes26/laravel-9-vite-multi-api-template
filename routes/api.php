@@ -39,5 +39,4 @@ Route::prefix('becas')->group(function () {
 Route::prefix('sidit/tramites')->group(function () {
     Route::get('/',[SiditController::class,'index']);
     Route::post('/',[SiditController::class,'create']);
-   
 });
