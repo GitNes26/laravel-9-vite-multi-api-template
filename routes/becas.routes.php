@@ -81,6 +81,4 @@ Route::controller(SchoolBecasController::class)->group(function () {
    Route::put('/schools', 'update');
    Route::delete('/schools/{id}', 'destroy');
 });
-
-
 // });

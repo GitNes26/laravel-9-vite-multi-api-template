@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Model
+class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -17,7 +17,7 @@ class User extends Model
      * @var string
      */
     protected $connection = "mysql_becas";
-    
+
     /**
      * The attributes that are mass assignable.
      *
@@ -62,7 +62,7 @@ class User extends Model
      */
     public function role()
     {   //primero se declara FK y despues la PK del modelo asociado
-        return $this->belongsTo(Role::class,'role_id','id');
+        return $this->belongsTo(Role::class, 'role_id', 'id');
     }
 
     // public function games()
