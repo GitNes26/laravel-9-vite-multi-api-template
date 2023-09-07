@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\becas;
+namespace App\Http\Controllers\Becas;
 
 use App\Http\Controllers\Controller;
 use App\Models\ObjResponse;
@@ -22,13 +22,12 @@ class LevelBecasController extends Controller
         $response->data = ObjResponse::DefaultResponse();
         try {
             $list = Level::where('active', true)
-            ->select('levels.id','levels.level')
-            ->orderBy('levels.id', 'asc')->get();
+                ->select('levels.id', 'levels.level')
+                ->orderBy('levels.id', 'asc')->get();
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'Peticion satisfactoria | Lista de niveles.';
             $response->data["result"] = $list;
-        }
-        catch (\Exception $ex) {
+        } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
         return response()->json($response, $response->data["status_code"]);
@@ -44,13 +43,12 @@ class LevelBecasController extends Controller
         $response->data = ObjResponse::DefaultResponse();
         try {
             $list = Level::where('active', true)
-            ->select('levels.id as value', 'levels.level as text')
-            ->orderBy('levels.level', 'asc')->get();
+                ->select('levels.id as value', 'levels.level as text')
+                ->orderBy('levels.level', 'asc')->get();
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'Peticion satisfactoria | Lista de niveles';
             $response->data["result"] = $list;
-        }
-        catch (\Exception $ex) {
+        } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
         return response()->json($response, $response->data["status_code"]);
@@ -72,8 +70,7 @@ class LevelBecasController extends Controller
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'peticion satisfactoria | nivel registrado.';
             $response->data["alert_text"] = 'Nivel registrado';
-        }
-        catch (\Exception $ex) {
+        } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
         return response()->json($response, $response->data["status_code"]);
@@ -88,16 +85,15 @@ class LevelBecasController extends Controller
     public function show(int $id, Response $response)
     {
         $response->data = ObjResponse::DefaultResponse();
-        try{
+        try {
             $level = Level::where('id', $id)
-            ->select('levels.id', 'levels.level')
-            ->first();
-            
+                ->select('levels.id', 'levels.level')
+                ->first();
+
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'peticion satisfactoria | nivel encontrado.';
             $response->data["result"] = $level;
-        }
-        catch (\Exception $ex) {
+        } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
         return response()->json($response, $response->data["status_code"]);
@@ -114,14 +110,13 @@ class LevelBecasController extends Controller
         $response->data = ObjResponse::DefaultResponse();
         try {
             $level = Level::where('id', $request->id)
-            ->update([
-                'level' => $request->level,
-            ]);
+                ->update([
+                    'level' => $request->level,
+                ]);
 
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'peticion satisfactoria | nivel actualizado.';
             $response->data["alert_text"] = 'Nivel actualizado';
-
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
@@ -139,14 +134,13 @@ class LevelBecasController extends Controller
         $response->data = ObjResponse::DefaultResponse();
         try {
             Level::where('id', $id)
-            ->update([
-                'active' => false,
-                'deleted_at' => date('Y-m-d H:i:s'),
-            ]);
+                ->update([
+                    'active' => false,
+                    'deleted_at' => date('Y-m-d H:i:s'),
+                ]);
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'peticion satisfactoria | nivel eliminado.';
-            $response->data["alert_text"] ='Nivel eliminado';
-
+            $response->data["alert_text"] = 'Nivel eliminado';
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }

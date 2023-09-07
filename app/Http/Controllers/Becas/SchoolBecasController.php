@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\becas;
+namespace App\Http\Controllers\Becas;
 
 use App\Http\Controllers\Controller;
 use App\Models\ObjResponse;

@@ -4,16 +4,16 @@ namespace App\Http\Controllers\Becas;
 
 use App\Http\Controllers\Controller;
 use App\Models\ObjResponse;
-use App\Models\becas\Colony;
+use App\Models\becas\Disability;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 
-class ColonyBecasController extends Controller
+class DisabilityBecasController extends Controller
 {
     /**
-     * Mostrar lista de todos las ciudades activos.
+     * Mostrar lista de todas las discapacidades activas.
      *
      * @return \Illuminate\Http\Response $response
      */
@@ -21,14 +21,13 @@ class ColonyBecasController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $list = Colony::where('active', true)
-            ->select('colonies.id','colonies.code', 'colonies.colony', 'colonies.cp', 'colonies.perimeter_id')
-            ->orderBy('colonies.code', 'asc')->get();
+            $list = Disability::where('active', true)
+                ->select('disabilities.*')
+                ->orderBy('disabilities.id', 'asc')->get();
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'Peticion satisfactoria | Lista de ciudades.';
+            $response->data["message"] = 'Peticion satisfactoria | Lista de discapacidades.';
             $response->data["result"] = $list;
-        }
-        catch (\Exception $ex) {
+        } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
         return response()->json($response, $response->data["status_code"]);
@@ -43,21 +42,20 @@ class ColonyBecasController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $list = Colony::where('active', true)
-            ->select('colonies.id as value', 'colonies.colony as text')
-            ->orderBy('colonies.colony', 'asc')->get();
+            $list = Disability::where('active', true)
+                ->select('disabilities.id as value', 'disabilities.disability as text')
+                ->orderBy('disabilities.disability', 'asc')->get();
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'Peticion satisfactoria | Lista de ciudades';
+            $response->data["message"] = 'Peticion satisfactoria | Lista de discapacidades';
             $response->data["result"] = $list;
-        }
-        catch (\Exception $ex) {
+        } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
         return response()->json($response, $response->data["status_code"]);
     }
 
     /**
-     * Crear un nuevo colonia.
+     * Crear una nueva discapacidad.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response $response
@@ -66,24 +64,21 @@ class ColonyBecasController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $new_colony = Colony::create([
-                'code' => $request->code,
-                'colony' => $request->colony,
-                'cp' => $request->cp,
-                'perimeter_id' => $request->perimeter_id,
+            $new_disability = Disability::create([
+                'disability' => $request->disability,
+                'description' => $request->description,
             ]);
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'peticion satisfactoria | colonia registrado.';
-            $response->data["alert_text"] = 'Colonia registrada';
-        }
-        catch (\Exception $ex) {
+            $response->data["message"] = 'peticion satisfactoria | discapacidad registrada.';
+            $response->data["alert_text"] = 'Discapacidad registrada';
+        } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
         return response()->json($response, $response->data["status_code"]);
     }
 
     /**
-     * Mostrar un colonia especifico.
+     * Mostrar una discapacidad especifica.
      *
      * @param   int $id
      * @return \Illuminate\Http\Response $response
@@ -91,23 +86,20 @@ class ColonyBecasController extends Controller
     public function show(int $id, Response $response)
     {
         $response->data = ObjResponse::DefaultResponse();
-        try{
-            $colony = Colony::where('id', $id)
-            ->select('colonies.id', 'colonies.code', 'colonies.colony','colonies.cp', 'colonies.perimeter_id')
-            ->first();
-            
+        try {
+            $disability = Disability::find($id);
+
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'peticion satisfactoria | colonia encontrado.';
-            $response->data["result"] = $colony;
-        }
-        catch (\Exception $ex) {
+            $response->data["message"] = 'peticion satisfactoria | discapacidad encontrada.';
+            $response->data["result"] = $disability;
+        } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
         return response()->json($response, $response->data["status_code"]);
     }
 
     /**
-     * Actualizar un colonia especifico.
+     * Actualizar una discapacidad especifica.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response $response
@@ -116,18 +108,15 @@ class ColonyBecasController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $colony = Colony::where('id', $request->id)
-            ->update([
-                'code' => $request->code,
-                'colony' => $request->colony,
-                'cp' => $request->cp,
-                'perimeter_id' => $request->perimeter_id,
-            ]);
+            $disability = Disability::find($request->id)
+                ->update([
+                    'disability' => $request->disability,
+                    'description' => $request->description,
+                ]);
 
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'peticion satisfactoria | colonia actualizada.';
-            $response->data["alert_text"] = 'Colonia actualizada';
-
+            $response->data["message"] = 'peticion satisfactoria | discapacidad actualizada.';
+            $response->data["alert_text"] = 'Discapacidad actualizada';
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
@@ -135,7 +124,7 @@ class ColonyBecasController extends Controller
     }
 
     /**
-     * Eliminar (cambiar estado activo=false) un colonia especidifco.
+     * Eliminar (cambiar estado activo=false) una discapacidad especidifca.
      *
      * @param  int $id
      * @return \Illuminate\Http\Response $response
@@ -144,15 +133,14 @@ class ColonyBecasController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            Colony::where('id', $id)
-            ->update([
-                'active' => false,
-                'deleted_at' => date('Y-m-d H:i:s'),
-            ]);
+            Disability::find($id)
+                ->update([
+                    'active' => false,
+                    'deleted_at' => date('Y-m-d H:i:s'),
+                ]);
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'peticion satisfactoria | colonia eliminada.';
-            $response->data["alert_text"] ='Colonia eliminada';
-
+            $response->data["message"] = 'peticion satisfactoria | discapacidad eliminada.';
+            $response->data["alert_text"] = 'Discapacidad eliminada';
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
