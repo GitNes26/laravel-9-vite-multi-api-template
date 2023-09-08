@@ -22,7 +22,7 @@ class Beca extends Model
     protected $fillable = [
         'id',
         'folio',
-        'tutor_name_full',
+        'tutor_full_name',
         'tutor_tel',
         'single_mother',
         'student_id',

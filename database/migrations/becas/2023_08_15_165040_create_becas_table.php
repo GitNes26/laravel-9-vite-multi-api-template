@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::connection("mysql_becas")->create('becas', function (Blueprint $table) {
             $table->id();
             $table->integer('folio');
-            $table->string('tutor_name_full');
+            $table->string('tutor_full_name');
             $table->string('tutor_tel');
             $table->boolean('single_mother');
 
