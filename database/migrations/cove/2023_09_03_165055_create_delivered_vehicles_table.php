@@ -13,9 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::connection('mysql_cove')->create('colonies', function (Blueprint $table) {
+        Schema::connection('mysql_cove')->create('delivered_vehicles', function (Blueprint $table) {
             $table->id();
-            $table->string('colony');
+            $table->integer('accident_folio')->nullable();
+            $table->foreignId('assigned_vehicle_id')->constrained('assigned_vehicles','id');
+            $table->text('reason')->nullable()->comment('motivo por el cual se devuelve la unidad');
+            $table->dateTime('date')->nullable();
             $table->boolean('active')->default(true);
             $table->timestamps();
             $table->dateTime('deleted_at')->nullable();
@@ -29,7 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-
-        Schema::connection('mysql_cove')->dropIfExists('colonies');
+        Schema::connection('mysql_cove')->dropIfExists('delivered_vehicles');
     }
 };

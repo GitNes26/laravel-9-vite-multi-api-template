@@ -13,9 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::connection('mysql_cove')->create('municipalities', function(Blueprint $table) {
+        Schema::connection("mysql_cove")->create('vehicle_plates', function (Blueprint $table) {
             $table->id();
-            $table->string('municipalty');
+            $table->foreignId('vehicle_id')->constrained('vehicles','id');
+            $table->string('plates');
+            $table->date('initial date');
+            $table->date('due_date');
             $table->boolean('active')->default(true);
             $table->timestamps();
             $table->dateTime('deleted_at')->nullable();
@@ -29,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::connection('mysql_cove')->dropIfExists('municipalities');
+        Schema::connection('mysql_cove')->dropIfExists('vehicle_plates');
     }
 };
