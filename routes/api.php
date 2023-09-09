@@ -40,3 +40,10 @@ Route::prefix('sidit/tramites')->group(function () {
     Route::get('/',[SiditController::class,'index']);
     Route::post('/',[SiditController::class,'create']);
 });
+
+Route::prefix('cove')->group(function () {
+    Route::get('/', function () {
+        return 'cove';
+    });
+    include_once "cove.routes.php";
+});
