@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('vehicle_id')->constrained('vehicles','id');
             $table->string('plates');
-            $table->date('initial date');
+            $table->date('initial_date');
             $table->date('due_date');
             $table->boolean('active')->default(true);
             $table->timestamps();
