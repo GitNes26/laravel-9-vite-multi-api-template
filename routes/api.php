@@ -32,6 +32,18 @@ Route::get('pdf', function () {
 Route::prefix('becas')->group(function () {
     Route::get('/', function () {
         return 'becas';
-        });
+    });
     include_once "becas.routes.php";
+});
+
+Route::prefix('sidit/tramites')->group(function () {
+    Route::get('/',[SiditController::class,'index']);
+    Route::post('/',[SiditController::class,'create']);
+});
+
+Route::prefix('cove')->group(function () {
+    Route::get('/', function () {
+        return 'cove';
+    });
+    include_once "cove.routes.php";
 });

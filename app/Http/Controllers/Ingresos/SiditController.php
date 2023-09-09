@@ -95,7 +95,7 @@ class SiditController extends Controller
                                         $response["Result"] = true;
                                         $response["Message"] = "Datos insertados con exito";
                                         DB::commit();
-                                    } catch (Exception $e) {
+                                    } catch (\Exception $e) {
                                         DB::rollBack();
                                         $response["Result"] = false;
                                         $response["Message"] = "El procedimiento almacenado fallo con errores";
@@ -137,11 +137,41 @@ class SiditController extends Controller
                         } else if($opcion === 5){
                             //CONSULTA DE DATOS A LAS TABLAS DE PAGOS
                             $response["Result"] = true;
-                            $response["Message"] = "Consulta Genetal de pagos concluida con exito";
+                            $response["Message"] = "Consulta completa de pagos concluida con exito";
                             $detalle1 = tramitesSiditConfig::all();
                             $detalle2 = detalleTramitesSidit::all();
                             $response["VPG"] = $detalle1;
                             $response["PV"] = $detalle2;
+                        } else if($opcion === 6){
+                            // Consulta individual a tabla general por id del tramite
+                            $response["Result"] = true;
+                            $response["Message"] = "Consulta de pago general individual";
+                            $detalle = tramitesSiditConfig::where("idTramite", $objeto["id"])->get()
+                        } else if($opcion === 7){
+                            // Consulta individual a tabla detalle por id del tramite
+                            $response["Result"] = true;
+                            $response["Message"] = "Consulta de pago general individual";
+                            $detalle = detalleTramitesSidit::where("idTramite", $objeto["id"])->get()
+                        } else if($opcion === 8){
+                            DB::beginTransaction();
+                            try {
+                                $response["Result"] = true;
+                                $response["Message"] = "Actualizacion a la tabla general exitosa";
+                                $filasAct = tramitesSiditConfig::where("id", $objeto["id"])->update([ "Estatus" => $objeto["Estatus"]]);
+                                if ($filasAct > 0) {
+                                    $response["Result"] = true;
+                                    $response["Message"] = "Se actualizaron un total de: ".$filasAct;
+                                    DB::commit();
+                                } else {
+                                    $response["Result"] = true;
+                                    $response["Message"] = "No se actualizo ningun registro";
+                                    DB::rollBack();
+                                }
+                            } catch (\Exception $e) {
+                                DB::rollBack();
+                                $response["Result"] = false;
+                                $response["Message"] = $e->getMessage();
+                            }
                         } else {
                             //RESPUESTA POR DEFECTO EN CASO DE NO ENCAJAR CON LAS OPCIONES
                             $response["Result"] = false;

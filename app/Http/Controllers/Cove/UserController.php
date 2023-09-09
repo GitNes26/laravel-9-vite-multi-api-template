@@ -1,18 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\becas;
+namespace App\Http\Controllers\Cove;
 
 use App\Http\Controllers\Controller;
 use App\Models\ObjResponse;
-use App\Models\becas\User;
+use App\Models\cove\User;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
-
-class UserBecasController extends Controller
+class UserController extends Controller
 {
 
     /**
@@ -200,7 +199,8 @@ class UserBecasController extends Controller
         try {
             $user = User::where('users.id', $id)
             ->join('roles', 'users.role_id', '=', 'roles.id')
-            ->select('users.*','roles.role')
+            ->join('departments', 'users.department_id', '=', 'departments.id')
+            ->select('users.*','roles.role','departments.department','departments.description')
             ->first();
 
             $response->data = ObjResponse::CorrectResponse();
@@ -272,18 +272,19 @@ class UserBecasController extends Controller
 
 
 
-    private function validateAvailability(string $prop, int $value, string $message_error)
-    {
-        $response->data = ObjResponse::DefaultResponse();
-        data_set($response,'alert_text',$message_error);
-        try {
-            $exist = User::where($prop, $value)->count();
+    // private function validateAvailability(string $prop, int $value, string $message_error)
+    // {
+    //     $response->data = ObjResponse::DefaultResponse();
+    //     data_set($response,'alert_text',$message_error);
+    //     try {
+    //         $exist = User::where($prop, $value)->count();
 
-            if ($exist > 0) $response = ObjResponse::CorrectResponse();
+    //         if ($exist > 0) $response = ObjResponse::CorrectResponse();
 
-        } catch (\Exception $ex) {
-            $response = ObjResponse::CatchResponse($ex->getMessage());
-        }
-        return response()->json($response,$response["status_code"]);
-    }
+    //     } catch (\Exception $ex) {
+    //         $response = ObjResponse::CatchResponse($ex->getMessage());
+    //     }
+    //     return response()->json($response,$response["status_code"]);
+    // }
 }
+
