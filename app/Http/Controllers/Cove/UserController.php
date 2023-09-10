@@ -117,7 +117,9 @@ class UserController extends Controller
             // User::on('mysql_becas')->get();
             $list = User::where('users.active', true)
             ->join('roles', 'users.role_id', '=', 'roles.id')
-            ->select('users.*','roles.role')
+            ->join('departments', 'users.department_id', '=', 'departments.id')
+            ->select('users.*','roles.role','departments.department','departments.description as department_description')
+            ->orderBy('users.id', 'desc')
             ->get();
 
             $response->data = ObjResponse::CorrectResponse();
@@ -169,13 +171,22 @@ class UserController extends Controller
             $token = $request->bearerToken();
 
             $new_user = User::create([
-                // 'name' => $request->name,
-                // 'last_name' => $request->last_name,
-                'email' => $request->email,
                 'username' => $request->username,
+                'email' => $request->email,
                 'password' => Hash::make($request->password),
-                // 'phone' => $request->phone,
                 'role_id' => $request->role_id,
+                'phone' => $request->phone || null,
+                'license_number' => $request->license_number || null,
+                'license_due_date' => $request->license_due_date,
+                'payroll_number' => $request->payroll_number || null,
+                'department_id' => $request->department_id || 1,
+                'name' => $request->name,
+                'paternal_last_name' => $request->paternal_last_name,
+                'maternal_last_name' => $request->maternal_last_name,
+                'community_id' => $request->community_id || 0,
+                'address' => $request->address || null,
+                'num_ext' => $request->num_ext || null,
+                'num_int' => $request->num_int || null,
             ]);
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'peticion satisfactoria | usuario registrado.';
@@ -191,16 +202,17 @@ class UserController extends Controller
      * Mostrar un usuario especifico.
      *
      * @param   int $id
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response $response
      */
-    public function show(int $id, Response $response)
+    public function show(Request $request, Response $response)
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $user = User::where('users.id', $id)
+            $user = User::find($request->id)
             ->join('roles', 'users.role_id', '=', 'roles.id')
             ->join('departments', 'users.department_id', '=', 'departments.id')
-            ->select('users.*','roles.role','departments.department','departments.description')
+            ->select('users.*','roles.role','departments.department','departments.description as department_description')
             ->first();
 
             $response->data = ObjResponse::CorrectResponse();
@@ -224,15 +236,24 @@ class UserController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $user = User::where('id', $request->id)
+            $user = User::find($request->id)
             ->update([
-                // 'name' => $request->name,
-                // 'last_name' => $request->last_name,
-                'email' => $request->email,
                 'username' => $request->username,
+                'email' => $request->email,
                 'password' => Hash::make($request->password),
-                // 'phone' => $request->phone,
                 'role_id' => $request->role_id,
+                'phone' => $request->phone,
+                'license_number' => $request->license_number,
+                'license_due_date' => $request->license_due_date,
+                'payroll_number' => $request->payroll_number,
+                'department_id' => $request->department_id,
+                'name' => $request->name,
+                'paternal_last_name' => $request->paternal_last_name,
+                'maternal_last_name' => $request->maternal_last_name,
+                'community_id' => $request->community_id,
+                'address' => $request->address,
+                'num_ext' => $request->num_ext,
+                'num_int' => $request->num_int,
             ]);
 
             $response->data = ObjResponse::CorrectResponse();
@@ -255,7 +276,7 @@ class UserController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            User::where('id', $id)
+            User::find($id)
             ->update([
                 'active' => false,
                 'deleted_at' => date('Y-m-d H:i:s'),

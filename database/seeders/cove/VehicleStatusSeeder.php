@@ -15,8 +15,8 @@ class VehicleStatusSeeder extends Seeder
      */
     public function run()
     {
-        DB::connection('mysql_cove')->table('roles')->insert([
-            'role' => 'Sin Asignar',
+        DB::connection('mysql_cove')->table('vehicle_status')->insert([
+            'vehicle_status' => 'Sin Asignar',
             'description' => 'EL vehículo no tiene un estatus definido.',
             'created_at' => now(),
         ]);
