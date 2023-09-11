@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 class SchoolBecasController extends Controller
 {
     /**
-     * Mostrar lista de todos las escuelas activas.
+     * Mostrar lista de escuelas activas.
      *
      * @return \Illuminate\Http\Response $response
      */
@@ -22,9 +22,10 @@ class SchoolBecasController extends Controller
         $response->data = ObjResponse::DefaultResponse();
         try {
             $list = School::where('schools.active', true)
+                ->join('levels', 'schools.level_id', '=', 'levels.id')
                 ->join('cities', 'schools.city_id', '=', 'cities.id')
                 ->join('colonies', 'schools.colony_id', '=', 'colonies.id')
-                ->select('schools.*', 'cities.city', 'colonies.colony')
+                ->select('schools.*', 'levels.level', 'cities.city', 'colonies.colony')
                 ->orderBy('schools.code', 'asc')->get();
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'Peticion satisfactoria | Lista de escuelas.';
@@ -44,7 +45,8 @@ class SchoolBecasController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $list = School::where('active', true)
+            $list = School::where('schools.active', true)
+                ->join('levels', 'schools.level_id', '=', 'levels.id')
                 ->select('schools.id as value', 'schools.school as text')
                 ->orderBy('schools.school', 'asc')->get();
             $response->data = ObjResponse::CorrectResponse();
@@ -57,29 +59,31 @@ class SchoolBecasController extends Controller
     }
 
     /**
-     * Crear un nuevo escuela.
+     * Crear escuela.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
      */
     public function create(Request $request, Response $response)
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $new_colony = School::create([
+            $new_school = School::create([
                 'code' => $request->code,
+                'level_id' => $request->level_id,
                 'school' => $request->school,
+                'community_id' => $request->community_id,
                 'city_id' => $request->city_id,
                 'colony_id' => $request->colony_id,
                 'address' => $request->address,
-                'tel' => $request->tel ?? 'S/N',
+                'phone' => $request->phone ?? 'S/N',
                 'director' => $request->director,
                 'loc_for' => $request->loc_for,
                 'zone' => $request->zone,
                 // 'type' => $request->type,
             ]);
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'peticion satisfactoria | escuela registrado.';
+            $response->data["message"] = 'peticion satisfactoria | escuela registrada.';
             $response->data["alert_text"] = 'Escuela registrada';
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
@@ -88,7 +92,7 @@ class SchoolBecasController extends Controller
     }
 
     /**
-     * Mostrar un escuela especifico.
+     * Mostrar escuela.
      *
      * @param   int $id
      * @return \Illuminate\Http\Response $response
@@ -97,15 +101,16 @@ class SchoolBecasController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $colony = School::where('schools.id', $id)
+            $school = School::where('schools.id', $id)
+                ->join('levels', 'schools.level_id', '=', 'levels.id')
                 ->join('cities', 'schools.city_id', '=', 'cities.id')
                 ->join('colonies', 'schools.colony_id', '=', 'colonies.id')
-                ->select('schools.*', 'cities.city', 'colonies.colony')
+                ->select('schools.*', 'levels.level', 'cities.city', 'colonies.colony')
                 ->first();
 
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'peticion satisfactoria | escuela encontrado.';
-            $response->data["result"] = $colony;
+            $response->data["message"] = 'peticion satisfactoria | escuela encontrada.';
+            $response->data["result"] = $school;
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
@@ -113,23 +118,25 @@ class SchoolBecasController extends Controller
     }
 
     /**
-     * Actualizar un escuela especifico.
+     * Actualizar escuela.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
      */
     public function update(Request $request, Response $response)
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $colony = School::where('id', $request->id)
+            $school = School::find($request->id)
                 ->update([
                     'code' => $request->code,
+                    'level_id' => $request->level_id,
                     'school' => $request->school,
+                    'community_id' => $request->community_id,
                     'city_id' => $request->city_id,
                     'colony_id' => $request->colony_id,
                     'address' => $request->address,
-                    'tel' => $request->tel ?? 'S/N',
+                    'phone' => $request->phone ?? 'S/N',
                     'director' => $request->director,
                     'loc_for' => $request->loc_for,
                     'zone' => $request->zone,
@@ -146,16 +153,17 @@ class SchoolBecasController extends Controller
     }
 
     /**
-     * Eliminar (cambiar estado activo=false) un escuela especidifco.
+     * Eliminar (cambiar estado activo=false) escuela.
      *
      * @param  int $id
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
      */
-    public function destroy(int $id, Response $response)
+    public function destroy(Request $request, Response $response)
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            School::where('id', $id)
+            School::find($request->id)
                 ->update([
                     'active' => false,
                     'deleted_at' => date('Y-m-d H:i:s'),

@@ -17,12 +17,14 @@ return new class extends Migration
             $table->id();
             $table->integer('folio');
             $table->string('tutor_full_name');
-            $table->string('tutor_tel');
-            $table->boolean('single_mother');
+            $table->string('tutor_phone');
+            $table->boolean('single_mother')->nullable();
 
             $table->foreignId('student_id')->constrained('student_data', 'id');
-            $table->foreignId('school_id')->constrained('schools', 'id');
 
+            $table->foreignId('school_id')->constrained('schools', 'id');
+            $table->integer('grade');
+            $table->decimal('average', 3, 2);
             $table->text('comments')->nullable();
 
             $table->enum('socioeconomic_study', ['BAJO', 'MEDIO-BAJO', 'NORMAL'])->nullable();

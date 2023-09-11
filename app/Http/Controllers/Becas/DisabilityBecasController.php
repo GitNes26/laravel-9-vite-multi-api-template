@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 class DisabilityBecasController extends Controller
 {
     /**
-     * Mostrar lista de todas las discapacidades activas.
+     * Mostrar lista de discapacidades activas.
      *
      * @return \Illuminate\Http\Response $response
      */
@@ -55,9 +55,9 @@ class DisabilityBecasController extends Controller
     }
 
     /**
-     * Crear una nueva discapacidad.
+     * Crear discapacidad.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
      */
     public function create(Request $request, Response $response)
@@ -78,7 +78,7 @@ class DisabilityBecasController extends Controller
     }
 
     /**
-     * Mostrar una discapacidad especifica.
+     * Mostrar discapacidad.
      *
      * @param   int $id
      * @return \Illuminate\Http\Response $response
@@ -99,9 +99,9 @@ class DisabilityBecasController extends Controller
     }
 
     /**
-     * Actualizar una discapacidad especifica.
+     * Actualizar discapacidad.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
      */
     public function update(Request $request, Response $response)
@@ -124,7 +124,7 @@ class DisabilityBecasController extends Controller
     }
 
     /**
-     * Eliminar (cambiar estado activo=false) una discapacidad especidifca.
+     * Eliminar (cambiar estado activo=false) discapacidad.
      *
      * @param  int $id
      * @return \Illuminate\Http\Response $response

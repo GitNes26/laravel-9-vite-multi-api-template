@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 class LevelBecasController extends Controller
 {
     /**
-     * Mostrar lista de todos los niveles activos.
+     * Mostrar lista de niveles activos.
      *
      * @return \Illuminate\Http\Response $response
      */
@@ -55,9 +55,9 @@ class LevelBecasController extends Controller
     }
 
     /**
-     * Crear un nuevo nivel.
+     * Crear nivel.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
      */
     public function create(Request $request, Response $response)
@@ -77,7 +77,7 @@ class LevelBecasController extends Controller
     }
 
     /**
-     * Mostrar un nivel especifico.
+     * Mostrar nivel.
      *
      * @param   int $id
      * @return \Illuminate\Http\Response $response
@@ -100,9 +100,9 @@ class LevelBecasController extends Controller
     }
 
     /**
-     * Actualizar un nivel especifico.
+     * Actualizar nivel.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
      */
     public function update(Request $request, Response $response)
@@ -124,7 +124,7 @@ class LevelBecasController extends Controller
     }
 
     /**
-     * Eliminar (cambiar estado activo=false) un nivel especidifco.
+     * Eliminar (cambiar estado activo=false) nivel.
      *
      * @param  int $id
      * @return \Illuminate\Http\Response $response

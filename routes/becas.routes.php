@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Becas\BecaBecasController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -92,5 +93,14 @@ Route::controller(DisabilityBecasController::class)->group(function () {
    Route::post('/disabilities', 'create');
    Route::put('/disabilities/{id?}', 'update');
    Route::delete('/disabilities/{id}', 'destroy');
+});
+
+Route::controller(BecaBecasController::class)->group(function () {
+   Route::get('/becas', 'index');
+   Route::get('/becas/selectIndex', 'selectIndex');
+   Route::get('/becas/{id}', 'show');
+   Route::post('/becas', 'create');
+   Route::put('/becas/{id?}', 'update');
+   Route::delete('/becas/{id}', 'destroy');
 });
 // });

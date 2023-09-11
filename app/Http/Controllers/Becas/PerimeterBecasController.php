@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 class PerimeterBecasController extends Controller
 {
     /**
-     * Mostrar lista de todos las perimetros activos.
+     * Mostrar lista de perimetros activos.
      *
      * @return \Illuminate\Http\Response $response
      */
@@ -55,9 +55,9 @@ class PerimeterBecasController extends Controller
     }
 
     /**
-     * Crear un nuevo perímetro.
+     * Crear perímetro.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
      */
     public function create(Request $request, Response $response)
@@ -77,7 +77,7 @@ class PerimeterBecasController extends Controller
     }
 
     /**
-     * Mostrar un perímetro especifico.
+     * Mostrar perímetro.
      *
      * @param   int $id
      * @return \Illuminate\Http\Response $response
@@ -100,9 +100,9 @@ class PerimeterBecasController extends Controller
     }
 
     /**
-     * Actualizar un perímetro especifico.
+     * Actualizar perímetro.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
      */
     public function update(Request $request, Response $response)
@@ -124,7 +124,7 @@ class PerimeterBecasController extends Controller
     }
 
     /**
-     * Eliminar (cambiar estado activo=false) un perímetro especidifco.
+     * Eliminar (cambiar estado activo=false) perímetro.
      *
      * @param  int $id
      * @return \Illuminate\Http\Response $response

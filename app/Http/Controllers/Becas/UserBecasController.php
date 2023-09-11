@@ -78,7 +78,7 @@ class UserBecasController extends Controller
     /**
      * Reegistrarse como jugador.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
      */
     public function signup(Request $request, Response $response)
@@ -105,7 +105,7 @@ class UserBecasController extends Controller
 
 
     /**
-     * Mostrar lista de todos los usuarios activos del
+     * Mostrar lista de usuarios activos del
      * uniendo con roles.
      *
      * @return \Illuminate\Http\Response $response
@@ -155,9 +155,9 @@ class UserBecasController extends Controller
     }
 
     /**
-     * Crear un nuevo usuario.
+     * Crear usuario.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
      */
     public function create(Request $request, Response $response)
@@ -185,7 +185,7 @@ class UserBecasController extends Controller
     }
 
     /**
-     * Mostrar un usuario especifico.
+     * Mostrar usuario.
      *
      * @param   int $id
      * @return \Illuminate\Http\Response $response
@@ -210,9 +210,9 @@ class UserBecasController extends Controller
     }
 
     /**
-     * Actualizar un usuario especifico.
+     * Actualizar usuario.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
      */
     public function update(Request $request, Response $response)
@@ -240,7 +240,7 @@ class UserBecasController extends Controller
     }
 
     /**
-     * "Eliminar" (cambiar estado activo=false) un usuario especidifco.
+     * "Eliminar" (cambiar estado activo=false) usuario.
      *
      * @param  int $id
      * @return \Illuminate\Http\Response $response

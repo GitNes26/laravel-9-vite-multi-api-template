@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 class CityBecasController extends Controller
 {
     /**
-     * Mostrar lista de todos las ciudades activos.
+     * Mostrar lista de ciudades activas.
      *
      * @return \Illuminate\Http\Response $response
      */
@@ -55,9 +55,9 @@ class CityBecasController extends Controller
     }
 
     /**
-     * Crear un nuevo ciudad.
+     * Crear ciudad.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
      */
     public function create(Request $request, Response $response)
@@ -78,7 +78,7 @@ class CityBecasController extends Controller
     }
 
     /**
-     * Mostrar un ciudad especifico.
+     * Mostrar ciudad.
      *
      * @param   int $id
      * @return \Illuminate\Http\Response $response
@@ -101,9 +101,9 @@ class CityBecasController extends Controller
     }
 
     /**
-     * Actualizar un ciudad especifico.
+     * Actualizar ciudad.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
      */
     public function update(Request $request, Response $response)
@@ -126,7 +126,7 @@ class CityBecasController extends Controller
     }
 
     /**
-     * Eliminar (cambiar estado activo=false) un ciudad especidifco.
+     * Eliminar (cambiar estado activo=false) ciudad.
      *
      * @param  int $id
      * @return \Illuminate\Http\Response $response

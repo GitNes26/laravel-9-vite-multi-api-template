@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('maternal_last_name');
             $table->date('birthdate');
             $table->enum('gender', ['MASCULINO', 'FEMENINO']);
-            $table->integer('community_id');
+            $table->integer('community_id')->comment('este dato viene de una api externa brindando de estado hasta colonia');
             $table->string('street');
             $table->string('num_ext');
             $table->string('num_int')->nullable();

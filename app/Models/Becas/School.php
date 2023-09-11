@@ -14,7 +14,7 @@ class School extends Model
      * @var string
      */
     protected $connection = "mysql_becas";
-    
+
     /**
      * Los atributos que se pueden solicitar.
      * @var array<int, string>
@@ -22,11 +22,13 @@ class School extends Model
     protected $fillable = [
         'id',
         'code',
+        'level_id',
         'school',
+        'community_id',
         'address',
         'city_id',
         'colony_id',
-        'tel',
+        'phone',
         'director',
         'loc_for',
         'type',
@@ -53,7 +55,7 @@ class School extends Model
      */
     public function city()
     {   //primero se declara FK y despues la PK del modelo asociado
-        return $this->belongsTo(City::class,'city_id','id');
+        return $this->belongsTo(City::class, 'city_id', 'id');
     }
 
     /**
@@ -61,10 +63,10 @@ class School extends Model
      */
     public function colony()
     {   //primero se declara FK y despues la PK del modelo asociado
-        return $this->belongsTo(Colony::class,'colony_id','id');
+        return $this->belongsTo(Colony::class, 'colony_id', 'id');
     }
 
-    
+
     /**
      * Obtener los usuarios relacionados a un rol.
      */
