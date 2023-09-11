@@ -76,7 +76,7 @@ class UserController extends Controller
     /**
      * Reegistrarse como jugador.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
      */
     public function signup(Request $request, Response $response)
@@ -87,10 +87,22 @@ class UserController extends Controller
             // if (!$this->validateAvailability('username',$request->username)->status) return;
 
             $new_user = User::create([
-                'email' => $request->email,
                 'username' => $request->username,
-                'password' => Hash::make($request->password),
-                'role_id' => 3,  //usuario normal
+                    'email' => $request->email,
+                    'password' => Hash::make($request->password),
+                    'role_id' => 3, //usuario normal
+                    'phone' => $request->phone,
+                    'license_number' => $request->license_number,
+                    'license_due_date' => $request->license_due_date,
+                    'payroll_number' => $request->payroll_number,
+                    'department_id' => $request->department_id,
+                    'name' => $request->name,
+                    'paternal_last_name' => $request->paternal_last_name,
+                    'maternal_last_name' => $request->maternal_last_name,
+                    'community_id' => $request->community_id,
+                    'address' => $request->address,
+                    'num_ext' => $request->num_ext,
+                    'num_int' => $request->num_int,
             ]);
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'peticion satisfactoria | usuario registrado.';
@@ -161,7 +173,7 @@ class UserController extends Controller
     /**
      * Crear un nuevo usuario.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
      */
     public function create(Request $request, Response $response)
@@ -170,24 +182,34 @@ class UserController extends Controller
         try {
             $token = $request->bearerToken();
 
-            $new_user = User::create([
-                'username' => $request->username,
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
-                'role_id' => $request->role_id,
-                'phone' => $request->phone || null,
-                'license_number' => $request->license_number || null,
-                'license_due_date' => $request->license_due_date,
-                'payroll_number' => $request->payroll_number || null,
-                'department_id' => $request->department_id || 1,
-                'name' => $request->name,
-                'paternal_last_name' => $request->paternal_last_name,
-                'maternal_last_name' => $request->maternal_last_name,
-                'community_id' => $request->community_id || 0,
-                'address' => $request->address || null,
-                'num_ext' => $request->num_ext || null,
-                'num_int' => $request->num_int || null,
-            ]);
+            if ($request->role_id < 2) {
+                $new_user = User::create([
+                    'username' => $request->username,
+                    'email' => $request->email,
+                    'password' => Hash::make($request->password),
+                    'role_id' => $request->role_id,
+                    'department_id' => $request->department_id
+                ]);
+            } else {
+                $new_user = User::create([
+                    'username' => $request->username,
+                    'email' => $request->email,
+                    'password' => Hash::make($request->password),
+                    'role_id' => $request->role_id,
+                    'phone' => $request->phone,
+                    'license_number' => $request->license_number,
+                    'license_due_date' => $request->license_due_date,
+                    'payroll_number' => $request->payroll_number,
+                    'department_id' => $request->department_id,
+                    'name' => $request->name,
+                    'paternal_last_name' => $request->paternal_last_name,
+                    'maternal_last_name' => $request->maternal_last_name,
+                    'community_id' => $request->community_id,
+                    'address' => $request->address,
+                    'num_ext' => $request->num_ext,
+                    'num_int' => $request->num_int,
+                ]);
+            }
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'peticion satisfactoria | usuario registrado.';
             $response->data["alert_text"] = "Usuario registrado";
@@ -202,14 +224,15 @@ class UserController extends Controller
      * Mostrar un usuario especifico.
      *
      * @param   int $id
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
      */
     public function show(Request $request, Response $response)
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $user = User::find($request->id)
+            // echo "el id: $request->id";
+            $user = User::where('users.id',$request->id)
             ->join('roles', 'users.role_id', '=', 'roles.id')
             ->join('departments', 'users.department_id', '=', 'departments.id')
             ->select('users.*','roles.role','departments.department','departments.description as department_description')
@@ -229,32 +252,44 @@ class UserController extends Controller
     /**
      * Actualizar un usuario especifico.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
      */
     public function update(Request $request, Response $response)
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $user = User::find($request->id)
-            ->update([
-                'username' => $request->username,
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
-                'role_id' => $request->role_id,
-                'phone' => $request->phone,
-                'license_number' => $request->license_number,
-                'license_due_date' => $request->license_due_date,
-                'payroll_number' => $request->payroll_number,
-                'department_id' => $request->department_id,
-                'name' => $request->name,
-                'paternal_last_name' => $request->paternal_last_name,
-                'maternal_last_name' => $request->maternal_last_name,
-                'community_id' => $request->community_id,
-                'address' => $request->address,
-                'num_ext' => $request->num_ext,
-                'num_int' => $request->num_int,
-            ]);
+            echo "el id: $request->id";
+            if ($request->role_id < 2) {
+                $user = User::find($request->id)
+                ->update([
+                    'username' => $request->username,
+                    'email' => $request->email,
+                    'password' => Hash::make($request->password),
+                    'role_id' => $request->role_id,
+                    'department_id' => $request->department_id
+                ]);
+            } else {
+                $user = User::find($request->id)
+                ->update([
+                    'username' => $request->username,
+                    'email' => $request->email,
+                    'password' => Hash::make($request->password),
+                    'role_id' => $request->role_id,
+                    'phone' => $request->phone,
+                    'license_number' => $request->license_number,
+                    'license_due_date' => $request->license_due_date,
+                    'payroll_number' => $request->payroll_number,
+                    'department_id' => $request->department_id,
+                    'name' => $request->name,
+                    'paternal_last_name' => $request->paternal_last_name,
+                    'maternal_last_name' => $request->maternal_last_name,
+                    'community_id' => $request->community_id,
+                    'address' => $request->address,
+                    'num_ext' => $request->num_ext,
+                    'num_int' => $request->num_int,
+                ]);
+            }
 
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'peticion satisfactoria | usuario actualizado.';

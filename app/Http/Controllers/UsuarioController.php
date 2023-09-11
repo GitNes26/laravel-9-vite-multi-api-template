@@ -15,7 +15,7 @@ class UsuarioController extends Controller
     public function index()
     {
        return Usuario::all();
-        
+
     }
 
     /**
@@ -31,17 +31,17 @@ class UsuarioController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    { 
+    {
 
         $request->validate([
                'nombre'=> 'required',
-               'pass'=> 'required' 
+               'pass'=> 'required'
         ]);
-      
+
 
         $usuarios = new Usuario;
         $usuarios->NombreUsuario = $request->nombreusuario;
@@ -82,7 +82,7 @@ class UsuarioController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @param  \App\Models\Usuario  $usuario
      * @return \Illuminate\Http\Response
      */
@@ -99,10 +99,10 @@ class UsuarioController extends Controller
      */
     public function destroy($id)
     {
-       
+
         $result = Usuario::where('idUsuario',$id)->delete();
 
-         return response()->json($result, 200); 
-   
+         return response()->json($result, 200);
+
     }
 }

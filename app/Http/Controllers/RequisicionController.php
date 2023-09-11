@@ -69,22 +69,22 @@ class RequisicionController extends Controller
         }
         switch ($requi) {
             case 35:
-                
+
                 return consulta("54");
                 break;
             case 36:
-              
+
                 return consulta("53");
                 break;
             case 37:
 
                 return consulta("64");
-                
+
                 break;
             case 38:
 
                 return consulta("83");
-       
+
                 break;
 
             default:
@@ -95,17 +95,17 @@ class RequisicionController extends Controller
             ->orderBy('Requisiciones.IDRequisicion', 'desc')
             ->get(['Requisiciones.IDDepartamento','Requisiciones.IDRequisicion', 'Ejercicio', 'Status', 'Nombre_Departamento', 'Solicitante', 'Observaciones', 'Requisitor', 'FechaCotizacion', 'Det_Notificaciones.notificacion']);
                 break;
-            
+
         }
 
 
-    
+
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @param  \App\Models\Requisicion  $requisicion
      * @return \Illuminate\Http\Response
      */

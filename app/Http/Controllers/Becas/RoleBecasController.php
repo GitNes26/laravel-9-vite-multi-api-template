@@ -59,7 +59,7 @@ class RoleBecasController extends Controller
     /**
      * Crear un nuevo rol.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
      */
     public function create(Request $request, Response $response)
@@ -104,7 +104,7 @@ class RoleBecasController extends Controller
     /**
      * Actualizar un rol especifico.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
      */
     public function update(Request $request, Response $response)

@@ -1,11 +1,13 @@
 <?php
 
+use App\Http\Controllers\Cove\BrandController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 #region CONTROLLERS
 use App\Http\Controllers\Cove\UserController;
 use App\Http\Controllers\Cove\RoleController;
+use App\Http\Controllers\Cove\DepartmentController;
 
 #endregion CONTROLLERS
 
@@ -34,22 +36,22 @@ Route::controller(RoleController::class)->group(function () {
    Route::delete('/roles/{id}', 'destroy');
 });
 
-Route::controller(PerimeterBecasController::class)->group(function () {
-   Route::get('/perimeters', 'index');
-   Route::get('/perimeters/selectIndex', 'selectIndex');
-   Route::get('/perimeters/{id}', 'show');
-   Route::post('/perimeters', 'create');
-   Route::put('/perimeters/{id?}', 'update');
-   Route::delete('/perimeters/{id}', 'destroy');
+Route::controller(DepartmentController::class)->group(function () {
+   Route::get('/departments', 'index');
+   Route::get('/departments/selectIndex', 'selectIndex');
+   Route::get('/departments/{id}', 'show');
+   Route::post('/departments', 'create');
+   Route::put('/departments/{id?}', 'update');
+   Route::delete('/departments/{id}', 'destroy');
 });
 
-Route::controller(CityBecasController::class)->group(function () {
-   Route::get('/cities', 'index');
-   Route::get('/cities/selectIndex', 'selectIndex');
-   Route::get('/cities/{id}', 'show');
-   Route::post('/cities', 'create');
-   Route::put('/cities/{id?}', 'update');
-   Route::delete('/cities/{id}', 'destroy');
+Route::controller(BrandController::class)->group(function () {
+   Route::get('/brands', 'index');
+   Route::get('/brands/selectIndex', 'selectIndex');
+   Route::get('/brands/{id}', 'show');
+   Route::post('/brands', 'create');
+   Route::put('/brands/{id?}', 'update');
+   Route::delete('/brands/{id}', 'destroy');
 });
 
 Route::controller(ColonyBecasController::class)->group(function () {

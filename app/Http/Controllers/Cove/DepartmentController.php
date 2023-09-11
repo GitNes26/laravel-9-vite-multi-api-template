@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Cove;
 
 use App\Http\Controllers\Controller;
+use App\Models\Cove\Department;
 use App\Models\ObjResponse;
 
 use Illuminate\Http\Request;
@@ -12,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 class DepartmentController extends Controller
 {
     /**
-     * Mostrar lista de todas las discapacidades activas.
+     * Mostrar lista de todas las departamentos activas.
      *
      * @return \Illuminate\Http\Response $response
      */
@@ -20,11 +21,11 @@ class DepartmentController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $list = Disability::where('active', true)
-                ->select('disabilities.*')
-                ->orderBy('disabilities.id', 'asc')->get();
+            $list = Department::where('active', true)
+                ->select('departments.*')
+                ->orderBy('departments.id', 'asc')->get();
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'Peticion satisfactoria | Lista de discapacidades.';
+            $response->data["message"] = 'Peticion satisfactoria | Lista de departamentos.';
             $response->data["result"] = $list;
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
@@ -41,11 +42,11 @@ class DepartmentController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $list = Disability::where('active', true)
-                ->select('disabilities.id as value', 'disabilities.disability as text')
-                ->orderBy('disabilities.disability', 'asc')->get();
+            $list = Department::where('active', true)
+                ->select('departments.id as value', 'departments.department as text')
+                ->orderBy('departments.department', 'asc')->get();
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'Peticion satisfactoria | Lista de discapacidades';
+            $response->data["message"] = 'Peticion satisfactoria | Lista de departamentos';
             $response->data["result"] = $list;
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
@@ -54,22 +55,22 @@ class DepartmentController extends Controller
     }
 
     /**
-     * Crear una nueva discapacidad.
+     * Crear un nuev departamento.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
      */
     public function create(Request $request, Response $response)
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $new_disability = Disability::create([
-                'disability' => $request->disability,
+            $new_department = Department::create([
+                'department' => $request->department,
                 'description' => $request->description,
             ]);
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'peticion satisfactoria | discapacidad registrada.';
-            $response->data["alert_text"] = 'Discapacidad registrada';
+            $response->data["message"] = 'peticion satisfactoria | departamento registrado.';
+            $response->data["alert_text"] = 'Departamento registrado';
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
@@ -77,20 +78,21 @@ class DepartmentController extends Controller
     }
 
     /**
-     * Mostrar una discapacidad especifica.
+     * Mostrar una departamento especifica.
      *
      * @param   int $id
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
      */
-    public function show(int $id, Response $response)
+    public function show(Request $request, Response $response)
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $disability = Disability::find($id);
+            $department = Department::find($request->id);
 
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'peticion satisfactoria | discapacidad encontrada.';
-            $response->data["result"] = $disability;
+            $response->data["message"] = 'peticion satisfactoria | departamento encontrado.';
+            $response->data["result"] = $department;
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
@@ -98,24 +100,24 @@ class DepartmentController extends Controller
     }
 
     /**
-     * Actualizar una discapacidad especifica.
+     * Actualizar un departamento especifico.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
      */
     public function update(Request $request, Response $response)
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $disability = Disability::find($request->id)
+            $department = Department::find($request->id)
                 ->update([
-                    'disability' => $request->disability,
+                    'department' => $request->department,
                     'description' => $request->description,
                 ]);
 
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'peticion satisfactoria | discapacidad actualizada.';
-            $response->data["alert_text"] = 'Discapacidad actualizada';
+            $response->data["message"] = 'peticion satisfactoria | departamento actualizado.';
+            $response->data["alert_text"] = 'Departamento actualizado';
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
@@ -123,23 +125,24 @@ class DepartmentController extends Controller
     }
 
     /**
-     * Eliminar (cambiar estado activo=false) una discapacidad especidifca.
+     * Eliminar (cambiar estado activo=false) un departamento especidifco.
      *
      * @param  int $id
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
      */
-    public function destroy(int $id, Response $response)
+    public function destroy(Request $request, Response $response)
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            Disability::find($id)
+            Department::find($request->id)
                 ->update([
                     'active' => false,
                     'deleted_at' => date('Y-m-d H:i:s'),
                 ]);
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'peticion satisfactoria | discapacidad eliminada.';
-            $response->data["alert_text"] = 'Discapacidad eliminada';
+            $response->data["message"] = 'peticion satisfactoria | departamento eliminado.';
+            $response->data["alert_text"] = 'Departamento eliminado';
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }

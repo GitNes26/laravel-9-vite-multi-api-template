@@ -77,7 +77,7 @@ class UserBecasController extends Controller
     /**
      * Reegistrarse como jugador.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
      */
     public function signup(Request $request, Response $response)
@@ -160,7 +160,7 @@ class UserBecasController extends Controller
     /**
      * Crear un nuevo usuario.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
      */
     public function create(Request $request, Response $response)
@@ -217,7 +217,7 @@ class UserBecasController extends Controller
     /**
      * Actualizar un usuario especifico.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
      */
     public function update(Request $request, Response $response)

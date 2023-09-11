@@ -59,7 +59,7 @@ class CityBecasController extends Controller
     /**
      * Crear un nuevo ciudad.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
      */
     public function create(Request $request, Response $response)
@@ -93,7 +93,7 @@ class CityBecasController extends Controller
             $city = City::where('id', $id)
             ->select('cities.id', 'cities.code', 'cities.city')
             ->first();
-            
+
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'peticion satisfactoria | ciudad encontrado.';
             $response->data["result"] = $city;
@@ -107,7 +107,7 @@ class CityBecasController extends Controller
     /**
      * Actualizar un ciudad especifico.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
      */
     public function update(Request $request, Response $response)

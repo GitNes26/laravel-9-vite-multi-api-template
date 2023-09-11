@@ -59,7 +59,7 @@ class ColonyBecasController extends Controller
     /**
      * Crear un nuevo colonia.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
      */
     public function create(Request $request, Response $response)
@@ -95,7 +95,7 @@ class ColonyBecasController extends Controller
             $colony = Colony::where('id', $id)
             ->select('colonies.id', 'colonies.code', 'colonies.colony','colonies.cp', 'colonies.perimeter_id')
             ->first();
-            
+
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'peticion satisfactoria | colonia encontrado.';
             $response->data["result"] = $colony;
@@ -109,7 +109,7 @@ class ColonyBecasController extends Controller
     /**
      * Actualizar un colonia especifico.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
      */
     public function update(Request $request, Response $response)

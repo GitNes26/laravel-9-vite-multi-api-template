@@ -57,7 +57,7 @@ class PerimeterBecasController extends Controller
     /**
      * Crear un nuevo perímetro.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
      */
     public function create(Request $request, Response $response)
@@ -102,7 +102,7 @@ class PerimeterBecasController extends Controller
     /**
      * Actualizar un perímetro especifico.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
      */
     public function update(Request $request, Response $response)

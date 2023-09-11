@@ -59,7 +59,7 @@ class SchoolBecasController extends Controller
     /**
      * Crear un nuevo escuela.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
      */
     public function create(Request $request, Response $response)
@@ -115,7 +115,7 @@ class SchoolBecasController extends Controller
     /**
      * Actualizar un escuela especifico.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
      */
     public function update(Request $request, Response $response)
@@ -172,7 +172,7 @@ class SchoolBecasController extends Controller
     /**
      * Validar que este disponible el dato.
      *
-     * @param  
+     * @param
      * @return \Illuminate\Http\Response $response
      */
     public function checkAvailableData(string $table, string $column, string $value, string $propTitle, string $input, int $id, string $secondTable = null)
@@ -221,11 +221,11 @@ class SchoolBecasController extends Controller
         //    if ($private) {
         //       echo "ando privado";
         //       if (!$candidate) return 0;
-        //       else return $candidate["id"]; 
+        //       else return $candidate["id"];
         //    } else {
         //       echo "ando publico";
         //       if (!$candidate) die(json_encode(array("data" => 0)));
-        //       else die(json_encode(array("data" => $candidate["id"]))); 
+        //       else die(json_encode(array("data" => $candidate["id"])));
         //    }
         // }
     }

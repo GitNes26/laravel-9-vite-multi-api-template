@@ -57,7 +57,7 @@ class RoleController extends Controller
     /**
      * Crear un nuevo rol.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
      */
     public function create(Request $request, Response $response)
@@ -85,7 +85,7 @@ class RoleController extends Controller
      * Mostrar un rol especifico.
      *
      * @param   int $id
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
      */
     public function show(Request $request, Response $response)
@@ -106,7 +106,7 @@ class RoleController extends Controller
     /**
      * Actualizar un rol especifico.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
      */
     public function update(Request $request, Response $response)
@@ -136,7 +136,7 @@ class RoleController extends Controller
      * Eliminar (cambiar estado activo=false) un rol especidifco.
      *
      * @param  int $id
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
      */
     public function destroy(Request $request, Response $response)

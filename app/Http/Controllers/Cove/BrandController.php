@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Http\Controllers\becas;
+namespace App\Http\Controllers\Cove;
 
 use App\Http\Controllers\Controller;
+use App\Models\Cove\Brand;
 use App\Models\ObjResponse;
-use App\Models\becas\Level;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 
-class LevelBecasController extends Controller
+class BrandController extends Controller
 {
     /**
-     * Mostrar lista de todos los niveles activos.
+     * Mostrar lista de todas las marcas activas.
      *
      * @return \Illuminate\Http\Response $response
      */
@@ -21,14 +21,13 @@ class LevelBecasController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $list = Level::where('active', true)
-            ->select('levels.id','levels.level')
-            ->orderBy('levels.id', 'asc')->get();
+            $list = Brand::where('active', true)
+                ->select('brands.*')
+                ->orderBy('brands.id', 'asc')->get();
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'Peticion satisfactoria | Lista de niveles.';
+            $response->data["message"] = 'Peticion satisfactoria | Lista de marcas.';
             $response->data["result"] = $list;
-        }
-        catch (\Exception $ex) {
+        } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
         return response()->json($response, $response->data["status_code"]);
@@ -43,21 +42,20 @@ class LevelBecasController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $list = Level::where('active', true)
-            ->select('levels.id as value', 'levels.level as text')
-            ->orderBy('levels.level', 'asc')->get();
+            $list = Brand::where('active', true)
+                ->select('brands.id as value', 'brands.brand as text')
+                ->orderBy('brands.brand', 'asc')->get();
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'Peticion satisfactoria | Lista de niveles';
+            $response->data["message"] = 'Peticion satisfactoria | Lista de marcas';
             $response->data["result"] = $list;
-        }
-        catch (\Exception $ex) {
+        } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
         return response()->json($response, $response->data["status_code"]);
     }
 
     /**
-     * Crear un nuevo nivel.
+     * Crear una nueva marca.
      *
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
@@ -66,45 +64,43 @@ class LevelBecasController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $new_level = Level::create([
-                'level' => $request->level,
+            $new_brand = Brand::create([
+                'brand' => $request->brand,
+                'description' => $request->description,
             ]);
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'peticion satisfactoria | nivel registrado.';
-            $response->data["alert_text"] = 'Nivel registrado';
-        }
-        catch (\Exception $ex) {
+            $response->data["message"] = 'peticion satisfactoria | marca registrada.';
+            $response->data["alert_text"] = 'Marca registrado';
+        } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
         return response()->json($response, $response->data["status_code"]);
     }
 
     /**
-     * Mostrar un nivel especifico.
+     * Mostrar una marca especifica.
      *
      * @param   int $id
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
      */
-    public function show(int $id, Response $response)
+    public function show(Request $request, Response $response)
     {
         $response->data = ObjResponse::DefaultResponse();
-        try{
-            $level = Level::where('id', $id)
-            ->select('levels.id', 'levels.level')
-            ->first();
+        try {
+            $brand = Brand::find($request->id);
 
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'peticion satisfactoria | nivel encontrado.';
-            $response->data["result"] = $level;
-        }
-        catch (\Exception $ex) {
+            $response->data["message"] = 'peticion satisfactoria | marca encontrada.';
+            $response->data["result"] = $brand;
+        } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
         return response()->json($response, $response->data["status_code"]);
     }
 
     /**
-     * Actualizar un nivel especifico.
+     * Actualizar un marca especifica.
      *
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
@@ -113,15 +109,15 @@ class LevelBecasController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $level = Level::where('id', $request->id)
-            ->update([
-                'level' => $request->level,
-            ]);
+            $brand = Brand::find($request->id)
+                ->update([
+                    'brand' => $request->brand,
+                    'description' => $request->description,
+                ]);
 
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'peticion satisfactoria | nivel actualizado.';
-            $response->data["alert_text"] = 'Nivel actualizado';
-
+            $response->data["message"] = 'peticion satisfactoria | marca actualizada.';
+            $response->data["alert_text"] = 'Marca actualizado';
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
@@ -129,24 +125,24 @@ class LevelBecasController extends Controller
     }
 
     /**
-     * Eliminar (cambiar estado activo=false) un nivel especidifco.
+     * Eliminar (cambiar estado activo=false) un marca especidifco.
      *
      * @param  int $id
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
      */
-    public function destroy(int $id, Response $response)
+    public function destroy(Request $request, Response $response)
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            Level::where('id', $id)
-            ->update([
-                'active' => false,
-                'deleted_at' => date('Y-m-d H:i:s'),
-            ]);
+            Brand::find($request->id)
+                ->update([
+                    'active' => false,
+                    'deleted_at' => date('Y-m-d H:i:s'),
+                ]);
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'peticion satisfactoria | nivel eliminado.';
-            $response->data["alert_text"] ='Nivel eliminado';
-
+            $response->data["message"] = 'peticion satisfactoria | marca eliminada.';
+            $response->data["alert_text"] = 'Marca eliminada';
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
