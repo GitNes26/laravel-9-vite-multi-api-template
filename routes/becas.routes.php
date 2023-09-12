@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Becas\BecaBecasController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -13,6 +12,9 @@ use App\Http\Controllers\Becas\ColonyBecasController;
 use App\Http\Controllers\Becas\DisabilityBecasController;
 use App\Http\Controllers\Becas\LevelBecasController;
 use App\Http\Controllers\Becas\SchoolBecasController;
+use App\Http\Controllers\Becas\BecaBecasController;
+use App\Http\Controllers\Becas\StudentDataBecasController;
+
 #endregion CONTROLLERS BECAS
 
 Route::post('/login', [UserBecasController::class, 'login']);
@@ -93,6 +95,16 @@ Route::controller(DisabilityBecasController::class)->group(function () {
    Route::post('/disabilities', 'create');
    Route::put('/disabilities/{id?}', 'update');
    Route::delete('/disabilities/{id}', 'destroy');
+});
+
+Route::controller(StudentDataBecasController::class)->group(function () {
+   Route::get('/students', 'index');
+   Route::get('/students/selectIndex', 'selectIndex');
+   Route::get('/students/{id}', 'show');
+   Route::get('/students/rfc/{rfc}', 'show');
+   Route::post('/students', 'create');
+   Route::put('/students/{id?}', 'update');
+   Route::delete('/students/{id}', 'destroy');
 });
 
 Route::controller(BecaBecasController::class)->group(function () {

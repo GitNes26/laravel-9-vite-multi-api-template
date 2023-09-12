@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('tutor_phone');
             $table->boolean('single_mother')->nullable();
 
-            $table->foreignId('student_id')->constrained('student_data', 'id');
+            $table->foreignId('student_data_id')->constrained('student_data', 'id');
 
             $table->foreignId('school_id')->constrained('schools', 'id');
             $table->integer('grade');
