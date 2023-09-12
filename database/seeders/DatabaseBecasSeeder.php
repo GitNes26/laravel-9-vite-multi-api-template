@@ -22,6 +22,7 @@ class DatabaseBecasSeeder extends Seeder
             becas\ColonySeeder::class,
             becas\LevelSeeder::class,
             becas\SchoolSeeder::class,
+            becas\DisabilitySeeder::class
         ]);
         // \App\Models\User::factory(10)->create();
 

@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 class BrandController extends Controller
 {
     /**
-     * Mostrar lista de todas las marcas activas.
+     * Mostrar lista de marcas activas.
      *
      * @return \Illuminate\Http\Response $response
      */
@@ -55,7 +55,7 @@ class BrandController extends Controller
     }
 
     /**
-     * Crear una nueva marca.
+     * Crear marca.
      *
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
@@ -78,7 +78,7 @@ class BrandController extends Controller
     }
 
     /**
-     * Mostrar una marca especifica.
+     * Mostrar marca.
      *
      * @param   int $id
      * @param  \Illuminate\Http\Request $request
@@ -100,7 +100,7 @@ class BrandController extends Controller
     }
 
     /**
-     * Actualizar un marca especifica.
+     * Actualizar marca.
      *
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
@@ -125,7 +125,7 @@ class BrandController extends Controller
     }
 
     /**
-     * Eliminar (cambiar estado activo=false) un marca especidifco.
+     * Eliminar (cambiar estado activo=false) marca.
      *
      * @param  int $id
      * @param  \Illuminate\Http\Request $request

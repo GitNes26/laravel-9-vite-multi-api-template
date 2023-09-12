@@ -116,7 +116,7 @@ class UserController extends Controller
 
 
     /**
-     * Mostrar lista de todos los usuarios activos del
+     * Mostrar lista de usuarios activos del
      * uniendo con roles.
      *
      * @return \Illuminate\Http\Response $response
@@ -171,7 +171,7 @@ class UserController extends Controller
     }
 
     /**
-     * Crear un nuevo usuario.
+     * Crear usuario.
      *
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
@@ -221,7 +221,7 @@ class UserController extends Controller
     }
 
     /**
-     * Mostrar un usuario especifico.
+     * Mostrar usuario.
      *
      * @param   int $id
      * @param  \Illuminate\Http\Request $request
@@ -250,7 +250,7 @@ class UserController extends Controller
     }
 
     /**
-     * Actualizar un usuario especifico.
+     * Actualizar usuario.
      *
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
@@ -302,7 +302,7 @@ class UserController extends Controller
     }
 
     /**
-     * "Eliminar" (cambiar estado activo=false) un usuario especidifco.
+     * "Eliminar" (cambiar estado activo=false) usuario.
      *
      * @param  int $id
      * @return \Illuminate\Http\Response $response

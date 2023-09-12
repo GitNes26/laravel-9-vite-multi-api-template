@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\becas;
+namespace App\Http\Controllers\Becas;
 
 use App\Http\Controllers\Controller;
 use App\Models\ObjResponse;
@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 class CityBecasController extends Controller
 {
     /**
-     * Mostrar lista de todos las ciudades activos.
+     * Mostrar lista de ciudades activas.
      *
      * @return \Illuminate\Http\Response $response
      */
@@ -22,13 +22,12 @@ class CityBecasController extends Controller
         $response->data = ObjResponse::DefaultResponse();
         try {
             $list = City::where('active', true)
-            ->select('cities.id','cities.code', 'cities.city')
-            ->orderBy('cities.code', 'asc')->get();
+                ->select('cities.id', 'cities.code', 'cities.city')
+                ->orderBy('cities.code', 'asc')->get();
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'Peticion satisfactoria | Lista de ciudades.';
             $response->data["result"] = $list;
-        }
-        catch (\Exception $ex) {
+        } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
         return response()->json($response, $response->data["status_code"]);
@@ -44,20 +43,19 @@ class CityBecasController extends Controller
         $response->data = ObjResponse::DefaultResponse();
         try {
             $list = City::where('active', true)
-            ->select('cities.id as value', 'cities.city as text')
-            ->orderBy('cities.city', 'asc')->get();
+                ->select('cities.id as value', 'cities.city as text')
+                ->orderBy('cities.city', 'asc')->get();
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'Peticion satisfactoria | Lista de ciudades';
             $response->data["result"] = $list;
-        }
-        catch (\Exception $ex) {
+        } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
         return response()->json($response, $response->data["status_code"]);
     }
 
     /**
-     * Crear un nuevo ciudad.
+     * Crear ciudad.
      *
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
@@ -81,7 +79,7 @@ class CityBecasController extends Controller
     }
 
     /**
-     * Mostrar un ciudad especifico.
+     * Mostrar ciudad.
      *
      * @param   int $id
      * @return \Illuminate\Http\Response $response
@@ -89,23 +87,22 @@ class CityBecasController extends Controller
     public function show(int $id, Response $response)
     {
         $response->data = ObjResponse::DefaultResponse();
-        try{
+        try {
             $city = City::where('id', $id)
-            ->select('cities.id', 'cities.code', 'cities.city')
-            ->first();
+                ->select('cities.id', 'cities.code', 'cities.city')
+                ->first();
 
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'peticion satisfactoria | ciudad encontrado.';
             $response->data["result"] = $city;
-        }
-        catch (\Exception $ex) {
+        } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
         return response()->json($response, $response->data["status_code"]);
     }
 
     /**
-     * Actualizar un ciudad especifico.
+     * Actualizar ciudad.
      *
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
@@ -115,15 +112,14 @@ class CityBecasController extends Controller
         $response->data = ObjResponse::DefaultResponse();
         try {
             $city = City::where('id', $request->id)
-            ->update([
-                'code' => $request->code,
-                'city' => $request->city,
-            ]);
+                ->update([
+                    'code' => $request->code,
+                    'city' => $request->city,
+                ]);
 
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'peticion satisfactoria | ciudad actualizada.';
             $response->data["alert_text"] = 'Ciudad actualizada';
-
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
@@ -131,7 +127,7 @@ class CityBecasController extends Controller
     }
 
     /**
-     * Eliminar (cambiar estado activo=false) un ciudad especidifco.
+     * Eliminar (cambiar estado activo=false) ciudad.
      *
      * @param  int $id
      * @return \Illuminate\Http\Response $response
@@ -141,14 +137,13 @@ class CityBecasController extends Controller
         $response->data = ObjResponse::DefaultResponse();
         try {
             City::where('id', $id)
-            ->update([
-                'active' => false,
-                'deleted_at' => date('Y-m-d H:i:s'),
-            ]);
+                ->update([
+                    'active' => false,
+                    'deleted_at' => date('Y-m-d H:i:s'),
+                ]);
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'peticion satisfactoria | ciudad eliminada.';
-            $response->data["alert_text"] ='Ciudad eliminada';
-
+            $response->data["alert_text"] = 'Ciudad eliminada';
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }

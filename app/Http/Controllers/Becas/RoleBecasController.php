@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\becas;
+namespace App\Http\Controllers\Becas;
 
 use App\Http\Controllers\Controller;
 use App\Models\ObjResponse;
@@ -15,7 +15,7 @@ use Illuminate\Validation\ValidationException;
 class RoleBecasController extends Controller
 {
     /**
-     * Mostrar lista de todos los roles activos.
+     * Mostrar lista de roles activos.
      *
      * @return \Illuminate\Http\Response $response
      */
@@ -57,7 +57,7 @@ class RoleBecasController extends Controller
     }
 
     /**
-     * Crear un nuevo rol.
+     * Crear rol.
      *
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
@@ -79,7 +79,7 @@ class RoleBecasController extends Controller
     }
 
     /**
-     * Mostrar un rol especifico.
+     * Mostrar rol.
      *
      * @param   int $id
      * @return \Illuminate\Http\Response $response
@@ -102,7 +102,7 @@ class RoleBecasController extends Controller
     }
 
     /**
-     * Actualizar un rol especifico.
+     * Actualizar rol.
      *
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
@@ -126,7 +126,7 @@ class RoleBecasController extends Controller
     }
 
     /**
-     * Eliminar (cambiar estado activo=false) un rol especidifco.
+     * Eliminar (cambiar estado activo=false) rol.
      *
      * @param  int $id
      * @return \Illuminate\Http\Response $response

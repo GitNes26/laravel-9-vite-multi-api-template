@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 class ModelController extends Controller
 {
     /**
-     * Mostrar lista de todas las modelos activas.
+     * Mostrar lista de modelos activas.
      *
      * @return \Illuminate\Http\Response $response
      */
@@ -55,7 +55,7 @@ class ModelController extends Controller
     }
 
     /**
-     * Crear un nuevo modelo.
+     * Crear modelo.
      *
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
@@ -78,7 +78,7 @@ class ModelController extends Controller
     }
 
     /**
-     * Mostrar un modelo especifico.
+     * Mostrar modelo.
      *
      * @param   int $id
      * @param  \Illuminate\Http\Request $request
@@ -100,7 +100,7 @@ class ModelController extends Controller
     }
 
     /**
-     * Actualizar un modelo especifica.
+     * Actualizar modelo.
      *
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
@@ -125,7 +125,7 @@ class ModelController extends Controller
     }
 
     /**
-     * Eliminar (cambiar estado activo=false) un modelo especidifco.
+     * Eliminar (cambiar estado activo=false) modelo.
      *
      * @param  int $id
      * @param  \Illuminate\Http\Request $request

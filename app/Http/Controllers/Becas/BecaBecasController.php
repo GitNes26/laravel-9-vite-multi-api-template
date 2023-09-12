@@ -3,17 +3,16 @@
 namespace App\Http\Controllers\Becas;
 
 use App\Http\Controllers\Controller;
+use App\Models\becas\Beca;
 use App\Models\ObjResponse;
-use App\Models\becas\Level;
-
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 
-class LevelBecasController extends Controller
+class BecaBecasController extends Controller
 {
     /**
-     * Mostrar lista de niveles activos.
+     * Mostrar lista de becas activas.
      *
      * @return \Illuminate\Http\Response $response
      */
@@ -21,11 +20,11 @@ class LevelBecasController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $list = Level::where('active', true)
-                ->select('levels.id', 'levels.level')
-                ->orderBy('levels.id', 'asc')->get();
+            $list = Beca::where('active', true)
+                ->select('becas.*')
+                ->orderBy('becas.id', 'asc')->get();
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'Peticion satisfactoria | Lista de niveles.';
+            $response->data["message"] = 'Peticion satisfactoria | Lista de becas.';
             $response->data["result"] = $list;
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
@@ -42,11 +41,11 @@ class LevelBecasController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $list = Level::where('active', true)
-                ->select('levels.id as value', 'levels.level as text')
-                ->orderBy('levels.level', 'asc')->get();
+            $list = Beca::where('active', true)
+                ->select('becas.id as value', 'becas.folio as text')
+                ->orderBy('becas.folio', 'asc')->get();
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'Peticion satisfactoria | Lista de niveles';
+            $response->data["message"] = 'Peticion satisfactoria | Lista de becas';
             $response->data["result"] = $list;
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
@@ -55,7 +54,7 @@ class LevelBecasController extends Controller
     }
 
     /**
-     * Crear nivel.
+     * Crear beca.
      *
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
@@ -64,12 +63,21 @@ class LevelBecasController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $new_level = Level::create([
-                'level' => $request->level,
+            $new_beca = Beca::create([
+                'folio' => $request->folio,
+                'tutor_full_name' => $request->tutor_full_name,
+                'tutor_phone' => $request->tutor_phone,
+                // 'single_mother' => $request->single_mother,
+                'student_id' => $request->student_id,
+                'school_id' => $request->school_id,
+                'grade' => $request->grade,
+                'average' => $request->average,
+                'comments' => $request->comments,
+                'socioeconomic_study' => $request->socioeconomic_study,
             ]);
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'peticion satisfactoria | nivel registrado.';
-            $response->data["alert_text"] = 'Nivel registrado';
+            $response->data["message"] = 'peticion satisfactoria | beca registrada.';
+            $response->data["alert_text"] = 'Beca registrada';
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
@@ -77,22 +85,21 @@ class LevelBecasController extends Controller
     }
 
     /**
-     * Mostrar nivel.
+     * Mostrar beca.
      *
      * @param   int $id
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
      */
-    public function show(int $id, Response $response)
+    public function show(Request $request, Response $response)
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $level = Level::where('id', $id)
-                ->select('levels.id', 'levels.level')
-                ->first();
+            $beca = Beca::where('id', $request->id)->first();
 
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'peticion satisfactoria | nivel encontrado.';
-            $response->data["result"] = $level;
+            $response->data["message"] = 'peticion satisfactoria | beca encontrada.';
+            $response->data["result"] = $beca;
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
@@ -100,7 +107,7 @@ class LevelBecasController extends Controller
     }
 
     /**
-     * Actualizar nivel.
+     * Actualizar beca.
      *
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
@@ -109,14 +116,23 @@ class LevelBecasController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $level = Level::where('id', $request->id)
+            $beca = Beca::find($request->id)
                 ->update([
-                    'level' => $request->level,
+                    'folio' => $request->folio,
+                    'tutor_full_name' => $request->tutor_full_name,
+                    'tutor_phone' => $request->tutor_phone,
+                    // 'single_mother' => $request->single_mother,
+                    'student_id' => $request->student_id,
+                    'school_id' => $request->school_id,
+                    'grade' => $request->grade,
+                    'average' => $request->average,
+                    'comments' => $request->comments,
+                    'socioeconomic_study' => $request->socioeconomic_study,
                 ]);
 
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'peticion satisfactoria | nivel actualizado.';
-            $response->data["alert_text"] = 'Nivel actualizado';
+            $response->data["message"] = 'peticion satisfactoria | beca actualizada.';
+            $response->data["alert_text"] = 'Beca actualizada';
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
@@ -124,23 +140,24 @@ class LevelBecasController extends Controller
     }
 
     /**
-     * Eliminar (cambiar estado activo=false) nivel.
+     * Eliminar (cambiar estado activo=false) beca.
      *
      * @param  int $id
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
      */
-    public function destroy(int $id, Response $response)
+    public function destroy(Request $request, Response $response)
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            Level::where('id', $id)
+            Beca::find($request->id)
                 ->update([
                     'active' => false,
                     'deleted_at' => date('Y-m-d H:i:s'),
                 ]);
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'peticion satisfactoria | nivel eliminado.';
-            $response->data["alert_text"] = 'Nivel eliminado';
+            $response->data["message"] = 'peticion satisfactoria | beca eliminada.';
+            $response->data["alert_text"] = 'Beca eliminada';
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }

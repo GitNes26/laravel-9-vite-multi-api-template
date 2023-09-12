@@ -5,7 +5,7 @@ namespace App\Models\becas;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class School extends Model
+class Beca extends Model
 {
     use HasFactory;
 
@@ -21,18 +21,16 @@ class School extends Model
      */
     protected $fillable = [
         'id',
-        'code',
-        'level_id',
-        'school',
-        'community_id',
-        'address',
-        'city_id',
-        'colony_id',
-        'phone',
-        'director',
-        'loc_for',
-        'type',
-        'zona',
+        'folio',
+        'tutor_full_name',
+        'tutor_phone',
+        'single_mother',
+        'student_id',
+        'school_id',
+        'grade',
+        'average',
+        'comments',
+        'socioeconomic_study',
         'active',
         'deleted_at'
     ];
@@ -41,7 +39,7 @@ class School extends Model
      * Nombre de la tabla asociada al modelo.
      * @var string
      */
-    protected $table = 'schools';
+    protected $table = 'becas';
 
     /**
      * LlavePrimaria asociada a la tabla.
@@ -51,19 +49,19 @@ class School extends Model
 
 
     /**
-     * Obtener ciudad asociada con la escuela.
+     * Obtener estudainte asociada con la beca.
      */
-    public function city()
+    public function student()
     {   //primero se declara FK y despues la PK del modelo asociado
-        return $this->belongsTo(City::class, 'city_id', 'id');
+        return $this->belongsTo(StudentData::class, 'student_id', 'id');
     }
 
     /**
-     * Obtener ciudad asociada con la escuela.
+     * Obtener escuela asociada con la beca.
      */
-    public function colony()
+    public function school()
     {   //primero se declara FK y despues la PK del modelo asociado
-        return $this->belongsTo(Colony::class, 'colony_id', 'id');
+        return $this->belongsTo(School::class, 'school_id', 'id');
     }
 
 

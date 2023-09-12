@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 class DepartmentController extends Controller
 {
     /**
-     * Mostrar lista de todas las departamentos activas.
+     * Mostrar lista de departamentos activas.
      *
      * @return \Illuminate\Http\Response $response
      */
@@ -78,7 +78,7 @@ class DepartmentController extends Controller
     }
 
     /**
-     * Mostrar una departamento especifica.
+     * Mostrar departamento.
      *
      * @param   int $id
      * @param  \Illuminate\Http\Request $request
@@ -100,7 +100,7 @@ class DepartmentController extends Controller
     }
 
     /**
-     * Actualizar un departamento especifico.
+     * Actualizar departamento.
      *
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
@@ -125,7 +125,7 @@ class DepartmentController extends Controller
     }
 
     /**
-     * Eliminar (cambiar estado activo=false) un departamento especidifco.
+     * Eliminar (cambiar estado activo=false) departamento.
      *
      * @param  int $id
      * @param  \Illuminate\Http\Request $request

@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\DB;
 class RoleController extends Controller
 {
     /**
-     * Mostrar lista de todos los roles activos.
+     * Mostrar lista de roles activos.
      *
      * @return \Illuminate\Http\Response $response
      */
@@ -55,7 +55,7 @@ class RoleController extends Controller
     }
 
     /**
-     * Crear un nuevo rol.
+     * Crear rol.
      *
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
@@ -82,7 +82,7 @@ class RoleController extends Controller
     }
 
     /**
-     * Mostrar un rol especifico.
+     * Mostrar rol.
      *
      * @param   int $id
      * @param  \Illuminate\Http\Request $request
@@ -104,7 +104,7 @@ class RoleController extends Controller
     }
 
     /**
-     * Actualizar un rol especifico.
+     * Actualizar rol.
      *
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
@@ -133,7 +133,7 @@ class RoleController extends Controller
     }
 
     /**
-     * Eliminar (cambiar estado activo=false) un rol especidifco.
+     * Eliminar (cambiar estado activo=false) rol.
      *
      * @param  int $id
      * @param  \Illuminate\Http\Request $request
