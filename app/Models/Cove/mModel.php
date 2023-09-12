@@ -21,6 +21,7 @@ class mModel extends Model
      */
     protected $fillable = [
         'id',
+        'brand_id',
         'model',
         'active',
         'deleted_at'

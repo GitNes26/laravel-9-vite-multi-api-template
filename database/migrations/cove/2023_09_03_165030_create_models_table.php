@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::connection("mysql_cove")->create('models', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('brand_id')->constrained('brands','id');
             $table->string('model');
             $table->boolean('active')->default(true);
             $table->timestamps();

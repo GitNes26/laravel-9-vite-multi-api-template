@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Cove\BrandController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -8,6 +7,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Cove\UserController;
 use App\Http\Controllers\Cove\RoleController;
 use App\Http\Controllers\Cove\DepartmentController;
+use App\Http\Controllers\Cove\BrandController;
+use App\Http\Controllers\Cove\ModelController;
 
 #endregion CONTROLLERS
 
@@ -54,13 +55,13 @@ Route::controller(BrandController::class)->group(function () {
    Route::delete('/brands/{id}', 'destroy');
 });
 
-Route::controller(ColonyBecasController::class)->group(function () {
-   Route::get('/colonies', 'index');
-   Route::get('/colonies/selectIndex', 'selectIndex');
-   Route::get('/colonies/{id}', 'show');
-   Route::post('/colonies', 'create');
-   Route::put('/colonies/{id?}', 'update');
-   Route::delete('/colonies/{id}', 'destroy');
+Route::controller(ModelController::class)->group(function () {
+   Route::get('/models', 'index');
+   Route::get('/models/brand/{brand_id}', 'selectIndex');
+   Route::get('/models/{id}', 'show');
+   Route::post('/models', 'create');
+   Route::put('/models/{id?}', 'update');
+   Route::delete('/models/{id}', 'destroy');
 });
 
 Route::controller(LevelBecasController::class)->group(function () {

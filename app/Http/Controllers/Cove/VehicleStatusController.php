@@ -3,17 +3,17 @@
 namespace App\Http\Controllers\Cove;
 
 use App\Http\Controllers\Controller;
-use App\Models\Cove\mModel;
+use App\Models\Cove\VehicleStatus;
 use App\Models\ObjResponse;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 
-class ModelController extends Controller
+class VehicleStatusController extends Controller
 {
     /**
-     * Mostrar lista de modelos activas.
+     * Mostrar lista de estatus de vehiculo activos.
      *
      * @return \Illuminate\Http\Response $response
      */
@@ -21,12 +21,11 @@ class ModelController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $list = mModel::where('models.active', true)
-                ->join('brands', 'models.brand_id','=','brands.id')
-                ->select('models.*','brands.brand')
-                ->orderBy('models.id', 'asc')->get();
+            $list = VehicleStatus::where('active', true)
+                ->select('vehicle_status.*')
+                ->orderBy('vehicle_status.id', 'asc')->get();
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'Peticion satisfactoria | Lista de modelos.';
+            $response->data["message"] = 'Peticion satisfactoria | Lista de estatus de vehiculo.';
             $response->data["result"] = $list;
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
@@ -37,18 +36,17 @@ class ModelController extends Controller
     /**
      * Mostrar listado para un selector.
      *
-     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
      */
-    public function selectIndex(Request $request,Response $response)
+    public function selectIndex(Response $response)
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $list = mModel::where('models.active', true)->where('models.brand_id', $request->brand_id)
-                ->select('models.id as value', 'models.model as text')
-                ->orderBy('models.model', 'asc')->get();
+            $list = VehicleStatus::where('active', true)
+                ->select('vehicle_status.id as value', 'vehicle_status.vehicle_status as text')
+                ->orderBy('vehicle_status.vehicle_status', 'asc')->get();
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'Peticion satisfactoria | Lista de modelos';
+            $response->data["message"] = 'Peticion satisfactoria | Lista de estatus de vehiculo';
             $response->data["result"] = $list;
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
@@ -57,7 +55,7 @@ class ModelController extends Controller
     }
 
     /**
-     * Crear modelo.
+     * Crear estatus de vehiculo.
      *
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
@@ -66,14 +64,13 @@ class ModelController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $new_model = mModel::create([
-                'brand_id' => $request->brand_id,
-                'model' => $request->model,
+            $new_vehicle_status = VehicleStatus::create([
+                'vehicle_status' => $request->vehicle_status,
                 'description' => $request->description,
             ]);
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'peticion satisfactoria | modelo registrado.';
-            $response->data["alert_text"] = 'Modelo registrado';
+            $response->data["message"] = 'peticion satisfactoria | estatus de vehiculo registrado.';
+            $response->data["alert_text"] = 'Estatus de vehiculo registrado';
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
@@ -81,7 +78,7 @@ class ModelController extends Controller
     }
 
     /**
-     * Mostrar modelo.
+     * Mostrar estatus de vehiculo.
      *
      * @param   int $id
      * @param  \Illuminate\Http\Request $request
@@ -91,14 +88,11 @@ class ModelController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $model = mModel::where('models.id',$request->id)
-                ->join('brands', 'models.brand_id','=','brands.id')
-                ->select('models.*','brands.brand')
-                ->first();
+            $vehicle_status = VehicleStatus::find($request->id);
 
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'peticion satisfactoria | modelo encontrado.';
-            $response->data["result"] = $model;
+            $response->data["message"] = 'peticion satisfactoria | estatus de vehiculo encontrado.';
+            $response->data["result"] = $vehicle_status;
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
@@ -106,7 +100,7 @@ class ModelController extends Controller
     }
 
     /**
-     * Actualizar modelo.
+     * Actualizar estatus de vehiculo.
      *
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
@@ -115,16 +109,15 @@ class ModelController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $model = mModel::find($request->id)
+            $vehicle_status = VehicleStatus::find($request->id)
                 ->update([
-                    'brand_id' => $request->brand_id,
-                    'model' => $request->model,
+                    'vehicle_status' => $request->vehicle_status,
                     'description' => $request->description,
                 ]);
 
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'peticion satisfactoria | modelo actualizado.';
-            $response->data["alert_text"] = 'Modelo actualizado';
+            $response->data["message"] = 'peticion satisfactoria | estatus de vehiculo actualizado.';
+            $response->data["alert_text"] = 'Estatus de vehiculo actualizado';
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
@@ -132,7 +125,7 @@ class ModelController extends Controller
     }
 
     /**
-     * Eliminar (cambiar estado activo=false) modelo.
+     * Eliminar (cambiar estado activo=false) estatus de vehiculo.
      *
      * @param  int $id
      * @param  \Illuminate\Http\Request $request
@@ -142,17 +135,18 @@ class ModelController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            mModel::find($request->id)
+            VehicleStatus::find($request->id)
                 ->update([
                     'active' => false,
                     'deleted_at' => date('Y-m-d H:i:s'),
                 ]);
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'peticion satisfactoria | modelo eliminado.';
-            $response->data["alert_text"] = 'Modelo eliminado';
+            $response->data["message"] = 'peticion satisfactoria | estatus de vehiculo eliminado.';
+            $response->data["alert_text"] = 'Estatus de vehiculo eliminado';
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
         return response()->json($response, $response->data["status_code"]);
     }
 }
+
