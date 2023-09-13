@@ -24,7 +24,7 @@ return new class extends Migration
             $table->integer('community_id')->comment('este dato viene de una api externa brindando de estado hasta colonia');
             $table->string('street');
             $table->string('num_ext');
-            $table->string('num_int')->nullable();
+            $table->string('num_int')->nullable()->default("S/N");
             $table->foreignId('disability_id')->constrained('disabilities', 'id');
             $table->boolean('active')->default(true);
             $table->timestamps();

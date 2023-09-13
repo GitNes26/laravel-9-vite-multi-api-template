@@ -71,6 +71,7 @@ class BecaBecasController extends Controller
 
             $new_beca = Beca::create([
                 'folio' => $request->folio,
+                'tutor_id' => $request->tutor_id,
                 'tutor_full_name' => $request->tutor_full_name,
                 'tutor_phone' => $request->tutor_phone,
                 // 'single_mother' => $request->single_mother,
@@ -125,6 +126,7 @@ class BecaBecasController extends Controller
             $beca = Beca::find($request->id)
                 ->update([
                     'folio' => $request->folio,
+                    'tutor_id' => $request->tutor_id,
                     'tutor_full_name' => $request->tutor_full_name,
                     'tutor_phone' => $request->tutor_phone,
                     // 'single_mother' => $request->single_mother,

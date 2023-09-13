@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::connection("mysql_becas")->create('becas', function (Blueprint $table) {
             $table->id();
             $table->integer('folio');
+            $table->foreignId('tutor_id')->constrained('users', 'id');
             $table->string('tutor_full_name');
             $table->string('tutor_phone');
             $table->boolean('single_mother')->nullable();
@@ -24,7 +25,7 @@ return new class extends Migration
 
             $table->foreignId('school_id')->constrained('schools', 'id');
             $table->integer('grade');
-            $table->decimal('average', 3, 2);
+            $table->decimal('average', 8, 2);
             $table->text('comments')->nullable();
 
             $table->enum('socioeconomic_study', ['BAJO', 'MEDIO-BAJO', 'NORMAL'])->nullable();

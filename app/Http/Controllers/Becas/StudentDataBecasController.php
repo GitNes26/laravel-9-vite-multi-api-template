@@ -49,7 +49,7 @@ class StudentDataBecasController extends Controller
             $list = StudentData::where('student_data.active', true)
                 ->join('disabilities', 'student_data.disability_id', '=', 'disabilities.id')
                 ->select('student_data.*', 'disabilities.disability', 'disabilities.description')
-                ->orderBy('student_data.id', 'asc')->get();
+                ->orderBy('student_data.id', 'desc')->get();
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'Peticion satisfactoria | Lista de estudiantes.';
             $response->data["result"] = $list;
@@ -69,8 +69,8 @@ class StudentDataBecasController extends Controller
         $response->data = ObjResponse::DefaultResponse();
         try {
             $list = StudentData::where('active', true)
-                ->select('student_data.id as value', 'student_data.folio as text')
-                ->orderBy('student_data.folio', 'asc')->get();
+                ->select('student_data.id as value', 'student_data.name as text')
+                ->orderBy('student_data.name', 'asc')->get();
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'Peticion satisfactoria | Lista de estudiantes';
             $response->data["result"] = $list;
