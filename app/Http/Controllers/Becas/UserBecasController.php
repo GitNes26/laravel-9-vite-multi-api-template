@@ -96,7 +96,7 @@ class UserBecasController extends Controller
             ]);
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'peticion satisfactoria | usuario registrado.';
-            $response->data["alert_text"] = "¡Felicidades! ya eres parte de la familia";
+            $response->data["alert_text"] = "REGISTRO EXITOSO! <br>Bienvenido $request->username!";
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
