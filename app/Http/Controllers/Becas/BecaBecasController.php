@@ -4,10 +4,13 @@ namespace App\Http\Controllers\Becas;
 
 use App\Http\Controllers\Controller;
 use App\Models\becas\Beca;
+use App\Models\becas\StudentData;
 use App\Models\ObjResponse;
+
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Becas\StudentDataBecasController;
 
 class BecaBecasController extends Controller
 {
@@ -63,12 +66,15 @@ class BecaBecasController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
+            $studentDataController = new StudentDataBecasController();
+            $student_data = $studentDataController->createOrUpdateByBeca($request);
+
             $new_beca = Beca::create([
                 'folio' => $request->folio,
                 'tutor_full_name' => $request->tutor_full_name,
                 'tutor_phone' => $request->tutor_phone,
                 // 'single_mother' => $request->single_mother,
-                'student_id' => $request->student_id,
+                'student_data_id' => $student_data->id,
                 'school_id' => $request->school_id,
                 'grade' => $request->grade,
                 'average' => $request->average,
@@ -122,7 +128,7 @@ class BecaBecasController extends Controller
                     'tutor_full_name' => $request->tutor_full_name,
                     'tutor_phone' => $request->tutor_phone,
                     // 'single_mother' => $request->single_mother,
-                    'student_id' => $request->student_id,
+                    'student_data_id' => $request->student_data_id,
                     'school_id' => $request->school_id,
                     'grade' => $request->grade,
                     'average' => $request->average,

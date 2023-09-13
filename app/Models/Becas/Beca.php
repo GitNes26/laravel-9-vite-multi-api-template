@@ -25,7 +25,7 @@ class Beca extends Model
         'tutor_full_name',
         'tutor_phone',
         'single_mother',
-        'student_id',
+        'student_data_id',
         'school_id',
         'grade',
         'average',
@@ -53,7 +53,7 @@ class Beca extends Model
      */
     public function student()
     {   //primero se declara FK y despues la PK del modelo asociado
-        return $this->belongsTo(StudentData::class, 'student_id', 'id');
+        return $this->belongsTo(StudentData::class, 'student_data_id', 'id');
     }
 
     /**
