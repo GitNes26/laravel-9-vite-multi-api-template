@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::connection("mysql_becas")->create('student_data', function (Blueprint $table) {
             $table->id();
-            $table->string('rfc');
+            $table->string('curp');
             $table->string('name');
             $table->string('paternal_last_name');
             $table->string('maternal_last_name');
@@ -24,7 +24,7 @@ return new class extends Migration
             $table->integer('community_id')->comment('este dato viene de una api externa brindando de estado hasta colonia');
             $table->string('street');
             $table->string('num_ext');
-            $table->string('num_int')->nullable()->default("S/N");
+            $table->string('num_int')->default("S/N");
             $table->foreignId('disability_id')->constrained('disabilities', 'id');
             $table->boolean('active')->default(true);
             $table->timestamps();
