@@ -64,22 +64,22 @@ Route::controller(ModelController::class)->group(function () {
    Route::delete('/models/{id}', 'destroy');
 });
 
-Route::controller(LevelBecasController::class)->group(function () {
-   Route::get('/levels', 'index');
-   Route::get('/levels/selectIndex', 'selectIndex');
-   Route::get('/levels/{id}', 'show');
-   Route::post('/levels', 'create');
-   Route::put('/levels/{id?}', 'update');
-   Route::delete('/levels/{id}', 'destroy');
-});
+// Route::controller(LevelBecasController::class)->group(function () {
+//    Route::get('/levels', 'index');
+//    Route::get('/levels/selectIndex', 'selectIndex');
+//    Route::get('/levels/{id}', 'show');
+//    Route::post('/levels', 'create');
+//    Route::put('/levels/{id?}', 'update');
+//    Route::delete('/levels/{id}', 'destroy');
+// });
 
-Route::controller(SchoolBecasController::class)->group(function () {
-   Route::get('/schools', 'index');
-   Route::get('/schools/{id}', 'show');
-   Route::post('/schools', 'create');
-   Route::put('/schools/{id?}', 'update');
-   Route::delete('/schools/{id}', 'destroy');
-});
+// Route::controller(SchoolBecasController::class)->group(function () {
+//    Route::get('/schools', 'index');
+//    Route::get('/schools/{id}', 'show');
+//    Route::post('/schools', 'create');
+//    Route::put('/schools/{id?}', 'update');
+//    Route::delete('/schools/{id}', 'destroy');
+// });
 
 
 // });

@@ -35,7 +35,12 @@ class RoleSeeder extends Seeder
         ]);
         DB::connection('mysql_cove')->table('roles')->insert([
             'role' => 'Usuario',
-            'description' => 'Rol dedicado para usuarios normales.',
+            'description' => 'Rol dedicado para usuarios que harán uso de las unidades.',
+            'created_at' => now(),
+        ]);
+        DB::connection('mysql_cove')->table('roles')->insert([
+            'role' => 'Mecánico',
+            'description' => 'Rol dedicado para mecánicos del taller.',
             'created_at' => now(),
         ]);
     }
