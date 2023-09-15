@@ -13,6 +13,7 @@ class tramitesSidit extends Model
     * Los atributos que se pueden solicitar.
     * @var array<int, string>
     */
+   public $timestamps = false;
    protected $fillable = [
        'id'
    ];

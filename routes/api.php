@@ -5,8 +5,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\RequisicionController;
 use App\Http\Controllers\oficiosController;
+use App\Http\Controllers\CodigoPostalController;
 
-
+use App\Http\Controllers\EstadosController;
 
 
 
@@ -28,6 +29,15 @@ Route::post('pdf', [oficiosController::class, 'pdf']);
 Route::get('pdf', function () {
     return 1;
 });
+
+Route::get('cp/{id}', [CodigoPostalController::class,'index']);
+Route::get('cp/colonia/{id}', [CodigoPostalController::class,'colonia']);
+
+
+Route::get('estados',[EstadosController::class,'index']);
+Route::get('estados/{id}',[EstadosController::class,'estadosFind']);
+
+
 
 Route::prefix('becas')->group(function () {
     Route::get('/', function () {
