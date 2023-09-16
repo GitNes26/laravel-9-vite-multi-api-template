@@ -41,9 +41,9 @@ Route::prefix('sidit/tramites')->group(function () {
     Route::post('/',[SiditController::class,'create']);
 });
 
-Route::prefix('cove')->group(function () {
+Route::prefix('gpCenter')->group(function () {
     Route::get('/', function () {
-        return 'cove';
+        return 'API GPCenter';
     });
-    include_once "cove.routes.php";
+    include_once "gpcenter.routes.php";
 });

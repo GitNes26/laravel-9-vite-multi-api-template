@@ -81,7 +81,7 @@ return [
                 PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
         ],
-        'mysql_cove' => [
+        'mysql_gp_center' => [
             'driver' => 'mysql',
             'url' => env('DATABASE_URL_COVE'),
             'host' => env('DB_HOST_COVE', '127.0.0.1'),
