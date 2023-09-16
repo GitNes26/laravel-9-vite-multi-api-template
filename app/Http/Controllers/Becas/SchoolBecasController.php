@@ -26,7 +26,7 @@ class SchoolBecasController extends Controller
                 ->join('cities', 'schools.city_id', '=', 'cities.id')
                 ->join('colonies', 'schools.colony_id', '=', 'colonies.id')
                 ->select('schools.*', 'levels.level', 'cities.city', 'colonies.colony')
-                ->orderBy('schools.code', 'asc')->get();
+                ->orderBy('schools.id', 'desc')->get();
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'Peticion satisfactoria | Lista de escuelas.';
             $response->data["result"] = $list;
@@ -47,8 +47,10 @@ class SchoolBecasController extends Controller
         try {
             $list = School::where('schools.active', true)
                 ->join('levels', 'schools.level_id', '=', 'levels.id')
-                ->select('schools.id as value', 'schools.school as text')
+                // ->select('schools.id as value', 'schools.school as text')
+                ->select('schools.id as value', DB::raw("CONCAT(levels.level,' - ', schools.school) as text"))
                 ->orderBy('schools.school', 'asc')->get();
+            // $list = School::select(DB::raw("CONCAT(levels.level,' - ', schools.school)"))->get();
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'Peticion satisfactoria | Lista de escuelas';
             $response->data["result"] = $list;
@@ -76,7 +78,7 @@ class SchoolBecasController extends Controller
                 'city_id' => $request->city_id,
                 'colony_id' => $request->colony_id,
                 'address' => $request->address,
-                'phone' => $request->phone ?? 'S/N',
+                'phone' => $request->phone,
                 'director' => $request->director,
                 'loc_for' => $request->loc_for,
                 'zone' => $request->zone,
@@ -136,7 +138,7 @@ class SchoolBecasController extends Controller
                     'city_id' => $request->city_id,
                     'colony_id' => $request->colony_id,
                     'address' => $request->address,
-                    'phone' => $request->phone ?? 'S/N',
+                    'phone' => $request->phone,
                     'director' => $request->director,
                     'loc_for' => $request->loc_for,
                     'zone' => $request->zone,

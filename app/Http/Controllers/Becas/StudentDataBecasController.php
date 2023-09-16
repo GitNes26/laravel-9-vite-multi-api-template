@@ -18,10 +18,10 @@ class StudentDataBecasController extends Controller
      */
     public function createOrUpdateByBeca($request)
     {
-        $student_data = StudentData::where('rfc', $request->rfc)->first();
+        $student_data = StudentData::where('curp', $request->curp)->first();
         if (!$student_data) $student_data = new StudentData();
 
-        $student_data->rfc = $request->rfc;
+        $student_data->curp = $request->curp;
         $student_data->name = $request->name;
         $student_data->paternal_last_name = $request->paternal_last_name;
         $student_data->maternal_last_name = $request->maternal_last_name;
@@ -49,7 +49,7 @@ class StudentDataBecasController extends Controller
             $list = StudentData::where('student_data.active', true)
                 ->join('disabilities', 'student_data.disability_id', '=', 'disabilities.id')
                 ->select('student_data.*', 'disabilities.disability', 'disabilities.description')
-                ->orderBy('student_data.id', 'asc')->get();
+                ->orderBy('student_data.id', 'desc')->get();
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'Peticion satisfactoria | Lista de estudiantes.';
             $response->data["result"] = $list;
@@ -69,8 +69,8 @@ class StudentDataBecasController extends Controller
         $response->data = ObjResponse::DefaultResponse();
         try {
             $list = StudentData::where('active', true)
-                ->select('student_data.id as value', 'student_data.folio as text')
-                ->orderBy('student_data.folio', 'asc')->get();
+                ->select('student_data.id as value', 'student_data.name as text')
+                ->orderBy('student_data.name', 'asc')->get();
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'Peticion satisfactoria | Lista de estudiantes';
             $response->data["result"] = $list;
@@ -91,7 +91,7 @@ class StudentDataBecasController extends Controller
         $response->data = ObjResponse::DefaultResponse();
         try {
             $new_estudent_data = StudentData::create([
-                'rfc' => $request->rfc,
+                'curp' => $request->curp,
                 'name' => $request->name,
                 'paternal_last_name' => $request->paternal_last_name,
                 'maternal_last_name' => $request->maternal_last_name,
@@ -125,9 +125,9 @@ class StudentDataBecasController extends Controller
         try {
             $field = 'student_data.id';
             $value = $request->id;
-            if ($request->rfc) {
-                $field = 'student_data.rfc';
-                $value = $request->rfc;
+            if ($request->curp) {
+                $field = 'student_data.curp';
+                $value = $request->curp;
             }
             // $student_data = StudentData::where('student_data.id', $request->id)
             $student_data = StudentData::where("$field", "$value")
@@ -156,7 +156,7 @@ class StudentDataBecasController extends Controller
         try {
             $student_data = StudentData::find($request->id)
                 ->update([
-                    'rfc' => $request->rfc,
+                    'curp' => $request->curp,
                     'name' => $request->name,
                     'paternal_last_name' => $request->paternal_last_name,
                     'maternal_last_name' => $request->maternal_last_name,

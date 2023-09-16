@@ -21,7 +21,7 @@ class StudentData extends Model
      */
     protected $fillable = [
         'id',
-        'rfc',
+        'curp',
         'name',
         'paternal_last_name',
         'maternal_last_name',

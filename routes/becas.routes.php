@@ -101,7 +101,7 @@ Route::controller(StudentDataBecasController::class)->group(function () {
    Route::get('/students', 'index');
    Route::get('/students/selectIndex', 'selectIndex');
    Route::get('/students/{id}', 'show');
-   Route::get('/students/rfc/{rfc}', 'show');
+   Route::get('/students/curp/{curp}', 'show');
    Route::post('/students', 'create');
    Route::put('/students/{id?}', 'update');
    Route::delete('/students/{id}', 'destroy');
