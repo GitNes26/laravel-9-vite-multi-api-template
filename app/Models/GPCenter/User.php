@@ -37,7 +37,7 @@ class User extends Authenticatable
         'paternal_last_name',
         'maternal_last_name',
         'community_id',
-        'address',
+        'street',
         'num_ext',
         'num_int',
         'active',

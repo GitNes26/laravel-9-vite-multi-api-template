@@ -29,7 +29,7 @@ return new class extends Migration
             $table->string('paternal_last_name')->nullable()->default('No Aplica');
             $table->string('maternal_last_name')->nullable()->default('No Aplica');
             $table->integer('community_id')->default(0)->comment("este dato viene de una API que por medio del C.P. nos arroja de estado a colonia");
-            $table->string('address')->default('No Aplica');
+            $table->string('street')->default('No Aplica');
             $table->string('num_ext')->default("S/N");
             $table->string('num_int')->nullable()->default("S/N");
             // $table->string('image')->nullable();

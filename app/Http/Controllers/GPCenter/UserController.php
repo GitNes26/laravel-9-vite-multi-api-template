@@ -100,7 +100,7 @@ class UserController extends Controller
                     'paternal_last_name' => $request->paternal_last_name,
                     'maternal_last_name' => $request->maternal_last_name,
                     'community_id' => $request->community_id,
-                    'address' => $request->address,
+                    'street' => $request->street,
                     'num_ext' => $request->num_ext,
                     'num_int' => $request->num_int,
             ]);
@@ -182,13 +182,13 @@ class UserController extends Controller
         try {
             $token = $request->bearerToken();
 
-            if ($request->role_id < 2) {
+            if ($request->role_id <= 2) {
                 $new_user = User::create([
                     'username' => $request->username,
                     'email' => $request->email,
                     'password' => Hash::make($request->password),
                     'role_id' => $request->role_id,
-                    'department_id' => $request->department_id
+                    'department_id' => 1, //$request->department_id
                 ]);
             } else {
                 $new_user = User::create([
@@ -205,7 +205,7 @@ class UserController extends Controller
                     'paternal_last_name' => $request->paternal_last_name,
                     'maternal_last_name' => $request->maternal_last_name,
                     'community_id' => $request->community_id,
-                    'address' => $request->address,
+                    'street' => $request->street,
                     'num_ext' => $request->num_ext,
                     'num_int' => $request->num_int,
                 ]);
@@ -259,7 +259,7 @@ class UserController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            echo "el id: $request->id";
+            // echo "el id: $request->id";
             if ($request->role_id < 2) {
                 $user = User::find($request->id)
                 ->update([
@@ -267,7 +267,7 @@ class UserController extends Controller
                     'email' => $request->email,
                     'password' => Hash::make($request->password),
                     'role_id' => $request->role_id,
-                    'department_id' => $request->department_id
+                    'department_id' => 1, //$request->department_id
                 ]);
             } else {
                 $user = User::find($request->id)
@@ -285,7 +285,7 @@ class UserController extends Controller
                     'paternal_last_name' => $request->paternal_last_name,
                     'maternal_last_name' => $request->maternal_last_name,
                     'community_id' => $request->community_id,
-                    'address' => $request->address,
+                    'street' => $request->street,
                     'num_ext' => $request->num_ext,
                     'num_int' => $request->num_int,
                 ]);
