@@ -34,7 +34,7 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 * Correr migraciones
 
   ```
-  php artisan migrate:fresh --path=database/migrations/GPCenter--database=mysql_gp_center
+  php artisan migrate:fresh --path=database/migrations/GPCenter --database=mysql_gp_center
   ```
 * Correr seeders
 
