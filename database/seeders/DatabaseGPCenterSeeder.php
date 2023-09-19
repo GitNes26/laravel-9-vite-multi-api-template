@@ -4,8 +4,6 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-// use Database\Seeders\GPCenter\RoleSeeder;
-// use Database\Seeders\GPCenter\VehicleStatusSeeder;
 use Illuminate\Database\Seeder;
 
 class DatabaseGPCenterSeeder extends Seeder
@@ -18,6 +16,7 @@ class DatabaseGPCenterSeeder extends Seeder
     public function run()
     {
         $this->call([
+            GPCenter\MenuSeeder::class,
             GPCenter\RoleSeeder::class,
             GPCenter\DepartamentSeeder::class,
             GPCenter\VehicleStatusSeeder::class,
