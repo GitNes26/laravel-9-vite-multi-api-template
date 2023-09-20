@@ -47,3 +47,10 @@ Route::prefix('gpCenter')->group(function () {
     });
     include_once "gpcenter.routes.php";
 });
+
+Route::prefix('gomezapp')->group(function () {
+    Route::get('/', function () {
+        return 'API GomezApp';
+    });
+    include_once "gomezapp.routes.php";
+});
