@@ -9,6 +9,6 @@ class ClavesCat extends Model
 {
     protected $connection = "sqlsrv_ingresos";
     protected $table = 'PREDIAL';
-
+    public $timestamps = false;
     // protected $primaryKey = '';
 }

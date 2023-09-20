@@ -132,13 +132,13 @@ class SiditController extends Controller
                             $response["Message"] = "Consulta Tabla General de pagos concluida con exito";
                             $id = $objeto["idFolio"];
                             
-                            $detalle = tramitesSiditConfig::all();
+                            $detalle = tramitesSidit::all();
                             $response["VPG"] = $detalle;
                         } else if($opcion === 5){
                             //CONSULTA DE DATOS A LAS TABLAS DE PAGOS
                             $response["Result"] = true;
                             $response["Message"] = "Consulta completa de pagos concluida con exito";
-                            $detalle1 = tramitesSiditConfig::all();
+                            $detalle1 = tramitesSidit::all();
                             $detalle2 = detalleTramitesSidit::all();
                             $response["VPG"] = $detalle1;
                             $response["PV"] = $detalle2;
@@ -146,18 +146,20 @@ class SiditController extends Controller
                             // Consulta individual a tabla general por id del tramite
                             $response["Result"] = true;
                             $response["Message"] = "Consulta de pago general individual";
-                            $detalle = tramitesSiditConfig::where("idTramite", $objeto["id"])->get()
+                            $detalle = tramitesSidit::where("idTramite", $objeto["id"])->get();
+                            $response["VPG"] = $detalle;
                         } else if($opcion === 7){
                             // Consulta individual a tabla detalle por id del tramite
                             $response["Result"] = true;
                             $response["Message"] = "Consulta de pago general individual";
-                            $detalle = detalleTramitesSidit::where("idTramite", $objeto["id"])->get()
+                            $detalle = detalleTramitesSidit::where("idTramite", $objeto["id"])->get();
+                            $response["PV"] = $detalle;
                         } else if($opcion === 8){
                             DB::beginTransaction();
                             try {
                                 $response["Result"] = true;
                                 $response["Message"] = "Actualizacion a la tabla general exitosa";
-                                $filasAct = tramitesSiditConfig::where("id", $objeto["id"])->update([ "Estatus" => $objeto["Estatus"]]);
+                                $filasAct = tramitesSidit::where("id", $objeto["id"])->update([ "Estatus" => $objeto["Estatus"]]);
                                 if ($filasAct > 0) {
                                     $response["Result"] = true;
                                     $response["Message"] = "Se actualizaron un total de: ".$filasAct;

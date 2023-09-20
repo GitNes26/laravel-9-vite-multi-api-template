@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Requisicion;
 use App\Models\Notificacion;
 use Illuminate\Http\Request;
-use Carbon\Carbon;
+// use Carbon\Carbon;
 use App\Mail\Correos;
 use Illuminate\Support\Facades\Mail;
 
