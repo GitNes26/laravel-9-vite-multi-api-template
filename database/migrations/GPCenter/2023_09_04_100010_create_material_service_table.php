@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('service_id')->constrained('services', 'id');
             $table->foreignId('material_id')->constrained('store', 'id');
-            $table->in('quantity');
+            $table->integer('quantity');
             $table->string('comments')->nullable();
             $table->boolean('active')->default(true);
             $table->timestamps();
