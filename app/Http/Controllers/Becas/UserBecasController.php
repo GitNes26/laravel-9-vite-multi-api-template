@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\becas;
+namespace App\Http\Controllers\Becas;
 
 use App\Http\Controllers\Controller;
 use App\Models\ObjResponse;
@@ -8,6 +8,7 @@ use App\Models\becas\User;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
@@ -31,24 +32,25 @@ class UserBecasController extends Controller
         }
 
         $request->validate([
-            $field=>'required',
-            'password'=>'required'
+            $field => 'required',
+            'password' => 'required'
         ]);
         $user = User::where("$field", "$value")->first();
 
 
-        if(!$user || !Hash::check($request->password, $user->password)) {
+        if (!$user || !Hash::check($request->password, $user->password)) {
 
             throw ValidationException::withMessages([
-                'message'=>'Credenciales incorrectas',
-                'alert_title'=>'Credenciales incorrectas',
-                'alert_text'=>'Credenciales incorrectas',
-                'alert_icon'=>'error',
+                'message' => 'Credenciales incorrectas',
+                'alert_title' => 'Credenciales incorrectas',
+                'alert_text' => 'Credenciales incorrectas',
+                'alert_icon' => 'error',
             ]);
         }
         $token = $user->createToken($user->email, ['user'])->plainTextToken;
+        // dd();
         $response->data = ObjResponse::CorrectResponse();
-        $response->data["message"] = 'peticion satisfactoria | usuario logeado.';
+        $response->data["message"] = "peticion satisfactoria | usuario logeado. " . Auth::user();
         $response->data["result"]["token"] = $token;
         $response->data["result"]["user"]["id"] = $user->id;
         return response()->json($response, $response->data["status_code"]);
@@ -67,7 +69,6 @@ class UserBecasController extends Controller
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'peticion satisfactoria | sesión cerrada.';
             $response->data["alert_title"] = "Bye!";
-
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
@@ -77,7 +78,7 @@ class UserBecasController extends Controller
     /**
      * Reegistrarse como jugador.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
      */
     public function signup(Request $request, Response $response)
@@ -95,8 +96,7 @@ class UserBecasController extends Controller
             ]);
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'peticion satisfactoria | usuario registrado.';
-            $response->data["alert_text"] = "¡Felicidades! ya eres parte de la familia";
-
+            $response->data["alert_text"] = "REGISTRO EXITOSO! <br>Bienvenido $request->username!";
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
@@ -105,7 +105,7 @@ class UserBecasController extends Controller
 
 
     /**
-     * Mostrar lista de todos los usuarios activos del
+     * Mostrar lista de usuarios activos del
      * uniendo con roles.
      *
      * @return \Illuminate\Http\Response $response
@@ -117,20 +117,18 @@ class UserBecasController extends Controller
             // $list = DB::select('SELECT * FROM users where active = 1');
             // User::on('mysql_becas')->get();
             $list = User::where('users.active', true)
-            ->join('roles', 'users.role_id', '=', 'roles.id')
-            ->select('users.*','roles.role')
-            ->get();
+                ->join('roles', 'users.role_id', '=', 'roles.id')
+                ->select('users.*', 'roles.role')
+                ->get();
 
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'peticion satisfactoria | lista de usuarios.';
             $response->data["alert_text"] = "usuarios encontrados";
             $response->data["result"] = $list;
-
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
         return response()->json($response, $response->data["status_code"]);
-
     }
 
     /**
@@ -143,24 +141,23 @@ class UserBecasController extends Controller
         $response->data = ObjResponse::DefaultResponse();
         try {
             $list = User::where('active', true)
-            ->select('users.id as value', 'users.username as text')
-            ->orderBy('users.username', 'asc')->get();
+                ->select('users.id as value', 'users.username as text')
+                ->orderBy('users.username', 'asc')->get();
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'peticion satisfactoria | lista de usuarios.';
             $response->data["alert_text"] = "usuarios encontrados";
             $response->data["result"] = $list;
             $response->data["toast"] = false;
-        }
-        catch (\Exception $ex) {
+        } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
         return response()->json($response, $response->data["status_code"]);
     }
 
     /**
-     * Crear un nuevo usuario.
+     * Crear usuario.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
      */
     public function create(Request $request, Response $response)
@@ -181,7 +178,6 @@ class UserBecasController extends Controller
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'peticion satisfactoria | usuario registrado.';
             $response->data["alert_text"] = "Usuario registrado";
-
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
@@ -189,7 +185,7 @@ class UserBecasController extends Controller
     }
 
     /**
-     * Mostrar un usuario especifico.
+     * Mostrar usuario.
      *
      * @param   int $id
      * @return \Illuminate\Http\Response $response
@@ -199,15 +195,14 @@ class UserBecasController extends Controller
         $response->data = ObjResponse::DefaultResponse();
         try {
             $user = User::where('users.id', $id)
-            ->join('roles', 'users.role_id', '=', 'roles.id')
-            ->select('users.*','roles.role')
-            ->first();
+                ->join('roles', 'users.role_id', '=', 'roles.id')
+                ->select('users.*', 'roles.role')
+                ->first();
 
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'peticion satisfactoria | usuario encontrado.';
             $response->data["alert_text"] = "Usuario encontrado";
             $response->data["result"] = $user;
-
         } catch (\Exception $ex) {
             $response = ObjResponse::CatchResponse($ex->getMessage());
         }
@@ -215,9 +210,9 @@ class UserBecasController extends Controller
     }
 
     /**
-     * Actualizar un usuario especifico.
+     * Actualizar usuario.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
      */
     public function update(Request $request, Response $response)
@@ -225,20 +220,19 @@ class UserBecasController extends Controller
         $response->data = ObjResponse::DefaultResponse();
         try {
             $user = User::where('id', $request->id)
-            ->update([
-                // 'name' => $request->name,
-                // 'last_name' => $request->last_name,
-                'email' => $request->email,
-                'username' => $request->username,
-                'password' => Hash::make($request->password),
-                // 'phone' => $request->phone,
-                'role_id' => $request->role_id,
-            ]);
+                ->update([
+                    // 'name' => $request->name,
+                    // 'last_name' => $request->last_name,
+                    'email' => $request->email,
+                    'username' => $request->username,
+                    'password' => Hash::make($request->password),
+                    // 'phone' => $request->phone,
+                    'role_id' => $request->role_id,
+                ]);
 
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'peticion satisfactoria | usuario actualizado.';
             $response->data["alert_text"] = "Usuario actualizado";
-
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
@@ -246,7 +240,7 @@ class UserBecasController extends Controller
     }
 
     /**
-     * "Eliminar" (cambiar estado activo=false) un usuario especidifco.
+     * "Eliminar" (cambiar estado activo=false) usuario.
      *
      * @param  int $id
      * @return \Illuminate\Http\Response $response
@@ -256,14 +250,13 @@ class UserBecasController extends Controller
         $response->data = ObjResponse::DefaultResponse();
         try {
             User::where('id', $id)
-            ->update([
-                'active' => false,
-                'deleted_at' => date('Y-m-d H:i:s'),
-            ]);
+                ->update([
+                    'active' => false,
+                    'deleted_at' => date('Y-m-d H:i:s'),
+                ]);
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'peticion satisfactoria | usuario eliminado.';
             $response->data["alert_text"] = "Usuario eliminado";
-
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
@@ -272,18 +265,17 @@ class UserBecasController extends Controller
 
 
 
-    private function validateAvailability(string $prop, int $value, string $message_error)
-    {
-        $response->data = ObjResponse::DefaultResponse();
-        data_set($response,'alert_text',$message_error);
-        try {
-            $exist = User::where($prop, $value)->count();
+    // private function validateAvailability(string $prop, int $value, string $message_error)
+    // {
+    //     $response->data = ObjResponse::DefaultResponse();
+    //     data_set($response, 'alert_text', $message_error);
+    //     try {
+    //         $exist = User::where($prop, $value)->count();
 
-            if ($exist > 0) $response = ObjResponse::CorrectResponse();
-
-        } catch (\Exception $ex) {
-            $response = ObjResponse::CatchResponse($ex->getMessage());
-        }
-        return response()->json($response,$response["status_code"]);
-    }
+    //         if ($exist > 0) $response = ObjResponse::CorrectResponse();
+    //     } catch (\Exception $ex) {
+    //         $response = ObjResponse::CatchResponse($ex->getMessage());
+    //     }
+    //     return response()->json($response, $response["status_code"]);
+    // }
 }

@@ -1,18 +1,19 @@
 <?php
 
-namespace App\Http\Controllers\Cove;
+namespace App\Http\Controllers\GPCenter;
 
 use App\Http\Controllers\Controller;
+use App\Models\GPCenter\mModel;
 use App\Models\ObjResponse;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 
-class DepartmentController extends Controller
+class ModelController extends Controller
 {
     /**
-     * Mostrar lista de todas las discapacidades activas.
+     * Mostrar lista de modelos activas.
      *
      * @return \Illuminate\Http\Response $response
      */
@@ -20,11 +21,12 @@ class DepartmentController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $list = Disability::where('active', true)
-                ->select('disabilities.*')
-                ->orderBy('disabilities.id', 'asc')->get();
+            $list = mModel::where('models.active', true)
+                ->join('brands', 'models.brand_id','=','brands.id')
+                ->select('models.*','brands.brand')
+                ->orderBy('models.id', 'asc')->get();
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'Peticion satisfactoria | Lista de discapacidades.';
+            $response->data["message"] = 'Peticion satisfactoria | Lista de modelos.';
             $response->data["result"] = $list;
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
@@ -35,17 +37,18 @@ class DepartmentController extends Controller
     /**
      * Mostrar listado para un selector.
      *
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
      */
-    public function selectIndex(Response $response)
+    public function selectIndex(Request $request,Response $response)
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $list = Disability::where('active', true)
-                ->select('disabilities.id as value', 'disabilities.disability as text')
-                ->orderBy('disabilities.disability', 'asc')->get();
+            $list = mModel::where('models.active', true)->where('models.brand_id', $request->brand_id)
+                ->select('models.id as value', 'models.model as text')
+                ->orderBy('models.model', 'asc')->get();
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'Peticion satisfactoria | Lista de discapacidades';
+            $response->data["message"] = 'Peticion satisfactoria | Lista de modelos';
             $response->data["result"] = $list;
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
@@ -54,22 +57,23 @@ class DepartmentController extends Controller
     }
 
     /**
-     * Crear una nueva discapacidad.
+     * Crear modelo.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
      */
     public function create(Request $request, Response $response)
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $new_disability = Disability::create([
-                'disability' => $request->disability,
+            $new_model = mModel::create([
+                'brand_id' => $request->brand_id,
+                'model' => $request->model,
                 'description' => $request->description,
             ]);
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'peticion satisfactoria | discapacidad registrada.';
-            $response->data["alert_text"] = 'Discapacidad registrada';
+            $response->data["message"] = 'peticion satisfactoria | modelo registrado.';
+            $response->data["alert_text"] = 'Modelo registrado';
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
@@ -77,20 +81,24 @@ class DepartmentController extends Controller
     }
 
     /**
-     * Mostrar una discapacidad especifica.
+     * Mostrar modelo.
      *
      * @param   int $id
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
      */
-    public function show(int $id, Response $response)
+    public function show(Request $request, Response $response)
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $disability = Disability::find($id);
+            $model = mModel::where('models.id',$request->id)
+                ->join('brands', 'models.brand_id','=','brands.id')
+                ->select('models.*','brands.brand')
+                ->first();
 
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'peticion satisfactoria | discapacidad encontrada.';
-            $response->data["result"] = $disability;
+            $response->data["message"] = 'peticion satisfactoria | modelo encontrado.';
+            $response->data["result"] = $model;
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
@@ -98,24 +106,25 @@ class DepartmentController extends Controller
     }
 
     /**
-     * Actualizar una discapacidad especifica.
+     * Actualizar modelo.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
      */
     public function update(Request $request, Response $response)
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $disability = Disability::find($request->id)
+            $model = mModel::find($request->id)
                 ->update([
-                    'disability' => $request->disability,
+                    'brand_id' => $request->brand_id,
+                    'model' => $request->model,
                     'description' => $request->description,
                 ]);
 
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'peticion satisfactoria | discapacidad actualizada.';
-            $response->data["alert_text"] = 'Discapacidad actualizada';
+            $response->data["message"] = 'peticion satisfactoria | modelo actualizado.';
+            $response->data["alert_text"] = 'Modelo actualizado';
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
@@ -123,23 +132,24 @@ class DepartmentController extends Controller
     }
 
     /**
-     * Eliminar (cambiar estado activo=false) una discapacidad especidifca.
+     * Eliminar (cambiar estado activo=false) modelo.
      *
      * @param  int $id
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
      */
-    public function destroy(int $id, Response $response)
+    public function destroy(Request $request, Response $response)
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            Disability::find($id)
+            mModel::find($request->id)
                 ->update([
                     'active' => false,
                     'deleted_at' => date('Y-m-d H:i:s'),
                 ]);
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'peticion satisfactoria | discapacidad eliminada.';
-            $response->data["alert_text"] = 'Discapacidad eliminada';
+            $response->data["message"] = 'peticion satisfactoria | modelo eliminado.';
+            $response->data["alert_text"] = 'Modelo eliminado';
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
