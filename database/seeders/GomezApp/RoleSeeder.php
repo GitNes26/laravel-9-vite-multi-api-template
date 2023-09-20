@@ -24,7 +24,7 @@ class RoleSeeder extends Seeder
             'delete' => 'todas',
             'created_at' => now(),
         ]);
-        DB::connection('mysql_gp_center')->table('roles')->insert([
+        DB::connection('mysql_gomezapp')->table('roles')->insert([
             'role' => 'Administrador',
             'description' => 'Rol dedicado para usuarios que gestionaran el sistema.',
             'read' => 'todas',
@@ -33,12 +33,12 @@ class RoleSeeder extends Seeder
             'delete' => 'todas',
             'created_at' => now(),
         ]);
-        DB::connection('mysql_gp_center')->table('roles')->insert([
+        DB::connection('mysql_gomezapp')->table('roles')->insert([
             'role' => 'Usuario',
             'description' => 'Rol dedicado para usuarios que harán uso de las unidades.',
             'created_at' => now(),
         ]);
-        DB::connection('mysql_gp_center')->table('roles')->insert([
+        DB::connection('mysql_gomezapp')->table('roles')->insert([
             'role' => 'Mecánico',
             'description' => 'Rol dedicado para mecánicos del taller.',
             'created_at' => now(),
