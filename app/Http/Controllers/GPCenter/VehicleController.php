@@ -3,9 +3,168 @@
 namespace App\Http\Controllers\GPCenter;
 
 use App\Http\Controllers\Controller;
+use App\Models\GPCenter\Vehicle;
+use App\Models\ObjResponse;
+
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 
 class VehicleController extends Controller
 {
-    //
+    /**
+     * Mostrar lista de vehículos activos.
+     *
+     * @return \Illuminate\Http\Response $response
+     */
+    public function index(Response $response)
+    {
+        $response->data = ObjResponse::DefaultResponse();
+        try {
+            $list = Vehicle::where('vehicles.active', true)
+                ->join('brands', 'vehicles.brand_id', '=', 'brands.id')
+                ->join('models', 'vehicles.model_id', '=', 'models.id')
+                ->join('vehicle_status', 'vehicles.vehicle_status_id', '=', 'vehicle_status.id')
+                ->select('vehicles.*', 'brands.brand', 'models.model', 'vehicle_status.vehicle_status', 'vehicle_status.bg_color', 'vehicle_status.letter_black')
+                ->orderBy('vehicles.id', 'asc')->get();
+            $response->data = ObjResponse::CorrectResponse();
+            $response->data["message"] = 'Peticion satisfactoria | Lista de vehículos.';
+            $response->data["result"] = $list;
+        } catch (\Exception $ex) {
+            $response->data = ObjResponse::CatchResponse($ex->getMessage());
+        }
+        return response()->json($response, $response->data["status_code"]);
+    }
+
+    /**
+     * Mostrar listado para un selector.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response $response
+     */
+    public function selectIndex(Request $request, Response $response)
+    {
+        $response->data = ObjResponse::DefaultResponse();
+        try {
+            $list = Vehicle::where('vehicles.active', true)->where('vehicles.brand_id', $request->brand_id)
+                ->select('vehicles.id as value', 'vehicles.model as text')
+                ->orderBy('vehicles.model', 'asc')->get();
+            $response->data = ObjResponse::CorrectResponse();
+            $response->data["message"] = 'Peticion satisfactoria | Lista de vehículos';
+            $response->data["result"] = $list;
+        } catch (\Exception $ex) {
+            $response->data = ObjResponse::CatchResponse($ex->getMessage());
+        }
+        return response()->json($response, $response->data["status_code"]);
+    }
+
+    /**
+     * Crear vehículo.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response $response
+     */
+    public function create(Request $request, Response $response)
+    {
+        $response->data = ObjResponse::DefaultResponse();
+        try {
+            $new_model = Vehicle::create([
+                'stock_number' => $request->stock_number,
+                'brand_id' => $request->brand_id,
+                'model_id' => $request->model_id,
+                'year' => $request->year,
+                'registration_date' => $request->registration_date,
+                'vehicle_status_id' => $request->vehicle_status_id,
+                'description' => $request->description,
+            ]);
+            $response->data = ObjResponse::CorrectResponse();
+            $response->data["message"] = 'peticion satisfactoria | vehículo registrado.';
+            $response->data["alert_text"] = 'Vehículo registrado';
+        } catch (\Exception $ex) {
+            $response->data = ObjResponse::CatchResponse($ex->getMessage());
+        }
+        return response()->json($response, $response->data["status_code"]);
+    }
+
+    /**
+     * Mostrar vehículo.
+     *
+     * @param   int $id
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response $response
+     */
+    public function show(Request $request, Response $response)
+    {
+        $response->data = ObjResponse::DefaultResponse();
+        try {
+            $model = Vehicle::where('vehicles.id', $request->id)
+                ->join('brands', 'vehicles.brand_id', '=', 'brands.id')
+                ->join('models', 'vehicles.model_id', '=', 'models.id')
+                ->join('vehicle_status', 'vehicles.vehicle_status_id', '=', 'vehicle_status.id')
+                ->select('vehicles.*', 'brands.brand', 'models.model', 'vehicle_status.vehicle_status', 'vehicle_status.bg_color', 'vehicle_status.letter_black')
+                ->first();
+
+            $response->data = ObjResponse::CorrectResponse();
+            $response->data["message"] = 'peticion satisfactoria | vehículo encontrado.';
+            $response->data["result"] = $model;
+        } catch (\Exception $ex) {
+            $response->data = ObjResponse::CatchResponse($ex->getMessage());
+        }
+        return response()->json($response, $response->data["status_code"]);
+    }
+
+    /**
+     * Actualizar vehículo.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response $response
+     */
+    public function update(Request $request, Response $response)
+    {
+        $response->data = ObjResponse::DefaultResponse();
+        try {
+            $model = Vehicle::find($request->id)
+                ->update([
+                    'stock_number' => $request->stock_number,
+                    'brand_id' => $request->brand_id,
+                    'model_id' => $request->model_id,
+                    'year' => $request->year,
+                    'registration_date' => $request->registration_date,
+                    'vehicle_status_id' => $request->vehicle_status_id,
+                    'description' => $request->description,
+                ]);
+
+            $response->data = ObjResponse::CorrectResponse();
+            $response->data["message"] = 'peticion satisfactoria | vehículo actualizado.';
+            $response->data["alert_text"] = 'Vehículo actualizado';
+        } catch (\Exception $ex) {
+            $response->data = ObjResponse::CatchResponse($ex->getMessage());
+        }
+        return response()->json($response, $response->data["status_code"]);
+    }
+
+    /**
+     * Eliminar (cambiar estado activo=false) vehículo.
+     *
+     * @param  int $id
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response $response
+     */
+    public function destroy(Request $request, Response $response)
+    {
+        $response->data = ObjResponse::DefaultResponse();
+        try {
+            Vehicle::find($request->id)
+                ->update([
+                    'active' => false,
+                    'deleted_at' => date('Y-m-d H:i:s'),
+                ]);
+            $response->data = ObjResponse::CorrectResponse();
+            $response->data["message"] = 'peticion satisfactoria | vehículo eliminado.';
+            $response->data["alert_text"] = 'Vehículo eliminado';
+        } catch (\Exception $ex) {
+            $response->data = ObjResponse::CatchResponse($ex->getMessage());
+        }
+        return response()->json($response, $response->data["status_code"]);
+    }
 }
