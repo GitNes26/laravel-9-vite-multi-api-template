@@ -9,6 +9,7 @@ use App\Http\Controllers\GPCenter\RoleController;
 use App\Http\Controllers\GPCenter\DepartmentController;
 use App\Http\Controllers\GPCenter\BrandController;
 use App\Http\Controllers\GPCenter\ModelController;
+use App\Http\Controllers\GPCenter\VehicleStatusController;
 
 #endregion CONTROLLERS
 
@@ -64,22 +65,15 @@ Route::controller(ModelController::class)->group(function () {
    Route::delete('/models/{id}', 'destroy');
 });
 
-// Route::controller(LevelBecasController::class)->group(function () {
-//    Route::get('/levels', 'index');
-//    Route::get('/levels/selectIndex', 'selectIndex');
-//    Route::get('/levels/{id}', 'show');
-//    Route::post('/levels', 'create');
-//    Route::put('/levels/{id?}', 'update');
-//    Route::delete('/levels/{id}', 'destroy');
-// });
+Route::controller(VehicleStatusController::class)->group(function () {
+    Route::get('/vehicleStatus', 'index');
+    Route::get('/vehicleStatus/brand/{brand_id}', 'selectIndex');
+    Route::get('/vehicleStatus/{id}', 'show');
+    Route::post('/vehicleStatus', 'create');
+    Route::put('/vehicleStatus/{id?}', 'update');
+    Route::delete('/vehicleStatus/{id}', 'destroy');
+ });
 
-// Route::controller(SchoolBecasController::class)->group(function () {
-//    Route::get('/schools', 'index');
-//    Route::get('/schools/{id}', 'show');
-//    Route::post('/schools', 'create');
-//    Route::put('/schools/{id?}', 'update');
-//    Route::delete('/schools/{id}', 'destroy');
-// });
 
 
 // });

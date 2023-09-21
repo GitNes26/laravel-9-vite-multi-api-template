@@ -17,6 +17,8 @@ class VehicleStatusSeeder extends Seeder
     {
         DB::connection('mysql_gp_center')->table('vehicle_status')->insert([
             'vehicle_status' => 'Sin Asignar',
+            'bg_color' => '#FFFFFFDE',
+            'letter_black' => true,
             'description' => 'EL vehículo no tiene un estatus definido.',
             'created_at' => now(),
         ]);

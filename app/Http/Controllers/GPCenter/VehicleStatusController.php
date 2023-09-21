@@ -66,6 +66,8 @@ class VehicleStatusController extends Controller
         try {
             $new_vehicle_status = VehicleStatus::create([
                 'vehicle_status' => $request->vehicle_status,
+                'bg_color' => $request->bg_color,
+                'letter_black' => $request->letter_black,
                 'description' => $request->description,
             ]);
             $response->data = ObjResponse::CorrectResponse();
@@ -112,6 +114,8 @@ class VehicleStatusController extends Controller
             $vehicle_status = VehicleStatus::find($request->id)
                 ->update([
                     'vehicle_status' => $request->vehicle_status,
+                    'bg_color' => $request->bg_color,
+                    'letter_black' => $request->letter_black,
                     'description' => $request->description,
                 ]);
 
@@ -149,4 +153,3 @@ class VehicleStatusController extends Controller
         return response()->json($response, $response->data["status_code"]);
     }
 }
-

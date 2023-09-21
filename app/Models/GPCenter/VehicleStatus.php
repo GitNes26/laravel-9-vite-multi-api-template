@@ -22,6 +22,8 @@ class VehicleStatus extends Model
     protected $fillable = [
         'id',
         'vehicle_status',
+        'bg_color',
+        'letter_black',
         'description',
         'active',
         'deleted_at'
