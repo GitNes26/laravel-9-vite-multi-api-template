@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\GomezApp\UserController;
+use App\Http\Controllers\GomezApp\RoleController;
+use App\Http\Controllers\GomezApp\DepartmentController;
+use App\Http\Controllers\GomezApp\ReportController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -27,24 +30,29 @@ Route::controller(UserController::class)->group(function () {
    Route::delete('/users/{id}', 'destroy');
 });
 
-// Route::controller(RoleController::class)->group(function () {
-//    Route::get('/roles', 'index');
-//    Route::get('/roles/selectIndex', 'selectIndex');
-//    Route::get('/roles/{id}', 'show');
-//    Route::post('/roles', 'create');
-//    Route::put('/roles/{id?}', 'update');
-//    Route::delete('/roles/{id}', 'destroy');
-// });
+Route::controller(RoleController::class)->group(function () {
+   Route::get('/roles', 'index');
+   Route::get('/roles/selectIndex', 'selectIndex');
+   Route::get('/roles/{id}', 'show');
+   Route::post('/roles', 'create');
+   Route::put('/roles/{id?}', 'update');
+   Route::delete('/roles/{id}', 'destroy');
+});
 
-// Route::controller(DepartmentController::class)->group(function () {
-//    Route::get('/departments', 'index');
-//    Route::get('/departments/selectIndex', 'selectIndex');
-//    Route::get('/departments/{id}', 'show');
-//    Route::post('/departments', 'create');
-//    Route::put('/departments/{id?}', 'update');
-//    Route::delete('/departments/{id}', 'destroy');
-// });
+Route::controller(DepartmentController::class)->group(function () {
+   Route::get('/departments', 'index');
+   Route::get('/departments/selectIndex', 'selectIndex');
+   Route::get('/departments/{id}', 'show');
+   Route::post('/departments', 'create');
+   Route::put('/departments/{id?}', 'update');
+   Route::delete('/departments/{id}', 'destroy');
+});
 
+
+Route::controller(ReportController::class)->group(function () {
+   Route::get('/reports', 'index');
+ 
+});
 
 
 
