@@ -51,6 +51,7 @@ Route::controller(DepartmentController::class)->group(function () {
 
 Route::controller(ReportController::class)->group(function () {
    Route::get('/reports', 'index');
+   Route::get('/icards', 'getCards');
  
 });
 
