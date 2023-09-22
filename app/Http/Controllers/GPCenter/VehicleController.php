@@ -4,6 +4,7 @@ namespace App\Http\Controllers\GPCenter;
 
 use App\Http\Controllers\Controller;
 use App\Models\GPCenter\Vehicle;
+use App\Models\GPCenter\VehiclePlate;
 use App\Models\ObjResponse;
 
 use Illuminate\Http\Request;
@@ -25,7 +26,11 @@ class VehicleController extends Controller
                 ->join('brands', 'vehicles.brand_id', '=', 'brands.id')
                 ->join('models', 'vehicles.model_id', '=', 'models.id')
                 ->join('vehicle_status', 'vehicles.vehicle_status_id', '=', 'vehicle_status.id')
-                ->select('vehicles.*', 'brands.brand', 'models.model', 'vehicle_status.vehicle_status', 'vehicle_status.bg_color', 'vehicle_status.letter_black')
+                ->join('vehicle_plates', function ($join) {
+                    $join->on('vehicle_plates.vehicle_id', '=', 'vehicles.id')
+                        ->where('vehicle_plates.expired', '=', 0);
+                })
+                ->select('vehicles.*', 'brands.brand', 'models.model', 'vehicle_status.vehicle_status', 'vehicle_status.bg_color', 'vehicle_status.letter_black', 'plates', 'initial_date', 'due_date')
                 ->orderBy('vehicles.id', 'asc')->get();
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'Peticion satisfactoria | Lista de vehículos.';
@@ -46,7 +51,7 @@ class VehicleController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $list = Vehicle::where('vehicles.active', true)->where('vehicles.brand_id', $request->brand_id)
+            $list = Vehicle::where('vehicles.active', true)->where('vehicles.', $request->brand_id)
                 ->select('vehicles.id as value', 'vehicles.model as text')
                 ->orderBy('vehicles.model', 'asc')->get();
             $response->data = ObjResponse::CorrectResponse();
@@ -77,6 +82,10 @@ class VehicleController extends Controller
                 'vehicle_status_id' => $request->vehicle_status_id,
                 'description' => $request->description,
             ]);
+
+            $vehiclesPlatesController = new VehiclePlate();
+            $vehiclePlates = $vehiclesPlatesController->create($request);
+
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'peticion satisfactoria | vehículo registrado.';
             $response->data["alert_text"] = 'Vehículo registrado';
@@ -101,7 +110,11 @@ class VehicleController extends Controller
                 ->join('brands', 'vehicles.brand_id', '=', 'brands.id')
                 ->join('models', 'vehicles.model_id', '=', 'models.id')
                 ->join('vehicle_status', 'vehicles.vehicle_status_id', '=', 'vehicle_status.id')
-                ->select('vehicles.*', 'brands.brand', 'models.model', 'vehicle_status.vehicle_status', 'vehicle_status.bg_color', 'vehicle_status.letter_black')
+                ->join('vehicle_plates', function ($join) {
+                    $join->on('vehicle_plates.vehicle_id', '=', 'vehicles.id')
+                        ->where('vehicle_plates.expired', '=', 0);
+                })
+                ->select('vehicles.*', 'brands.brand', 'models.model', 'vehicle_status.vehicle_status', 'vehicle_status.bg_color', 'vehicle_status.letter_black', 'plates', 'initial_date', 'due_date')
                 ->first();
 
             $response->data = ObjResponse::CorrectResponse();
@@ -133,6 +146,11 @@ class VehicleController extends Controller
                     'vehicle_status_id' => $request->vehicle_status_id,
                     'description' => $request->description,
                 ]);
+
+            if ($response->changePlates) {
+                $vehiclesPlatesController = new VehiclePlate();
+                $vehiclePlates = $vehiclesPlatesController->create($request);
+            }
 
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'peticion satisfactoria | vehículo actualizado.';
