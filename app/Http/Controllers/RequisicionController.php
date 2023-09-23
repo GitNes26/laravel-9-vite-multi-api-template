@@ -27,7 +27,6 @@ class RequisicionController extends Controller
     public function store(Request $request)
     {
         $idDepartamento = $request->idDep;
-        error_log($idDepartamento);
         $notificacion = new Notificacion;
         $notificacion->idRequisicion = $request->idRequi;
         $notificacion->notificacion = 1;
