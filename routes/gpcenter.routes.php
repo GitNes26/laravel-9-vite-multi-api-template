@@ -10,6 +10,7 @@ use App\Http\Controllers\GPCenter\DepartmentController;
 use App\Http\Controllers\GPCenter\BrandController;
 use App\Http\Controllers\GPCenter\ModelController;
 use App\Http\Controllers\GPCenter\VehicleController;
+use App\Http\Controllers\GPCenter\VehiclePlatesController;
 use App\Http\Controllers\GPCenter\VehicleStatusController;
 
 #endregion CONTROLLERS
@@ -79,9 +80,18 @@ Route::controller(VehicleController::class)->group(function () {
    Route::get('/vehicles', 'index');
    Route::get('/vehicles/selectIndex', 'selectIndex');
    Route::get('/vehicles/{id}', 'show');
+   Route::get('/vehicles/{searchBy?}/{value}', 'showBy');
    Route::post('/vehicles', 'create');
    Route::put('/vehicles/{id?}', 'update');
    Route::delete('/vehicles/{id}', 'destroy');
+});
+Route::controller(VehiclePlatesController::class)->group(function () {
+   Route::get('/vehiclesPlates', 'index');
+   Route::get('/vehiclesPlates/selectIndex', 'selectIndex');
+   Route::get('/vehiclesPlates/{id}', 'show');
+   Route::post('/vehiclesPlates', 'create');
+   Route::put('/vehiclesPlates/{id?}', 'update');
+   Route::delete('/vehiclesPlates/{id}', 'destroy');
 });
 
 
