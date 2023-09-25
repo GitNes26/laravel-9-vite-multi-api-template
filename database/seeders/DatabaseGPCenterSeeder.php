@@ -21,6 +21,7 @@ class DatabaseGPCenterSeeder extends Seeder
             GPCenter\DepartamentSeeder::class,
             GPCenter\VehicleStatusSeeder::class,
             GPCenter\UserSeeder::class,
+       
         ]);
         // \App\Models\User::factory(10)->create();
 

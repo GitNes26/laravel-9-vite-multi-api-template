@@ -17,9 +17,11 @@ return new class extends Migration
             $table->id();
             $table->date('fecha_reporte');
             $table->string('img_reporte');
+            $table->integer('folio');
             $table->string('latitud'); //->unique();
             $table->string('longitud');
-            $table->foreignId('idUsuario')->constrained('users','id');
+            $table->foreignId('id_user')->constrained('users','id');
+            $table->foreignId('id_tipo_reporte')->constrained('tipos_reportes','id');
             $table->string('referencia');
             $table->string('comentario');
             $table->boolean('active')->default(true);
