@@ -189,7 +189,7 @@ class VehicleController extends Controller
 
             if ($response->changePlates) {
                 $vehiclesPlatesController = new VehiclePlate();
-                $vehiclePlates = $vehiclesPlatesController->create($request);
+                $vehiclesPlatesController->create($request);
             }
 
             $response->data = ObjResponse::CorrectResponse();
