@@ -8,6 +8,8 @@ use App\Models\GomezApp\InfoCards;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
+use App\Models\ObjResponse;
+
 class ReportController extends Controller
 {
     public function index(Response $response)
@@ -25,6 +27,7 @@ class ReportController extends Controller
 
 
     public function saveReport(Request $request, Response $response) {
+        $response->data = ObjResponse::DefaultResponse();
     try {
      
        $reports = new Report;
@@ -40,12 +43,14 @@ class ReportController extends Controller
        $reports->created_at =now();
        $reports->save();
 
-       $response->data = 1;
+       $response->data = ObjResponse::CorrectResponse();
+       $response->data["message"] = 'Peticion satisfactoria. Lista de roles:';
+       $response->data["result"]['Folio'] = $reports->id;
           
         } catch (\Exception $ex) {
             $response->data = $ex->getMessage();
         }
 
-        return response()->json($response);
+        return response()->json($response,200);
     }
 }
