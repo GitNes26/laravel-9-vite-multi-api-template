@@ -28,15 +28,15 @@ class ReportController extends Controller
     try {
      
        $reports = new Report;
-       $reports->fecha_reporte = null;
-       $reports->img_reporte =null;
-       $reports->folio =11;
-       $reports->latitud =null;
-       $reports->longitud = null;
-       $reports->id_user =1;
-       $reports->id_tipo_reporte =1;
-       $reports->referencia = "SOY NESTOR";
-       $reports->comentario = null;
+       $reports->fecha_reporte = $request->fecha_reporte;
+       $reports->img_reporte =$request->img_reporte;
+       $reports->folio =$request->folio;
+       $reports->latitud =$request->latitud;
+       $reports->longitud = $request->longitud;
+       $reports->id_user =$request->id_user;
+       $reports->id_tipo_reporte =$request->id_tipo_reporte;
+       $reports->referencia = $request->referencia;
+       $reports->comentario = $request->comentario;
        $reports->created_at =now();
        $reports->save();
 
