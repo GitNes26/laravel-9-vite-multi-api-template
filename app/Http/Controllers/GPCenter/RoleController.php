@@ -43,7 +43,7 @@ class RoleController extends Controller
         $response->data = ObjResponse::DefaultResponse();
         try {
             $list = Role::where('active', true)
-                ->select('roles.id as value', 'roles.role as text')
+                ->select('roles.id as id', 'roles.role as label')
                 ->orderBy('roles.id', 'asc')->get();
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'Peticion satisfactoria. Lista de roles:';
