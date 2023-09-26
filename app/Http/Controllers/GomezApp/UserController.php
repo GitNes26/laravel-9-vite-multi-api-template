@@ -30,16 +30,16 @@ class UserController extends Controller
           $field = 'email';
           $value = $request->email;
        }
- 
+
        $request->validate([
           $field => 'required',
           'password' => 'required'
        ]);
        $user = User::where("$field", "$value")->first();
- 
- 
+
+
        if (!$user || !Hash::check($request->password, $user->password)) {
- 
+
           throw ValidationException::withMessages([
              'message' => 'Credenciales incorrectas',
              'alert_title' => 'Credenciales incorrectas',
@@ -54,7 +54,7 @@ class UserController extends Controller
        $response->data["result"]["user"]["id"] = $user->id;
        return response()->json($response, $response->data["status_code"]);
     }
- 
+
     /**
      * Metodo para cerrar sesión.
      * @param int $id
@@ -64,7 +64,7 @@ class UserController extends Controller
     {
        try {
           DB::connection('mysql_becas')->table('personal_access_tokens')->where('tokenable_id', $id)->delete();
- 
+
           $response->data = ObjResponse::CorrectResponse();
           $response->data["message"] = 'peticion satisfactoria | sesión cerrada.';
           $response->data["alert_title"] = "Bye!";
@@ -73,37 +73,35 @@ class UserController extends Controller
        }
        return response()->json($response, $response->data["status_code"]);
     }
- 
+
     /**
-     * Reegistrarse como jugador.
+     * Reegistrarse como ciudadano desde la app.
      *
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
      */
     public function signup(Request $request, Response $response)
     {
+      
        $response->data = ObjResponse::DefaultResponse();
        try {
- 
+
           // if (!$this->validateAvailability('username',$request->username)->status) return;
- 
+
           $new_user = User::create([
              'username' => $request->username,
              'email' => $request->email,
              'password' => Hash::make($request->password),
              'role_id' => 3, //usuario normal
              'phone' => $request->phone,
-             'license_number' => $request->license_number,
-             'license_due_date' => $request->license_due_date,
-             'payroll_number' => $request->payroll_number,
-             'department_id' => $request->department_id,
              'name' => $request->name,
              'paternal_last_name' => $request->paternal_last_name,
              'maternal_last_name' => $request->maternal_last_name,
-             'community_id' => $request->community_id,
-             'street' => $request->street,
-             'num_ext' => $request->num_ext,
-             'num_int' => $request->num_int,
+             'department_id' => 1,
+            //  'community_id' => $request->community_id,
+            //  'street' => $request->street,
+            //  'num_ext' => $request->num_ext,
+            //  'num_int' => $request->num_int,
           ]);
           $response->data = ObjResponse::CorrectResponse();
           $response->data["message"] = 'peticion satisfactoria | usuario registrado.';
@@ -113,8 +111,8 @@ class UserController extends Controller
        }
        return response()->json($response, $response->data["status_code"]);
     }
- 
- 
+
+
     /**
      * Mostrar lista de usuarios activos del
      * uniendo con roles.
@@ -133,7 +131,7 @@ class UserController extends Controller
              ->select('users.*', 'roles.role', 'departments.department', 'departments.description as department_description')
              ->orderBy('users.id', 'desc')
              ->get();
- 
+
           $response->data = ObjResponse::CorrectResponse();
           $response->data["message"] = 'peticion satisfactoria | lista de usuarios.';
           $response->data["alert_text"] = "usuarios encontrados";
@@ -143,7 +141,7 @@ class UserController extends Controller
        }
        return response()->json($response, $response->data["status_code"]);
     }
- 
+
     /**
      * Mostrar listado para un selector.
      *
@@ -166,7 +164,7 @@ class UserController extends Controller
        }
        return response()->json($response, $response->data["status_code"]);
     }
- 
+
     /**
      * Crear usuario.
      *
@@ -178,7 +176,7 @@ class UserController extends Controller
        $response->data = ObjResponse::DefaultResponse();
        try {
           $token = $request->bearerToken();
- 
+
           if ($request->role_id <= 2) {
              $new_user = User::create([
                 'username' => $request->username,
@@ -194,13 +192,10 @@ class UserController extends Controller
                 'password' => Hash::make($request->password),
                 'role_id' => $request->role_id,
                 'phone' => $request->phone,
-                'license_number' => $request->license_number,
-                'license_due_date' => $request->license_due_date,
-                'payroll_number' => $request->payroll_number,
-                'department_id' => $request->department_id,
                 'name' => $request->name,
                 'paternal_last_name' => $request->paternal_last_name,
                 'maternal_last_name' => $request->maternal_last_name,
+                'department_id' => $request->department_id,
                 'community_id' => $request->community_id,
                 'street' => $request->street,
                 'num_ext' => $request->num_ext,
@@ -215,7 +210,7 @@ class UserController extends Controller
        }
        return response()->json($response, $response->data["status_code"]);
     }
- 
+
     /**
      * Mostrar usuario.
      *
@@ -233,7 +228,7 @@ class UserController extends Controller
              ->join('departments', 'users.department_id', '=', 'departments.id')
              ->select('users.*', 'roles.role', 'departments.department', 'departments.description as department_description')
              ->first();
- 
+
           $response->data = ObjResponse::CorrectResponse();
           $response->data["message"] = 'peticion satisfactoria | usuario encontrado.';
           $response->data["alert_text"] = "Usuario encontrado";
@@ -243,7 +238,7 @@ class UserController extends Controller
        }
        return response()->json($response, $response->data["status_code"]);
     }
- 
+
     /**
      * Actualizar usuario.
      *
@@ -285,7 +280,7 @@ class UserController extends Controller
                    'num_int' => $request->num_int,
                 ]);
           }
- 
+
           $response->data = ObjResponse::CorrectResponse();
           $response->data["message"] = 'peticion satisfactoria | usuario actualizado.';
           $response->data["alert_text"] = "Usuario actualizado";
@@ -294,7 +289,7 @@ class UserController extends Controller
        }
        return response()->json($response, $response->data["status_code"]);
     }
- 
+
     /**
      * "Eliminar" (cambiar estado activo=false) usuario.
      *
@@ -318,18 +313,18 @@ class UserController extends Controller
        }
        return response()->json($response, $response->data["status_code"]);
     }
- 
- 
- 
+
+
+
     // private function validateAvailability(string $prop, int $value, string $message_error)
     // {
     //     $response->data = ObjResponse::DefaultResponse();
     //     data_set($response,'alert_text',$message_error);
     //     try {
     //         $exist = User::where($prop, $value)->count();
- 
+
     //         if ($exist > 0) $response = ObjResponse::CorrectResponse();
- 
+
     //     } catch (\Exception $ex) {
     //         $response = ObjResponse::CatchResponse($ex->getMessage());
     //     }
