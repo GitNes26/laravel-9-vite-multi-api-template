@@ -82,6 +82,7 @@ class UserController extends Controller
      */
     public function signup(Request $request, Response $response)
     {
+      
        $response->data = ObjResponse::DefaultResponse();
        try {
 
