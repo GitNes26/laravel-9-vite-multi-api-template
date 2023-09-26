@@ -73,6 +73,12 @@ class VehicleController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
+            $imgName = "";
+            if ($request->hasFile('imgFile')) {
+                $image = $request->file('imgFile');
+                $imgName = time() . '.' . $image->getClientOriginalExtension();
+                $image->move(public_path('GPCenter/vehicles'), $imgName);
+            }
             $new_vehicle = Vehicle::create([
                 'stock_number' => $request->stock_number,
                 'brand_id' => $request->brand_id,
@@ -81,6 +87,7 @@ class VehicleController extends Controller
                 'registration_date' => $request->registration_date,
                 'vehicle_status_id' => $request->vehicle_status_id,
                 'description' => $request->description,
+                'img_path' => "GPCenter/vehicles/$imgName"
             ]);
 
             $vehiclesPlatesController = new VehiclePlatesController();
@@ -176,6 +183,12 @@ class VehicleController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
+            $imgName = "";
+            if ($request->hasFile('imgFile')) {
+                $image = $request->file('imgFile');
+                $imgName = time() . '.' . $image->getClientOriginalExtension();
+                $image->move(public_path('GPCenter/vehicles'), $imgName);
+            }
             $vehicle = Vehicle::find($request->id)
                 ->update([
                     'stock_number' => $request->stock_number,
@@ -185,6 +198,7 @@ class VehicleController extends Controller
                     'registration_date' => $request->registration_date,
                     'vehicle_status_id' => $request->vehicle_status_id,
                     'description' => $request->description,
+                    'img_path' => "GPCenter/vehicles/$imgName"
                 ]);
 
             if ($response->changePlates) {
