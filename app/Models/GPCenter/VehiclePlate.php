@@ -25,6 +25,7 @@ class VehiclePlate extends Model
         'plates',
         'initial_date',
         'due_date',
+        'expired',
         'active',
         'deleted_at'
     ];

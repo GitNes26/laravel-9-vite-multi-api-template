@@ -16,6 +16,8 @@ return new class extends Migration
         Schema::connection("mysql_gp_center")->create('vehicle_status', function (Blueprint $table) {
             $table->id();
             $table->string('vehicle_status');
+            $table->string('bg_color')->default("#d9d9d9")->comment("guardarlo en hexadecimal");
+            $table->boolean('letter_black')->default(true);
             $table->string('description')->nullable();
             $table->boolean('active')->default(true);
             $table->timestamps();

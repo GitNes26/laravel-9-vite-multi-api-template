@@ -43,7 +43,7 @@ class VehicleStatusController extends Controller
         $response->data = ObjResponse::DefaultResponse();
         try {
             $list = VehicleStatus::where('active', true)
-                ->select('vehicle_status.id as value', 'vehicle_status.vehicle_status as text')
+                ->select('vehicle_status.id as value', 'vehicle_status.vehicle_status as text', 'vehicle_status.bg_color', 'vehicle_status.letter_black')
                 ->orderBy('vehicle_status.vehicle_status', 'asc')->get();
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'Peticion satisfactoria | Lista de estatus de vehiculo';
@@ -66,6 +66,8 @@ class VehicleStatusController extends Controller
         try {
             $new_vehicle_status = VehicleStatus::create([
                 'vehicle_status' => $request->vehicle_status,
+                'bg_color' => $request->bg_color,
+                'letter_black' => $request->letter_black,
                 'description' => $request->description,
             ]);
             $response->data = ObjResponse::CorrectResponse();
@@ -112,6 +114,8 @@ class VehicleStatusController extends Controller
             $vehicle_status = VehicleStatus::find($request->id)
                 ->update([
                     'vehicle_status' => $request->vehicle_status,
+                    'bg_color' => $request->bg_color,
+                    'letter_black' => $request->letter_black,
                     'description' => $request->description,
                 ]);
 
@@ -149,4 +153,3 @@ class VehicleStatusController extends Controller
         return response()->json($response, $response->data["status_code"]);
     }
 }
-

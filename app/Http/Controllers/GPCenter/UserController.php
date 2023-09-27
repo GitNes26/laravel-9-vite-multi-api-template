@@ -254,35 +254,64 @@ class UserController extends Controller
       $response->data = ObjResponse::DefaultResponse();
       try {
          // echo "el id: $request->id";
-         if ($request->role_id < 2) {
-            $user = User::find($request->id)
-               ->update([
-                  'username' => $request->username,
-                  'email' => $request->email,
-                  'password' => Hash::make($request->password),
-                  'role_id' => $request->role_id,
-                  'department_id' => 1, //$request->department_id
-               ]);
+         if ($request->role_id <= 2) {
+            if (strlen($request->password) > 0)
+               $new_user = User::find($request->id)
+                  ->update([
+                     'username' => $request->username,
+                     'email' => $request->email,
+                     'password' => Hash::make($request->password),
+                     'role_id' => $request->role_id,
+                     'department_id' => 1, //$request->department_id
+                  ]);
+            else
+               $new_user = User::find($request->id)
+                  ->update([
+                     'username' => $request->username,
+                     'email' => $request->email,
+                     'role_id' => $request->role_id,
+                     'department_id' => 1, //$request->department_id
+                  ]);
          } else {
-            $user = User::find($request->id)
-               ->update([
-                  'username' => $request->username,
-                  'email' => $request->email,
-                  'password' => Hash::make($request->password),
-                  'role_id' => $request->role_id,
-                  'phone' => $request->phone,
-                  'license_number' => $request->license_number,
-                  'license_due_date' => $request->license_due_date,
-                  'payroll_number' => $request->payroll_number,
-                  'department_id' => $request->department_id,
-                  'name' => $request->name,
-                  'paternal_last_name' => $request->paternal_last_name,
-                  'maternal_last_name' => $request->maternal_last_name,
-                  'community_id' => $request->community_id,
-                  'street' => $request->street,
-                  'num_ext' => $request->num_ext,
-                  'num_int' => $request->num_int,
-               ]);
+            if (strlen($request->password) > 0)
+               $new_user = User::find($request->id)
+                  ->update([
+                     'username' => $request->username,
+                     'email' => $request->email,
+                     'password' => Hash::make($request->password),
+                     'role_id' => $request->role_id,
+                     'phone' => $request->phone,
+                     'license_number' => $request->license_number,
+                     'license_due_date' => $request->license_due_date,
+                     'payroll_number' => $request->payroll_number,
+                     'department_id' => $request->department_id,
+                     'name' => $request->name,
+                     'paternal_last_name' => $request->paternal_last_name,
+                     'maternal_last_name' => $request->maternal_last_name,
+                     'community_id' => $request->community_id,
+                     'street' => $request->street,
+                     'num_ext' => $request->num_ext,
+                     'num_int' => $request->num_int,
+                  ]);
+            else
+               $new_user = User::find($request->id)
+                  ->update([
+                     'username' => $request->username,
+                     'email' => $request->email,
+                     'role_id' => $request->role_id,
+                     'phone' => $request->phone,
+                     'license_number' => $request->license_number,
+                     'license_due_date' => $request->license_due_date,
+                     'payroll_number' => $request->payroll_number,
+                     'department_id' => $request->department_id,
+                     'name' => $request->name,
+                     'paternal_last_name' => $request->paternal_last_name,
+                     'maternal_last_name' => $request->maternal_last_name,
+                     'community_id' => $request->community_id,
+                     'street' => $request->street,
+                     'num_ext' => $request->num_ext,
+                     'num_int' => $request->num_int,
+                  ]);
          }
 
          $response->data = ObjResponse::CorrectResponse();

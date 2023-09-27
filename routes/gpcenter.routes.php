@@ -9,6 +9,9 @@ use App\Http\Controllers\GPCenter\RoleController;
 use App\Http\Controllers\GPCenter\DepartmentController;
 use App\Http\Controllers\GPCenter\BrandController;
 use App\Http\Controllers\GPCenter\ModelController;
+use App\Http\Controllers\GPCenter\VehicleController;
+use App\Http\Controllers\GPCenter\VehiclePlatesController;
+use App\Http\Controllers\GPCenter\VehicleStatusController;
 
 #endregion CONTROLLERS
 
@@ -64,22 +67,33 @@ Route::controller(ModelController::class)->group(function () {
    Route::delete('/models/{id}', 'destroy');
 });
 
-// Route::controller(LevelBecasController::class)->group(function () {
-//    Route::get('/levels', 'index');
-//    Route::get('/levels/selectIndex', 'selectIndex');
-//    Route::get('/levels/{id}', 'show');
-//    Route::post('/levels', 'create');
-//    Route::put('/levels/{id?}', 'update');
-//    Route::delete('/levels/{id}', 'destroy');
-// });
+Route::controller(VehicleStatusController::class)->group(function () {
+   Route::get('/vehicleStatus', 'index');
+   Route::get('/vehicleStatus/selectIndex', 'selectIndex');
+   Route::get('/vehicleStatus/{id}', 'show');
+   Route::post('/vehicleStatus', 'create');
+   Route::put('/vehicleStatus/{id?}', 'update');
+   Route::delete('/vehicleStatus/{id}', 'destroy');
+});
 
-// Route::controller(SchoolBecasController::class)->group(function () {
-//    Route::get('/schools', 'index');
-//    Route::get('/schools/{id}', 'show');
-//    Route::post('/schools', 'create');
-//    Route::put('/schools/{id?}', 'update');
-//    Route::delete('/schools/{id}', 'destroy');
-// });
+Route::controller(VehicleController::class)->group(function () {
+   Route::get('/vehicles', 'index');
+   Route::get('/vehicles/selectIndex', 'selectIndex');
+   Route::get('/vehicles/{id}', 'show');
+   Route::get('/vehicles/{searchBy?}/{value}', 'showBy');
+   Route::post('/vehicles', 'create');
+   Route::put('/vehicles/{id?}', 'update');
+   Route::delete('/vehicles/{id}', 'destroy');
+});
+Route::controller(VehiclePlatesController::class)->group(function () {
+   Route::get('/vehiclesPlates', 'index');
+   Route::get('/vehiclesPlates/selectIndex', 'selectIndex');
+   Route::get('/vehiclesPlates/{id}', 'show');
+   Route::post('/vehiclesPlates', 'create');
+   Route::put('/vehiclesPlates/{id?}', 'update');
+   Route::delete('/vehiclesPlates/{id}', 'destroy');
+});
+
 
 
 // });

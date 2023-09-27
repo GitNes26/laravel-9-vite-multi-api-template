@@ -15,10 +15,11 @@ return new class extends Migration
     {
         Schema::connection("mysql_gp_center")->create('vehicle_plates', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('vehicle_id')->constrained('vehicles','id');
+            $table->foreignId('vehicle_id')->constrained('vehicles', 'id');
             $table->string('plates');
             $table->date('initial_date');
             $table->date('due_date');
+            $table->boolean('expired')->default(false);
             $table->boolean('active')->default(true);
             $table->timestamps();
             $table->dateTime('deleted_at')->nullable();
