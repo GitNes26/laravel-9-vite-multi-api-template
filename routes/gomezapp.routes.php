@@ -4,6 +4,7 @@ use App\Http\Controllers\GomezApp\UserController;
 use App\Http\Controllers\GomezApp\RoleController;
 use App\Http\Controllers\GomezApp\DepartmentController;
 use App\Http\Controllers\GomezApp\ReportController;
+use App\Http\Controllers\GomezApp\TipoReporteController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -54,6 +55,15 @@ Route::controller(ReportController::class)->group(function () {
    Route::get('/icards', 'getCards');
    Route::post('/reports','saveReport');
  
+});
+
+Route::controller(TipoReporteController::class)->group(function () {
+   Route::get('/reportTypes', 'index');
+   Route::get('/reportTypes/selectIndex', 'selectIndex');
+   Route::get('/reportTypes/{id}', 'show');
+   Route::post('/reportTypes', 'create');
+   Route::put('/reportTypes/{id?}', 'update');
+   Route::delete('/reportTypes/{id}', 'destroy');
 });
 
 
