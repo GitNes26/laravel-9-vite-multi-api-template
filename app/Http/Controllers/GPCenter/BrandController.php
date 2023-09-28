@@ -64,9 +64,16 @@ class BrandController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
+            $imgName = "";
+            if ($request->hasFile('imgFile')) {
+                $image = $request->file('imgFile');
+                $imgName = time() . '.' . $image->getClientOriginalExtension();
+                $image->move(public_path('GPCenter/brands'), $imgName);
+            }
             $new_brand = Brand::create([
                 'brand' => $request->brand,
                 'description' => $request->description,
+                'img_path' => "GPCenter/brands/$imgName"
             ]);
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'peticion satisfactoria | marca registrada.';
