@@ -37,6 +37,7 @@ Route::get('pdf', function(){
     return 1 ;
 });
 
+
 Route::prefix('becas')->group(function () {
     Route::get('/', function(){return 'becas' ;});
     Route::post('/login', [UserBecasController::class,'login']);
@@ -116,5 +117,10 @@ Route::prefix('becas')->group(function () {
 Route::prefix('sidit/tramites')->group(function () {
     Route::get('/',[SiditController::class,'index']);
     Route::post('/',[SiditController::class,'create']);
+   
+});
+
+Route::prefix('imm')->group(function () {
+    include_once "imm.routes.php";
    
 });

@@ -39,7 +39,16 @@ return [
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
+            
         ],
+      
+        'db_imm' => [
+            'driver' => 'session',
+            'provider' => 'imm',
+            'connection' => 'mysql_imm', // Especifica la conexión deseada para 'db_imm'
+
+        ],
+      
     ],
 
     /*
@@ -62,9 +71,13 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => App\Models\User::class,
+            'model' => App\Models\Imm\User::class, 
         ],
-
+        'imm' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Imm\User::class, 
+        ],
+     
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',
@@ -93,6 +106,7 @@ return [
             'expire' => 60,
             'throttle' => 60,
         ],
+     
     ],
 
     /*
@@ -107,5 +121,7 @@ return [
     */
 
     'password_timeout' => 10800,
-
+    
+    
+    
 ];
