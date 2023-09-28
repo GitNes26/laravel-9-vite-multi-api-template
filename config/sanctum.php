@@ -35,7 +35,7 @@ return [
 
     'guard' => [
         'web', // Aquí puedes especificar los guardias que quieres que Sanctum use
-        'db_imm', // Por ejemplo, si tienes una conexión llamada 'db_imm'
+        // 'db_imm', // Por ejemplo, si tienes una conexión llamada 'db_imm'
     ],
     /*
     |--------------------------------------------------------------------------

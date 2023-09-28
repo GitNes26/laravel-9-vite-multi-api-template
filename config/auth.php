@@ -42,12 +42,12 @@ return [
             
         ],
       
-        'db_imm' => [
-            'driver' => 'session',
-            'provider' => 'imm',
-            'connection' => 'mysql_imm', // Especifica la conexión deseada para 'db_imm'
+        // 'db_imm' => [
+        //     'driver' => 'session',
+        //     'provider' => 'imm',
+        //     'connection' => 'mysql_imm', // Especifica la conexión deseada para 'db_imm'
 
-        ],
+        // ],
       
     ],
 
@@ -73,10 +73,10 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\Imm\User::class, 
         ],
-        'imm' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\Imm\User::class, 
-        ],
+        // 'imm' => [
+        //     'driver' => 'eloquent',
+        //     'model' => App\Models\Imm\User::class, 
+        // ],
      
         // 'users' => [
         //     'driver' => 'database',
