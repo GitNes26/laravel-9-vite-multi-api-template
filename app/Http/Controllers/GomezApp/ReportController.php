@@ -62,7 +62,7 @@ class ReportController extends Controller
         try {
             $list = Report::where('reportes_movil.active', true)->where('reportes_movil.id_user', $request->id_user)
                 ->join('tipos_reportes', 'reportes_movil.id_tipo_reporte', '=', 'tipos_reportes.id')
-                ->select('reportes_movil.*', 'tipos_reportes.tipo_nombre', 'tipos_reportes.bg_circle', 'tipos_reportes.bg_card', 'tipos_reportes.icono,tipos_reportes.letter_black')
+                ->select('reportes_movil.*', 'tipos_reportes.tipo_nombre', 'tipos_reportes.bg_circle', 'tipos_reportes.bg_card', 'tipos_reportes.icono', 'tipos_reportes.letter_black')
                 ->orderBy('reportes_movil.id', 'desc')->get();
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'Peticion satisfactoria | Lista de mis reportes.';
