@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class CodigoPostal extends Model
 {
-    protected $connection = "mysql_becas";
+    protected $connection = "mysql_communities";
 
-    protected $table = 'db_becas.vista_cp';
+    protected $table = 'db_communities.vista_cp';
 }
