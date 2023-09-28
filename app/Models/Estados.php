@@ -7,7 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Estados extends Model
 {
-   protected $connection = "mysql_communities";
-
-   protected $table = "db_communities.estados";
+   // protected $connection = "mysql_communities";
+   // protected $table = "db_communities.estados";
+   protected $connection = "mysql_becas";
+   protected $table = "db_becas.estados";
 }
