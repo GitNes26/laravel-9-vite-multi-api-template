@@ -38,6 +38,8 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 
   php artisan migrate:fresh --path=database/migrations/GomezApp --database=mysql_gomezapp
 
+  php artisan migrate:fresh --path=database/migrations/imm --database=mysql_imm
+
 
   ```
 - Correr seeders
@@ -46,6 +48,8 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
   php artisan db:seed --class=DatabaseGPCenterSeeder
 
   php artisan db:seed --class=DatabaseGomezAppSeeder
+
+  php artisan db:seed --class=DatabaseImmSeeder
 
     SAMUEL GARZA
   ```
