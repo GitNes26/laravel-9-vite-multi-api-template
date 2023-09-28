@@ -100,6 +100,7 @@ return [
                 PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
         ],
+<<<<<<< HEAD
         'mysql_gp_center' => [
             'driver' => 'mysql',
             'url' => env('DATABASE_URL_GPCENTER'),
@@ -108,6 +109,16 @@ return [
             'database' => env('DB_DATABASE_GPCENTER', 'forge'),
             'username' => env('DB_USERNAME_GPCENTER', 'forge'),
             'password' => env('DB_PASSWORD_GPCENTER', ''),
+=======
+        'mysql_imm' => [
+            'driver' => 'mysql',
+            'url' => env('DATABASE_URL_IMM'),
+            'host' => env('DB_HOST_IMM', '127.0.0.1'),
+            'port' => env('DB_PORT_IMM', '3306'),
+            'database' => env('DB_DATABASE_IMM', 'forge'),
+            'username' => env('DB_USERNAME_IMM', 'forge'),
+            'password' => env('DB_PASSWORD_IMM', ''),
+>>>>>>> aa1f59d0351003083a2fdcf9a0795af31e1476dd
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_520_ci',
@@ -119,6 +130,7 @@ return [
                 PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
         ],
+<<<<<<< HEAD
 
         'mysql_gomezapp' => [
             'driver' => 'mysql',
@@ -140,6 +152,8 @@ return [
             ]) : [],
         ],
 
+=======
+>>>>>>> aa1f59d0351003083a2fdcf9a0795af31e1476dd
         'pgsql' => [
             'driver' => 'pgsql',
             'url' => env('DATABASE_URL'),

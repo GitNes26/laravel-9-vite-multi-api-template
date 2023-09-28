@@ -64,3 +64,9 @@ Route::prefix('gomezapp')->group(function () {
     });
     include_once "gomezapp.routes.php";
 });
+   
+
+Route::prefix('imm')->group(function () {
+    include_once "imm.routes.php";
+   
+});
