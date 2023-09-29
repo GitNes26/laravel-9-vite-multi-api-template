@@ -22,8 +22,10 @@ return new class extends Migration
             $table->string('longitud');
             $table->foreignId('id_user')->constrained('users','id');
             $table->foreignId('id_tipo_reporte')->constrained('tipos_reportes','id');
-            $table->string('referencia');
-            $table->string('comentario');
+            $table->foreignId('id_direccion')->constrained('direcciones_reportes','id');
+            $table->foreignId('id_origen')->constrained('origen_reporte','id')->default(1);
+            $table->foreignId('id_estatus')->constrained('estatus','id')->default(1);
+            $table->foreignId('id_servicio')->constrained('servicios','id')->default(1);
             $table->boolean('active')->default(true);
             $table->timestamps();
             $table->dateTime('deleted_at')->nullable();
