@@ -47,7 +47,7 @@ Route::prefix('becas')->group(function () {
 });
 
 Route::prefix('sidit/tramites')->group(function () {
-    Route::get('/',[SiditController::class,'index']);
+    Route::get("/",function(){return "sidit ONLINE";});
     Route::post('/',[SiditController::class,'create']);
 });
 
@@ -68,5 +68,9 @@ Route::prefix('gomezapp')->group(function () {
 
 Route::prefix('imm')->group(function () {
     include_once "imm.routes.php";
-   
+});
+
+Route::prefix('facturacion')->group(function() {
+    Route::get("/",function(){return "Factuacion ONLINE";});
+    include_once("facturacion.routes.php");
 });
