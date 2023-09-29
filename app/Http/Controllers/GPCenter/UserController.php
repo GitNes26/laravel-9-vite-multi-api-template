@@ -186,7 +186,20 @@ class UserController extends Controller
                'role_id' => $request->role_id,
                'department_id' => 1, //$request->department_id
             ]);
-         } else {
+         }elseif ($request->role_id == 4) {
+            $new_user = User::create([
+               'username' => $request->username,
+               'email' => $request->email,
+               'password' => Hash::make($request->password),
+               'role_id' => $request->role_id,
+               'department_id' => 1, //$request->department_id
+               'phone' => $request->phone,
+               'name' => $request->name,
+               'paternal_last_name' => $request->paternal_last_name,
+               'maternal_last_name' => $request->maternal_last_name,
+            ]);
+         }
+         else {
             $new_user = User::create([
                'username' => $request->username,
                'email' => $request->email,

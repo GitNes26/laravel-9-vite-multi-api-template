@@ -121,7 +121,7 @@ class VehicleController extends Controller
                     $join->on('vehicle_plates.vehicle_id', '=', 'vehicles.id')
                         ->where('vehicle_plates.expired', '=', 0);
                 })
-                ->select('vehicles.*', 'brands.brand', 'models.model', 'vehicle_status.vehicle_status', 'vehicle_status.bg_color', 'vehicle_status.letter_black', 'plates', 'initial_date', 'due_date')
+                ->select('vehicles.*', 'brands.brand','brands.img_path as img_brand', 'models.model', 'vehicle_status.vehicle_status', 'vehicle_status.bg_color', 'vehicle_status.letter_black', 'plates', 'initial_date', 'due_date')
                 ->first();
 
             $response->data = ObjResponse::CorrectResponse();

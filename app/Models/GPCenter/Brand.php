@@ -22,6 +22,7 @@ class Brand extends Model
     protected $fillable = [
         'id',
         'brand',
+        'img_path',
         'active',
         'deleted_at'
     ];
@@ -63,4 +64,3 @@ class Brand extends Model
     //     'active' => true,
     // ];
 }
-

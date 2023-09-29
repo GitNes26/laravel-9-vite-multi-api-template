@@ -54,6 +54,7 @@ Route::controller(BrandController::class)->group(function () {
    Route::get('/brands/selectIndex', 'selectIndex');
    Route::get('/brands/{id}', 'show');
    Route::post('/brands', 'create');
+   Route::post('/brands/{id}', 'update');
    Route::put('/brands/{id?}', 'update');
    Route::delete('/brands/{id}', 'destroy');
 });
@@ -63,7 +64,7 @@ Route::controller(ModelController::class)->group(function () {
    Route::get('/models/brand/{brand_id}', 'selectIndex');
    Route::get('/models/{id}', 'show');
    Route::post('/models', 'create');
-   Route::put('/models/{id?}', 'update');
+//    Route::put('/models/{id?}', 'update');
    Route::delete('/models/{id}', 'destroy');
 });
 
