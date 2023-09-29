@@ -20,7 +20,8 @@ return new class extends Migration
             $table->foreignId('activity_id')->constrained('activities','id');
             $table->string('sourceofincome',1);
             $table->foreignId('workplace_id')->constrained('workplaces','id');
-            $table->time('time');
+            $table->time('entry_time');
+            $table->time('departure_time');
             $table->foreignId('training_id')->nullable()->default(null)->constrained('trainings','id');
             $table->string('finish',1)->nullable()->default(null);
             $table->string('wantofindwork',1)->nullable()->default(null);
@@ -28,8 +29,7 @@ return new class extends Migration
             $table->string('wantocontinuestudying',1)->nullable()->default(null);
             $table->string('caseviolence',1)->nullable()->default(null);
             $table->foreignId('household_id')->constrained('households','id');
-            // $table->foreignId('medicalservice_id')->constrained('medicalservices','id');
-            // $table->foreignId('addiction_id')->constrained('addictions','id');            
+             
             $table->boolean('active')->default(true);
             $table->timestamps();
             $table->dateTime('deleted_at')->nullable();

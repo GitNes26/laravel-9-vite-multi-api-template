@@ -263,6 +263,7 @@ Route::controller(ClosuremotifImmController::class)->group(function () {
 });
 
 Route::controller(UserProfileImmController::class)->group(function () {
+    Route::get('/updatestatus/{iduser}/{idstatus}','statusServiceProfile');
     Route::post('/userdatageneral/{id?}','createData');
     Route::post('/userprofile/{id}','createProfile');
     Route::post('/userviolence/{id}','createViolence');

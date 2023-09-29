@@ -88,7 +88,9 @@ class UserProfileImmController extends Controller
             $UserProfile->activity_id = $request->activity_id;
             $UserProfile->sourceofincome = $request->sourceofincome;
             $UserProfile->workplace_id = $request->workplace_id;
-            $UserProfile->time = $request->time;
+            $UserProfile->entry_time = $request->entry_time;
+            $UserProfile->departure_time = $request->departure_time;
+
             $UserProfile->training_id = $request->training_id;
             $UserProfile->finish = $request->finish;
             $UserProfile->wantofindwork = $request->wantofindwork;
@@ -210,6 +212,8 @@ class UserProfileImmController extends Controller
                     $userData->user_violence = $id;
                     $userViolence = new UserViolence();
                     $userViolence->user_datageneral_id = $id;
+                    
+
                 }
                 else{
                     $userViolence = UserViolence::where("id", $userData->user_violence)->first();
@@ -231,11 +235,12 @@ class UserProfileImmController extends Controller
                 $comunity = new UserComunityImmController();
                 $comunity->create($request,$response,$userData->id,$userData->id);
                 $this->createProfile($request,$response,$userData->id);
-                
+                $idreturn = UserViolence::where("id", $id)->first();
+                    $id= intval($idreturn->user_datageneral_id);
                 $response->data = ObjResponse::CorrectResponse();
                 $response->data["message"] = 'peticion satisfactoria | datos del agresor registrados.';
                 $response->data["alert_text"] = 'UserData registrada';
-                $response->data["result"] = $userViolence->user_datageneral_id;
+                $response->data["result"] = $id;
         }
         catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
@@ -289,8 +294,11 @@ class UserProfileImmController extends Controller
         $response->data = ObjResponse::DefaultResponse();
         try {
             $list = UserData::where('user_datageneral.active', true)
-            ->select('user_proceedings.procceding as folio', 'user_datageneral.id', 'user_datageneral.name as nombre', 'user_datageneral.lastName as apellido paterno', 'user_datageneral.secondName as apellido materno')
+            ->select('user_proceedings.procceding as folio', 'user_datageneral.id', 'user_datageneral.name as nombre', 'user_datageneral.lastName as apellido paterno', 'user_datageneral.secondName as apellido materno',
+                'status.status as status')
             ->join('user_proceedings', 'user_proceedings.user_datageneral_id', '=', 'user_datageneral.id')
+            ->join('user_services', 'user_services.user_datageneral_id', '=', 'user_datageneral.id')
+            ->join('status', 'status.id', '=', 'user_services.status_id')
             ->orderBy('user_datageneral.id', 'asc')
             ->get();
 
@@ -372,50 +380,52 @@ class UserProfileImmController extends Controller
         $response->data = ObjResponse::DefaultResponse();
         try {
             $list = UserProfile::where('user_profiles.user_datageneral_id', $id)
-    ->select(
-        'user_profiles.activity_id',
-        'user_profiles.sourceofincome',
-        'user_profiles.workplace_id',
-        'user_profiles.time',
-        'user_profiles.training_id',
-        'user_profiles.finish',
-        'user_profiles.wantofindwork',
-        'user_profiles.wanttotrain',
-        'user_profiles.wantocontinuestudying',
-        'user_profiles.household_id',
-        'user_profiles.caseviolence',
-        DB::raw('GROUP_CONCAT(DISTINCT medicalservices.medicalservice,user_profiles_medicalservices.medicalservice_id,",",user_profiles_medicalservices.medicalservice_id) as medicalservices'),
-        DB::raw('GROUP_CONCAT(DISTINCT addictions.addiction,user_profiles_adicttions.addiction_id,",",user_profiles_adicttions.addiction_id) as adicttions'),
-        DB::raw('GROUP_CONCAT(DISTINCT diseases.diseas,user_diseases.diseas_id) as diseas_ids'),
-        DB::raw('GROUP_CONCAT(DISTINCT diseases.diseas,user_diseases.diseas_id,"_description,",user_diseases.origin_id) as diseas_origin_id'),
-        DB::raw('GROUP_CONCAT(DISTINCT disabilities.disability,disabilities.id) as disability_ids'),
-        DB::raw('GROUP_CONCAT(DISTINCT disabilities.disability,disabilities.id,"_description,",user_disabilities.origin_id) as disability_origin_id'),
-
-        )
-    ->leftjoin('user_disabilities', 'user_disabilities.user_datageneral_id', '=', 'user_profiles.user_datageneral_id')
-    ->leftjoin('user_diseases', 'user_diseases.user_datageneral_id', '=', 'user_profiles.user_datageneral_id')
-    ->leftjoin('diseases', 'diseases.id', '=', 'user_diseases.diseas_id')
-    ->leftjoin('disabilities', 'disabilities.id', '=', 'user_disabilities.disability_id')
-    ->leftjoin('user_profiles_adicttions', 'user_profiles_adicttions.user_profiles_id', '=', 'user_profiles.id')
-    ->leftjoin('user_profiles_medicalservices', 'user_profiles_medicalservices.user_profiles_id', '=', 'user_profiles.id')
-    ->leftjoin('medicalservices', 'medicalservices.id', '=', 'user_profiles_medicalservices.medicalservice_id')
-    ->leftjoin('addictions', 'addictions.id', '=', 'user_profiles_adicttions.addiction_id')
-
-    ->groupBy(
-        'user_profiles.activity_id',
-        'user_profiles.sourceofincome',
-        'user_profiles.workplace_id',
-        'user_profiles.time',
-        'user_profiles.training_id',
-        'user_profiles.finish',
-        'user_profiles.wantofindwork',
-        'user_profiles.wanttotrain',
-        'user_profiles.wantocontinuestudying',
-        'user_profiles.household_id',
-        'user_profiles.caseviolence'
-    )
-    // ->orderBy('user_profiles.id', 'asc')
-    ->get();
+            ->select(
+                'user_profiles.activity_id',
+                'user_profiles.sourceofincome',
+                'user_profiles.workplace_id',
+                'user_profiles.entry_time',
+                'user_profiles.departure_time',
+                'user_profiles.training_id',
+                'user_profiles.finish',
+                'user_profiles.wantofindwork',
+                'user_profiles.wanttotrain',
+                'user_profiles.wantocontinuestudying',
+                'user_profiles.household_id',
+                'user_profiles.caseviolence',
+                DB::raw('GROUP_CONCAT(DISTINCT medicalservices.medicalservice,user_profiles_medicalservices.medicalservice_id,",",user_profiles_medicalservices.medicalservice_id) as medicalservices'),
+                DB::raw('GROUP_CONCAT(DISTINCT addictions.addiction,user_profiles_adicttions.addiction_id,",",user_profiles_adicttions.addiction_id) as adicttions'),
+                DB::raw('GROUP_CONCAT(DISTINCT diseases.diseas,user_diseases.diseas_id) as diseas_ids'),
+                DB::raw('GROUP_CONCAT(DISTINCT diseases.diseas,user_diseases.diseas_id,"_description,",user_diseases.origin_id) as diseas_origin_id'),
+                DB::raw('GROUP_CONCAT(DISTINCT disabilities.disability,disabilities.id) as disability_ids'),
+                DB::raw('GROUP_CONCAT(DISTINCT disabilities.disability,disabilities.id,"_description,",user_disabilities.origin_id) as disability_origin_id')
+            )
+            ->leftJoin('user_disabilities', 'user_disabilities.user_datageneral_id', '=', 'user_profiles.user_datageneral_id')
+            ->leftJoin('user_diseases', 'user_diseases.user_datageneral_id', '=', 'user_profiles.user_datageneral_id')
+            ->leftJoin('diseases', 'diseases.id', '=', 'user_diseases.diseas_id')
+            ->leftJoin('disabilities', 'disabilities.id', '=', 'user_disabilities.disability_id')
+            ->leftJoin('user_profiles_adicttions', 'user_profiles_adicttions.user_profiles_id', '=', 'user_profiles.id')
+            ->leftJoin('user_profiles_medicalservices', 'user_profiles_medicalservices.user_profiles_id', '=', 'user_profiles.id')
+            ->leftJoin('medicalservices', 'medicalservices.id', '=', 'user_profiles_medicalservices.medicalservice_id')
+            ->leftJoin('addictions', 'addictions.id', '=', 'user_profiles_adicttions.addiction_id')
+            ->groupBy(
+                'user_profiles.activity_id',
+                'user_profiles.sourceofincome',
+                'user_profiles.workplace_id',
+                'user_profiles.entry_time', // Agrega esta columna a GROUP BY
+                'user_profiles.departure_time',
+                'user_profiles.training_id',
+                'user_profiles.finish',
+                'user_profiles.wantofindwork',
+                'user_profiles.wanttotrain',
+                'user_profiles.wantocontinuestudying',
+                'user_profiles.household_id',
+                'user_profiles.caseviolence',
+              
+            
+            )
+            ->get();
+        
 
 
             $response->data = ObjResponse::CorrectResponse();
@@ -493,7 +503,8 @@ class UserProfileImmController extends Controller
                 'user_profiles.activity_id',
                 'user_profiles.sourceofincome',
                 'user_profiles.workplace_id',
-                'user_profiles.time',
+                'user_profiles.entry_time',
+                'user_profiles.departure_time',
                 'user_profiles.household_id',
                 DB::raw('GROUP_CONCAT(DISTINCT medicalservices.medicalservice,user_profiles_medicalservices.medicalservice_id,",",user_profiles_medicalservices.medicalservice_id) as medicalservices'),
                 DB::raw('GROUP_CONCAT(DISTINCT addictions.addiction,user_profiles_adicttions.addiction_id,",",user_profiles_adicttions.addiction_id) as adicttions'),
@@ -530,7 +541,8 @@ class UserProfileImmController extends Controller
                 'user_profiles.activity_id',
                 'user_profiles.sourceofincome',
                 'user_profiles.workplace_id',
-                'user_profiles.time',
+                'user_profiles.entry_time',
+                'user_profiles.departure_time',
                 'user_profiles.household_id',
               
             )
@@ -576,6 +588,22 @@ class UserProfileImmController extends Controller
 
         }
         catch (\Exception $ex) {
+            $response->data = ObjResponse::CatchResponse($ex->getMessage());
+        }
+        return response()->json($response, $response->data["status_code"]);
+    }
+    public function statusServiceProfile(Request $request, Response $response,int $iduser,int $idstatus){
+        $response->data = ObjResponse::DefaultResponse();
+        try {
+            UserService::where('user_datageneral_id', $iduser)
+            ->update([
+                'status_id' => $idstatus,
+            ]);
+            $response->data = ObjResponse::CorrectResponse();
+            $response->data["message"] = 'peticion satisfactoria | Status Actualizado.';
+            $response->data["alert_text"] ='Status Actualizado';
+
+        } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
         return response()->json($response, $response->data["status_code"]);
