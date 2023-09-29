@@ -72,7 +72,6 @@ class BrandController extends Controller
             }
             $new_brand = Brand::create([
                 'brand' => $request->brand,
-                'description' => $request->description,
                 'img_path' => "GPCenter/brands/$imgName"
             ]);
             $response->data = ObjResponse::CorrectResponse();
@@ -116,11 +115,24 @@ class BrandController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $brand = Brand::find($request->id)
+            $imgName = "";
+            if ($request->hasFile('imgFile')) {
+                $image = $request->file('imgFile');
+                $imgName = time() . '.' . $image->getClientOriginalExtension();
+                $image->move(public_path('GPCenter/brands'), $imgName);
+            }
+            if ($imgName != "") {
+                $brand = Brand::find($request->id)
                 ->update([
                     'brand' => $request->brand,
-                    'description' => $request->description,
+                    'img_path' => "GPCenter/brands/$imgName"
                 ]);
+            } else {
+                $brand = Brand::find($request->id)
+                ->update([
+                    'brand' => $request->brand,
+                ]);
+            }
 
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'peticion satisfactoria | marca actualizada.';

@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::connection("mysql_gp_center")->create('brands', function (Blueprint $table) {
             $table->id();
             $table->string('brand');
+            $table->string('img_path');
             $table->boolean('active')->default(true);
             $table->timestamps();
             $table->dateTime('deleted_at')->nullable();
