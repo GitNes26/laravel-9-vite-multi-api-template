@@ -55,7 +55,7 @@ Route::controller(BrandController::class)->group(function () {
    Route::get('/brands/{id}', 'show');
    Route::post('/brands', 'create');
    Route::post('/brands/{id}', 'update');
-   Route::put('/brands/{id?}', 'update');
+//    Route::put('/brands/{id?}', 'update');
    Route::delete('/brands/{id}', 'destroy');
 });
 
@@ -64,7 +64,7 @@ Route::controller(ModelController::class)->group(function () {
    Route::get('/models/brand/{brand_id}', 'selectIndex');
    Route::get('/models/{id}', 'show');
    Route::post('/models', 'create');
-//    Route::put('/models/{id?}', 'update');
+   Route::put('/models/{id?}', 'update');
    Route::delete('/models/{id}', 'destroy');
 });
 
@@ -83,7 +83,8 @@ Route::controller(VehicleController::class)->group(function () {
    Route::get('/vehicles/{id}', 'show');
    Route::get('/vehicles/{searchBy?}/{value}', 'showBy');
    Route::post('/vehicles', 'create');
-   Route::put('/vehicles/{id?}', 'update');
+   Route::post('/vehicles/{id}', 'update');
+//    Route::put('/vehicles/{id?}', 'update');
    Route::delete('/vehicles/{id}', 'destroy');
 });
 Route::controller(VehiclePlatesController::class)->group(function () {

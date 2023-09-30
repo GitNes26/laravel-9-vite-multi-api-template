@@ -189,7 +189,9 @@ class VehicleController extends Controller
                 $imgName = time() . '.' . $image->getClientOriginalExtension();
                 $image->move(public_path('GPCenter/vehicles'), $imgName);
             }
-            $vehicle = Vehicle::find($request->id)
+
+            if ($imgName != "") {
+                $vehicle = Vehicle::find($request->id)
                 ->update([
                     'stock_number' => $request->stock_number,
                     'brand_id' => $request->brand_id,
@@ -200,6 +202,18 @@ class VehicleController extends Controller
                     'description' => $request->description,
                     'img_path' => "GPCenter/vehicles/$imgName"
                 ]);
+            } else {
+                $vehicle = Vehicle::find($request->id)
+                ->update([
+                    'stock_number' => $request->stock_number,
+                    'brand_id' => $request->brand_id,
+                    'model_id' => $request->model_id,
+                    'year' => $request->year,
+                    'registration_date' => $request->registration_date,
+                    'vehicle_status_id' => $request->vehicle_status_id,
+                    'description' => $request->description,
+                ]);
+            }
 
             if ($response->changePlates) {
                 $vehiclesPlatesController = new VehiclePlate();
