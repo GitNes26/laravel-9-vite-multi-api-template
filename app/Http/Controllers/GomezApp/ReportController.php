@@ -33,7 +33,7 @@ class ReportController extends Controller
             if ($request->hasFile('imgFile')) {
                 $image = $request->file('imgFile');
                 $imgName = time() . '.' . $image->getClientOriginalExtension();
-                $image->move(public_path('GPCenter/vehicles'), $imgName);
+                $image->move(public_path('GomezApp/reportes'), $imgName);
             }
 
             $reports = new Report;
