@@ -17,7 +17,7 @@ class SiditController extends Controller
        
         try {
 
-            $tramites = tramitesSidit::all();
+            $tramites = tramitesSidit::all()->first();
             
             return response()->json($tramites);
 
