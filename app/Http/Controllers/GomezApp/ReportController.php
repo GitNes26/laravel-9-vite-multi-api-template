@@ -27,11 +27,18 @@ class ReportController extends Controller
 
     public function saveReport(Request $request, Response $response)
     {
+        $response->data = ObjResponse::DefaultResponse();
         try {
+            $imgName = "";
+            if ($request->hasFile('imgFile')) {
+                $image = $request->file('imgFile');
+                $imgName = time() . '.' . $image->getClientOriginalExtension();
+                $image->move(public_path('GPCenter/vehicles'), $imgName);
+            }
 
             $reports = new Report;
             $reports->fecha_reporte = $request->fecha_reporte;
-            $reports->img_reporte = $request->img_reporte;
+            $reports->img_reporte = "GomezApp/reportes/$imgName";
             $reports->folio = $request->folio;
             $reports->latitud = $request->latitud;
             $reports->longitud = $request->longitud;
@@ -42,12 +49,12 @@ class ReportController extends Controller
             $reports->created_at = now();
             $reports->save();
 
-            $response->data = 1;
+            $response->data = ObjResponse::CorrectResponse();
+            $response->data["message"] = 'Peticion satisfactoria | Lista de mis reportes.';
         } catch (\Exception $ex) {
-            $response->data = $ex->getMessage();
+            $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
-
-        return response()->json($response);
+        return response()->json($response, $response->data["status_code"]);
     }
 
     /**
