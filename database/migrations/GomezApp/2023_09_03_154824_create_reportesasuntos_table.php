@@ -15,7 +15,8 @@ return new class extends Migration
     {
         Schema::connection('mysql_gomezapp')->create('reportes_asuntos', function (Blueprint $table) {
            
-            $table->foreignId('id_reporte')->constrained('reportes_movil','id');
+            $table->foreignId('id_reporte')->constrained('reportes','id');
+            $table->foreignId('id_servicio')->constrained('servicios','id')->default(1); //  QUEJA, SOSPECHA, DEMANDA ETC
             $table->foreignId('id_asunto')->constrained('asuntos','id');
             $table->string('observaciones');
            

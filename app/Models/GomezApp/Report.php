@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class Report extends Model
 {
     protected $connection = 'mysql_gomezapp';
-    protected $table = 'reportes_movil';
+    protected $table = 'reportes';
 }
