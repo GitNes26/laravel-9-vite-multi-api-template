@@ -71,6 +71,5 @@ Route::prefix('imm')->group(function () {
 });
 
 Route::prefix('facturacion')->group(function() {
-    Route::get("/",function(){return "Factuacion ONLINE";});
     include_once("facturacion.routes.php");
 });
