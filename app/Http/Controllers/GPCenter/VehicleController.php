@@ -52,7 +52,7 @@ class VehicleController extends Controller
         $response->data = ObjResponse::DefaultResponse();
         try {
             $list = Vehicle::where('vehicles.active', true)->where('vehicles.', $request->brand_id)
-                ->select('vehicles.id as value', 'vehicles.model as text')
+                ->select('vehicles.id as id', 'vehicles.model as label')
                 ->orderBy('vehicles.model', 'asc')->get();
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'Peticion satisfactoria | Lista de vehículos';
