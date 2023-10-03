@@ -43,7 +43,7 @@ class DepartmentController extends Controller
         $response->data = ObjResponse::DefaultResponse();
         try {
             $list = Department::where('active', true)
-                ->select('departments.id as value', 'departments.department as text')
+                ->select('departments.id as id', 'departments.department as label')
                 ->orderBy('departments.department', 'asc')->get();
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'Peticion satisfactoria | Lista de departamentos';

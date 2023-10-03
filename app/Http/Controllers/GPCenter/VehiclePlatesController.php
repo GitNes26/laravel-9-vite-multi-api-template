@@ -43,7 +43,7 @@ class VehiclePlatesController extends Controller
         $response->data = ObjResponse::DefaultResponse();
         try {
             $list = VehiclePlate::where('active', true)
-                ->select('vehicle_plates.id as value', 'vehicle_plates.vehicle_plates as text')
+                ->select('vehicle_plates.id as id', 'vehicle_plates.vehicle_plates as label')
                 ->orderBy('vehicle_plates.vehicle_plates', 'asc')->get();
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'Peticion satisfactoria | Lista de placas de vehiculo';

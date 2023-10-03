@@ -153,7 +153,7 @@ class UserController extends Controller
       $response->data = ObjResponse::DefaultResponse();
       try {
          $list = User::where('active', true)
-            ->select('users.id as value', 'users.username as text')
+            ->select('users.id as id', 'users.username as label')
             ->orderBy('users.username', 'asc')->get();
          $response->data = ObjResponse::CorrectResponse();
          $response->data["message"] = 'peticion satisfactoria | lista de usuarios.';

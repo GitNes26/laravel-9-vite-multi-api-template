@@ -43,7 +43,7 @@ class VehicleStatusController extends Controller
         $response->data = ObjResponse::DefaultResponse();
         try {
             $list = VehicleStatus::where('active', true)
-                ->select('vehicle_status.id as value', 'vehicle_status.vehicle_status as text', 'vehicle_status.bg_color', 'vehicle_status.letter_black')
+                ->select('vehicle_status.id as id', 'vehicle_status.vehicle_status as label', 'vehicle_status.bg_color', 'vehicle_status.letter_black')
                 ->orderBy('vehicle_status.vehicle_status', 'asc')->get();
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'Peticion satisfactoria | Lista de estatus de vehiculo';

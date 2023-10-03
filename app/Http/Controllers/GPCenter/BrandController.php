@@ -43,7 +43,7 @@ class BrandController extends Controller
         $response->data = ObjResponse::DefaultResponse();
         try {
             $list = Brand::where('active', true)
-                ->select('brands.id as value', 'brands.brand as text')
+                ->select('brands.id as id', 'brands.brand as label')
                 ->orderBy('brands.brand', 'asc')->get();
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'Peticion satisfactoria | Lista de marcas';
