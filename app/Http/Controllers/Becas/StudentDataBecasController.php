@@ -18,23 +18,30 @@ class StudentDataBecasController extends Controller
      */
     public function createOrUpdateByBeca($request)
     {
-        $student_data = StudentData::where('curp', $request->curp)->first();
-        if (!$student_data) $student_data = new StudentData();
+        try {
+            $student_data = StudentData::where('curp', $request->curp)->first();
+            if (!$student_data) $student_data = new StudentData();
 
-        $student_data->curp = $request->curp;
-        $student_data->name = $request->name;
-        $student_data->paternal_last_name = $request->paternal_last_name;
-        $student_data->maternal_last_name = $request->maternal_last_name;
-        $student_data->birthdate = $request->birthdate;
-        $student_data->gender = $request->gender;
-        $student_data->community_id = $request->community_id;
-        $student_data->street = $request->street;
-        $student_data->num_ext = $request->num_ext;
-        $student_data->num_int = $request->num_int;
-        $student_data->disability_id = $request->disability_id;
+            $student_data->curp = $request->curp;
+            $student_data->name = $request->name;
+            $student_data->paternal_last_name = $request->paternal_last_name;
+            $student_data->maternal_last_name = $request->maternal_last_name;
+            $student_data->birthdate = $request->birthdate;
+            $student_data->gender = $request->gender;
+            $student_data->community_id = $request->community_id;
+            $student_data->street = $request->street;
+            $student_data->num_ext = $request->num_ext;
+            $student_data->num_int = $request->num_int;
+            $student_data->disability_id = $request->disability_id;
 
-        $student_data->save();
-        return $student_data;
+            $student_data->save();
+            return $student_data;
+        } catch (\Exception $ex) {
+            $msg =  "Error al crear o actualizar estudiante por medio de la beca: " . $ex->getMessage();
+
+            echo "$msg";
+            return $msg;
+        }
     }
 
     /**

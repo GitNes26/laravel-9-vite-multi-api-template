@@ -43,7 +43,7 @@ class DisabilityBecasController extends Controller
         $response->data = ObjResponse::DefaultResponse();
         try {
             $list = Disability::where('active', true)
-                ->select('disabilities.id as value', 'disabilities.disability as text')
+                ->select('disabilities.id as id', 'disabilities.disability as label')
                 ->orderBy('disabilities.disability', 'asc')->get();
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'Peticion satisfactoria | Lista de discapacidades';

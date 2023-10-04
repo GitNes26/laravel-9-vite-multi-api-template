@@ -69,8 +69,10 @@ class BecaBecasController extends Controller
             $studentDataController = new StudentDataBecasController();
             $student_data = $studentDataController->createOrUpdateByBeca($request);
 
+            $folio = $this->getLastFolio($response);
+
             $new_beca = Beca::create([
-                'folio' => $request->folio,
+                'folio' => (int)$folio + 1,
                 'tutor_id' => $request->tutor_id,
                 'tutor_full_name' => $request->tutor_full_name,
                 'tutor_phone' => $request->tutor_phone,
@@ -85,6 +87,7 @@ class BecaBecasController extends Controller
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'peticion satisfactoria | beca registrada.';
             $response->data["alert_text"] = 'Beca registrada';
+            $response->data["result"] = $new_beca;
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
@@ -170,5 +173,24 @@ class BecaBecasController extends Controller
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
         return response()->json($response, $response->data["status_code"]);
+    }
+
+
+    /**
+     * Obtener el ultimo folio.
+     *
+     * @return \Illuminate\Http\Int $folio
+     */
+    private function getLastFolio()
+    {
+        try {
+            $folio = Beca::max('folio');
+            if ($folio == null) return 0;
+            return $folio;
+        } catch (\Exception $ex) {
+            $msg =  "Error al crear o actualizar estudiante por medio de la beca: " . $ex->getMessage();
+            echo "$msg";
+            return $msg;
+        }
     }
 }
