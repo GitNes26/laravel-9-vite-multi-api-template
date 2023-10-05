@@ -94,6 +94,8 @@ Route::controller(VehiclePlatesController::class)->group(function () {
    Route::post('/vehiclesPlates', 'create');
    Route::put('/vehiclesPlates/{id?}', 'update');
    Route::delete('/vehiclesPlates/{id}', 'destroy');
+
+   Route::get('/vehiclesPlates/history/{vehicle_id}', 'history');
 });
 
 

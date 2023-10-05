@@ -55,12 +55,12 @@ class VehiclePlatesController extends Controller
     }
 
     /**
-     * Mostrar lista de placas de vehiculo correspondiente.
+     * Mostrar lista de placas del vehiculo correspondiente.
      *
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
      */
-    public function platesByVehicleId(Request $request, Response $response)
+    public function history(Request $request, Response $response)
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
@@ -68,7 +68,7 @@ class VehiclePlatesController extends Controller
                 ->select('vehicle_plates.*')
                 ->orderBy('vehicle_plates.id', 'desc')->get();
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'Peticion satisfactoria | Lista de placas de vehiculo.';
+            $response->data["message"] = 'Peticion satisfactoria | historial de placas del vehiculo.';
             $response->data["result"] = $list;
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
