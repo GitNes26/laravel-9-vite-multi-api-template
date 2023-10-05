@@ -5,6 +5,7 @@ use App\Http\Controllers\GomezApp\RoleController;
 use App\Http\Controllers\GomezApp\DepartmentController;
 use App\Http\Controllers\GomezApp\ReportController;
 use App\Http\Controllers\GomezApp\TipoReporteController;
+use App\Http\Controllers\GomezApp\ServiceController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -64,6 +65,12 @@ Route::controller(TipoReporteController::class)->group(function () {
    Route::post('/reportTypes', 'create');
    Route::put('/reportTypes/{id?}', 'update');
    Route::delete('/reportTypes/{id}', 'destroy');
+});
+
+
+Route::controller(ServiceController::class)->group(function () {
+   Route::get('/services', 'index');
+  
 });
 
 
