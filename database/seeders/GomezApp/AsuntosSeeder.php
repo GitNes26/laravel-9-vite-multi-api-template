@@ -7,7 +7,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
-class UserSeeder extends Seeder
+class AsuntosSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -16,11 +16,9 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        DB::connection('mysql_gomezapp')->table('users')->insert([
-            'email' => 'admin@gmail.com',
-            'password' => Hash::make('123'),
-            'role_id' => 1, //SuperAdmin
-            'created_at' => now()
+        DB::connection('mysql_gomezapp')->table('asuntos')->insert([
+            'asunto' => 'BACHEO'
+            
         ]);
     }
 }

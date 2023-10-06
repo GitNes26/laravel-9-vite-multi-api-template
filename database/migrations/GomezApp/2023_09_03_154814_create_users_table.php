@@ -15,7 +15,6 @@ return new class extends Migration
     {
         Schema::connection('mysql_gomezapp')->create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('username');
             $table->string('email'); //->unique();
             $table->string('password');
             $table->foreignId('role_id')->constrained('roles','id');
@@ -23,13 +22,7 @@ return new class extends Migration
             $table->string('name')->nullable()->default('No Aplica');
             $table->string('paternal_last_name')->nullable()->default('No Aplica');
             $table->string('maternal_last_name')->nullable()->default('No Aplica');
-            $table->foreignId('department_id')->constrained('departments','id')->default(1);
-            $table->integer('community_id')->default(0)->comment("este dato viene de una API que por medio del C.P. nos arroja de estado a colonia");
-            $table->string('street')->default('No Aplica');
-            $table->string('num_ext')->default("S/N");
-            $table->string('num_int')->nullable()->default("S/N");
-            // $table->string('image')->nullable();
-            // $table->timestamp('email_verified_at')->nullable();
+            $table->string('curp')->nullable();
             $table->boolean('active')->default(true);
             $table->rememberToken();
             $table->timestamps();

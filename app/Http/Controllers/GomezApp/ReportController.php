@@ -5,6 +5,8 @@ namespace App\Http\Controllers\GomezApp;
 use App\Http\Controllers\Controller;
 use App\Models\GomezApp\Report;
 use App\Models\GomezApp\InfoCards;
+use App\Models\GomezApp\ReportAsuntos;
+use App\Models\GomezApp\User;
 use App\Models\ObjResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -40,9 +42,22 @@ class ReportController extends Controller
 
 
             if ($request->has('op')) {
+
+
+                $users = new User;
+                $users->email = "";
+                $users->password="123456";
+                $users->role_id= 3;
+                $users->phone="";
+                $users->name="";
+                $users->paternal_last_name="";
+                $users->maternal_last_name="";
+                $users->curp="";
+                $users->save();
+
                 $reports = new Report;
                 $reports->fecha_reporte = $request->fecha;
-                $reports->folio = 1;
+                $reports->folio = $reports->id;
                 $reports->id_user = 1;
                 $reports->calle = $request->calle;
                 $reports->num_ext = $request->num_ext;
@@ -52,14 +67,22 @@ class ReportController extends Controller
                 $reports->localidad = $request->ciudad;
                 $reports->municipio = "";
                 $reports->estado = $request->estado;
-                $reports->id_tipo_reporte = $request->tipoServicio;
                 $reports->id_departamento = $request->depart;
-                $reports->id_origen = 1;
+                $reports->id_origen = $request->origen;
                 $reports->id_estatus = 1;
-                $reports->observaciones = $request->observaciones;
                 $reports->created_at = now();
                 $reports->save();
-                $result = $reports;
+
+
+
+                $reportsAsunt = new ReportAsuntos();
+                $reportsAsunt->id_reporte = $reports->id;
+                $reportsAsunt->id_servicio = $request->tipoServicio;
+                $reportsAsunt->id_asunto = $request->asunto;
+                $reportsAsunt->observaciones = $request->observaciones;
+                $reportsAsunt->save();
+
+        
             } else {
                 $reports = new Report;
                 $reports->fecha_reporte = $request->fecha_reporte;
@@ -73,7 +96,7 @@ class ReportController extends Controller
                 $reports->comentario = $request->comentario;
                 $reports->created_at = now();
                 $reports->save();
-                $result = $reports;
+        
             }
 
 

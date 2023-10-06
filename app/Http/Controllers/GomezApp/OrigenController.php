@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\GomezApp;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 
-use App\Models\GomezApp\Services;
+use Illuminate\Http\Request;
+use App\Models\GomezApp\Origen;
 use App\Models\ObjResponse;
 use Illuminate\Http\Response;
 
-class ServiceController extends Controller
+class OrigenController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,7 +20,7 @@ class ServiceController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $list = Services::all();
+            $list = Origen::all();
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'Peticion satisfactoria | Lista de departamentos.';
             $response->data["result"] = $list;
