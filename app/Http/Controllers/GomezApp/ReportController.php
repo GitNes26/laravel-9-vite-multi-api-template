@@ -27,7 +27,9 @@ class ReportController extends Controller
 
     public function saveReport(Request $request, Response $response)
     {
+
         $response->data = ObjResponse::DefaultResponse();
+        $result = [];
         try {
             $imgName = "";
             if ($request->hasFile('imgFile')) {
@@ -36,20 +38,48 @@ class ReportController extends Controller
                 $image->move(public_path('GomezApp/reportes'), $imgName);
             }
 
-            $reports = new Report;
-            $reports->fecha_reporte = $request->fecha_reporte;
-            $reports->img_reporte = "GomezApp/reportes/$imgName";
-            $reports->folio = $request->folio;
-            $reports->latitud = $request->latitud;
-            $reports->longitud = $request->longitud;
-            $reports->id_user = $request->id_user;
-            $reports->id_tipo_reporte = $request->id_tipo_reporte;
-            $reports->referencia = $request->referencia;
-            $reports->comentario = $request->comentario;
-            $reports->created_at = now();
-            $reports->save();
+
+            if ($request->has('op')) {
+                $reports = new Report;
+                $reports->fecha_reporte = $request->fecha;
+                $reports->folio = 1;
+                $reports->id_user = 1;
+                $reports->calle = $request->calle;
+                $reports->num_ext = $request->num_ext;
+                $reports->num_int = $request->num_int;
+                $reports->cp = $request->cp;
+                $reports->colonia = $request->colonia;
+                $reports->localidad = $request->ciudad;
+                $reports->municipio = "";
+                $reports->estado = $request->estado;
+                $reports->id_tipo_reporte = $request->tipoServicio;
+                $reports->id_departamento = $request->depart;
+                $reports->id_origen = 1;
+                $reports->id_estatus = 1;
+                $reports->observaciones = $request->observaciones;
+                $reports->created_at = now();
+                $reports->save();
+                $result = $reports;
+            } else {
+                $reports = new Report;
+                $reports->fecha_reporte = $request->fecha_reporte;
+                $reports->img_reporte = "GomezApp/reportes/$imgName";
+                $reports->folio = $request->folio;
+                $reports->latitud = $request->latitud;
+                $reports->longitud = $request->longitud;
+                $reports->id_user = $request->id_user;
+                $reports->id_tipo_reporte = $request->id_tipo_reporte;
+                $reports->referencia = $request->referencia;
+                $reports->comentario = $request->comentario;
+                $reports->created_at = now();
+                $reports->save();
+                $result = $reports;
+            }
+
+
 
             $response->data = ObjResponse::CorrectResponse();
+            $response->dara["result"] = $result;
             $response->data["message"] = 'Peticion satisfactoria | Lista de mis reportes.';
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
