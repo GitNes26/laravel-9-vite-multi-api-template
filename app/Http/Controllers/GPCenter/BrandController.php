@@ -64,6 +64,12 @@ class BrandController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
+            $duplicate = $this->validateAvailableData($request->username, $request->email, $request->id);
+            if ($duplicate["result"] == true) {
+                $response->data = $duplicate;
+                return response()->json($response);
+            }
+
             $imgName = "";
             if ($request->hasFile('imgFile')) {
                 $image = $request->file('imgFile');
@@ -123,15 +129,15 @@ class BrandController extends Controller
             }
             if ($imgName != "") {
                 $brand = Brand::find($request->id)
-                ->update([
-                    'brand' => $request->brand,
-                    'img_path' => "GPCenter/brands/$imgName"
-                ]);
+                    ->update([
+                        'brand' => $request->brand,
+                        'img_path' => "GPCenter/brands/$imgName"
+                    ]);
             } else {
                 $brand = Brand::find($request->id)
-                ->update([
-                    'brand' => $request->brand,
-                ]);
+                    ->update([
+                        'brand' => $request->brand,
+                    ]);
             }
 
             $response->data = ObjResponse::CorrectResponse();
@@ -166,5 +172,21 @@ class BrandController extends Controller
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
         return response()->json($response, $response->data["status_code"]);
+    }
+
+
+    private function validateAvailableData($level, $id)
+    {
+        #este codigo se pone en las funciones de registro y edicion
+        // $duplicate = $this->validateAvailableData($request->username, $request->email, $request->id);
+        // if ($duplicate["result"] == true) {
+        //     $response->data = $duplicate;
+        //     return response()->json($response);
+        // }
+        $checkAvailable = new UserBecasController();
+        // #VALIDACION DE DATOS REPETIDOS
+        $duplicate = $checkAvailable->checkAvailableData('levels', 'level', $level, 'El nivel', 'level', $id, null);
+        if ($duplicate["result"] == true) return $duplicate;
+        return array("result" => false);
     }
 }
