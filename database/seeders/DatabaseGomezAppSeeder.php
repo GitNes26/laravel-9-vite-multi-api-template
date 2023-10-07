@@ -20,13 +20,12 @@ class DatabaseGomezAppSeeder extends Seeder
             GomezApp\RoleSeeder::class,
             GomezApp\DepartamentSeeder::class,
             GomezApp\UserSeeder::class,
-            GomezApp\TiposReportesSeeder::class,
             GomezApp\TipoServicioSedeer::class,
             GomezApp\OrigenReporteSeeder::class,
             GomezApp\AsuntosSeeder::class,
             GomezApp\DepAsuntoSeeder::class,
             GomezApp\EstatusSeeder::class,
-            
+
         ]);
         // \App\Models\User::factory(10)->create();
 

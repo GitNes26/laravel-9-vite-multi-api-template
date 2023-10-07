@@ -10,6 +10,8 @@ use App\Models\GomezApp\User;
 use App\Models\ObjResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class ReportController extends Controller
 {
@@ -30,6 +32,12 @@ class ReportController extends Controller
     public function saveReport(Request $request, Response $response)
     {
 
+        $longitud_cadena = 5;
+        $caracteres_alfabeticos = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $caracter_alfabetico = $caracteres_alfabeticos[mt_rand(0, strlen($caracteres_alfabeticos) - 1)];
+        $numeros = mt_rand(pow(10, $longitud_cadena - 2), pow(10, $longitud_cadena - 1) - 1);
+        $cadena_aleatoria = $caracter_alfabetico . $numeros;
+
         $response->data = ObjResponse::DefaultResponse();
         $result = [];
         try {
@@ -45,20 +53,21 @@ class ReportController extends Controller
 
 
                 $users = new User;
-                $users->email = "";
-                $users->password="123456";
-                $users->role_id= 3;
-                $users->phone="";
-                $users->name="";
-                $users->paternal_last_name="";
-                $users->maternal_last_name="";
-                $users->curp="";
+                $users->email = $request->correo;
+                $users->password = Hash::make('123456');
+                $users->role_id = 3;
+                $users->phone = $request->telefono;
+                $users->name = $request->nombre;
+                $users->paternal_last_name = $request->app;
+                $users->maternal_last_name = $request->apm;
+                $users->curp = $request->curp;
                 $users->save();
+
 
                 $reports = new Report;
                 $reports->fecha_reporte = $request->fecha;
-                $reports->folio = $reports->id;
-                $reports->id_user = 1;
+                $reports->folio =  $cadena_aleatoria;
+                $reports->id_user = $users->id;
                 $reports->calle = $request->calle;
                 $reports->num_ext = $request->num_ext;
                 $reports->num_int = $request->num_int;
@@ -81,8 +90,6 @@ class ReportController extends Controller
                 $reportsAsunt->id_asunto = $request->asunto;
                 $reportsAsunt->observaciones = $request->observaciones;
                 $reportsAsunt->save();
-
-        
             } else {
                 $reports = new Report;
                 $reports->fecha_reporte = $request->fecha_reporte;
@@ -96,7 +103,6 @@ class ReportController extends Controller
                 $reports->comentario = $request->comentario;
                 $reports->created_at = now();
                 $reports->save();
-        
             }
 
 

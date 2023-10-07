@@ -17,11 +17,10 @@ return new class extends Migration
             $table->id();
             $table->date('fecha_reporte')->nullable();
             $table->string('img_reporte')->nullable();
-            $table->integer('folio')->nullable();
+            $table->string('folio')->nullable();
             $table->string('latitud')->nullable(); //->unique();
             $table->string('longitud')->nullable();
             $table->foreignId('id_user')->constrained('users', 'id');
-            $table->string('curp')->nullable();
             $table->string('cp')->nullable();
             $table->string('calle')->nullable();
             $table->string('num_ext')->nullable();
