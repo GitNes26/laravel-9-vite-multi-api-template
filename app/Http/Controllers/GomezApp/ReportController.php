@@ -4,6 +4,7 @@ namespace App\Http\Controllers\GomezApp;
 
 use App\Http\Controllers\Controller;
 use App\Models\GomezApp\Report;
+use App\Models\GomezApp\ReportView;
 use App\Models\GomezApp\InfoCards;
 use App\Models\GomezApp\ReportAsuntos;
 use App\Models\GomezApp\User;
@@ -19,6 +20,11 @@ class ReportController extends Controller
     {
 
         $response = Report::all();
+        return response()->json($response);
+    }
+    public function reportsview(Response $response)
+    {
+        $response = ReportView::all();
         return response()->json($response);
     }
 
@@ -61,6 +67,7 @@ class ReportController extends Controller
                 $users->paternal_last_name = $request->app;
                 $users->maternal_last_name = $request->apm;
                 $users->curp = $request->curp;
+                $users->sexo = $request->genero;
                 $users->save();
 
 
@@ -79,6 +86,7 @@ class ReportController extends Controller
                 $reports->id_departamento = $request->depart;
                 $reports->id_origen = $request->origen;
                 $reports->id_estatus = 1;
+                $reports->community_id = $request->community_id;
                 $reports->created_at = now();
                 $reports->save();
 

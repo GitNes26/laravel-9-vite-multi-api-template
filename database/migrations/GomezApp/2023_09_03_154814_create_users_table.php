@@ -17,12 +17,13 @@ return new class extends Migration
             $table->id();
             $table->string('email'); //->unique();
             $table->string('password');
-            $table->foreignId('role_id')->constrained('roles','id');
+            $table->foreignId('role_id')->constrained('roles', 'id');
             $table->string('phone')->default('No Aplica');
             $table->string('name')->nullable()->default('No Aplica');
             $table->string('paternal_last_name')->nullable()->default('No Aplica');
             $table->string('maternal_last_name')->nullable()->default('No Aplica');
             $table->string('curp')->nullable();
+            $table->string('sexo')->nullable();
             $table->boolean('active')->default(true);
             $table->rememberToken();
             $table->timestamps();

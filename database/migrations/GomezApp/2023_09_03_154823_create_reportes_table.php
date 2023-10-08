@@ -33,6 +33,7 @@ return new class extends Migration
             $table->string('id_departamento')->nullable();
             $table->foreignId('id_origen')->constrained('origen_reporte', 'id')->default(1); //WEB, APP, TELEFONICO ETC
             $table->foreignId('id_estatus')->constrained('estatus', 'id')->default(1);   // ASIGANDO, EN CURSO, ATENDIDO ETC
+            $table->string('community_id')->nullable();
             $table->boolean('active')->default(true);
             $table->timestamps();
             $table->dateTime('deleted_at')->nullable();
