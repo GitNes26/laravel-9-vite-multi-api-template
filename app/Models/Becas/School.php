@@ -25,9 +25,11 @@ class School extends Model
         'level_id',
         'school',
         'community_id',
-        'address',
-        'city_id',
-        'colony_id',
+        'street',
+        'num_ext',
+        'num_int',
+        // 'city_id',
+        // 'colony_id',
         'phone',
         'director',
         'loc_for',
@@ -50,21 +52,21 @@ class School extends Model
     protected $primaryKey = 'id';
 
 
-    /**
-     * Obtener ciudad asociada con la escuela.
-     */
-    public function city()
-    {   //primero se declara FK y despues la PK del modelo asociado
-        return $this->belongsTo(City::class, 'city_id', 'id');
-    }
+    // /**
+    //  * Obtener ciudad asociada con la escuela.
+    //  */
+    // public function city()
+    // {   //primero se declara FK y despues la PK del modelo asociado
+    //     return $this->belongsTo(City::class, 'city_id', 'id');
+    // }
 
-    /**
-     * Obtener ciudad asociada con la escuela.
-     */
-    public function colony()
-    {   //primero se declara FK y despues la PK del modelo asociado
-        return $this->belongsTo(Colony::class, 'colony_id', 'id');
-    }
+    // /**
+    //  * Obtener ciudad asociada con la escuela.
+    //  */
+    // public function colony()
+    // {   //primero se declara FK y despues la PK del modelo asociado
+    //     return $this->belongsTo(Colony::class, 'colony_id', 'id');
+    // }
 
 
     /**

@@ -76,7 +76,7 @@ class StudentDataBecasController extends Controller
         $response->data = ObjResponse::DefaultResponse();
         try {
             $list = StudentData::where('active', true)
-                ->select('student_data.id as value', 'student_data.name as text')
+                ->select('student_data.id as id', 'student_data.name as label')
                 ->orderBy('student_data.name', 'asc')->get();
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'Peticion satisfactoria | Lista de estudiantes';

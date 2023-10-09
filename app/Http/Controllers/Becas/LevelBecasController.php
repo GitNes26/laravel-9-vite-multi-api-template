@@ -43,7 +43,7 @@ class LevelBecasController extends Controller
         $response->data = ObjResponse::DefaultResponse();
         try {
             $list = Level::where('active', true)
-                ->select('levels.id as value', 'levels.level as text')
+                ->select('levels.id as id', 'levels.level as label')
                 ->orderBy('levels.level', 'asc')->get();
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'Peticion satisfactoria | Lista de niveles';
