@@ -55,6 +55,7 @@ Route::controller(DepartmentController::class)->group(function () {
 
 Route::controller(ReportController::class)->group(function () {
    Route::get('/reports', 'index');
+   Route::delete('/reports/{id}', 'destroy');
    Route::get('/reportsview', 'reportsview');
    Route::get('/icards', 'getCards');
    Route::post('/reports', 'saveReport');
@@ -73,18 +74,15 @@ Route::controller(TipoReporteController::class)->group(function () {
 
 Route::controller(ServiceController::class)->group(function () {
    Route::get('/services', 'index');
-  
 });
 
 Route::controller(OrigenController::class)->group(function () {
    Route::get('/origen', 'index');
-  
 });
 
 Route::controller(AsuntosDepController::class)->group(function () {
    Route::get('/asuntosdep', 'index');
    Route::get('/asuntosdep/{id}', 'show');
-  
 });
 
 

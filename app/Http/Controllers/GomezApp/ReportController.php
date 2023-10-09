@@ -57,47 +57,94 @@ class ReportController extends Controller
 
             if ($request->has('op')) {
 
-
-                $users = new User;
-                $users->email = $request->correo;
-                $users->password = Hash::make('123456');
-                $users->role_id = 3;
-                $users->phone = $request->telefono;
-                $users->name = $request->nombre;
-                $users->paternal_last_name = $request->app;
-                $users->maternal_last_name = $request->apm;
-                $users->curp = $request->curp;
-                $users->sexo = $request->genero;
-                $users->save();
-
-
-                $reports = new Report;
-                $reports->fecha_reporte = $request->fecha;
-                $reports->folio =  $cadena_aleatoria;
-                $reports->id_user = $users->id;
-                $reports->calle = $request->calle;
-                $reports->num_ext = $request->num_ext;
-                $reports->num_int = $request->num_int;
-                $reports->cp = $request->cp;
-                $reports->colonia = $request->colonia;
-                $reports->localidad = $request->ciudad;
-                $reports->municipio = "";
-                $reports->estado = $request->estado;
-                $reports->id_departamento = $request->depart;
-                $reports->id_origen = $request->origen;
-                $reports->id_estatus = 1;
-                $reports->community_id = $request->community_id;
-                $reports->created_at = now();
-                $reports->save();
+                if ($request->op === "1") {
+                    $users = new User;
+                    $users->email = $request->correo;
+                    $users->password = Hash::make('123456');
+                    $users->role_id = 3;
+                    $users->phone = $request->telefono;
+                    $users->name = $request->nombre;
+                    $users->paternal_last_name = $request->app;
+                    $users->maternal_last_name = $request->apm;
+                    $users->curp = $request->curp;
+                    $users->sexo = $request->genero;
+                    $users->save();
 
 
+                    $reports = new Report;
+                    $reports->fecha_reporte = $request->fecha;
+                    $reports->folio =  $cadena_aleatoria;
+                    $reports->id_user = $users->id;
+                    $reports->calle = $request->calle;
+                    $reports->num_ext = $request->num_ext;
+                    $reports->num_int = $request->num_int;
+                    $reports->cp = $request->cp;
+                    $reports->colonia = $request->colonia;
+                    $reports->localidad = $request->ciudad;
+                    $reports->municipio = "";
+                    $reports->estado = $request->estado;
+                    $reports->id_departamento = $request->depart;
+                    $reports->id_origen = $request->origen;
+                    $reports->id_estatus = 1;
+                    $reports->community_id = $request->community_id;
+                    $reports->created_at = now();
+                    $reports->save();
 
-                $reportsAsunt = new ReportAsuntos();
-                $reportsAsunt->id_reporte = $reports->id;
-                $reportsAsunt->id_servicio = $request->tipoServicio;
-                $reportsAsunt->id_asunto = $request->asunto;
-                $reportsAsunt->observaciones = $request->observaciones;
-                $reportsAsunt->save();
+
+
+                    $reportsAsunt = new ReportAsuntos();
+                    $reportsAsunt->id_reporte = $reports->id;
+                    $reportsAsunt->id_servicio = $request->tipoServicio;
+                    $reportsAsunt->id_asunto = $request->asunto;
+                    $reportsAsunt->observaciones = $request->observaciones;
+                    $reportsAsunt->save();
+
+
+                    $response->data = ObjResponse::CorrectResponse();
+                    $response->dara["result"] = $result;
+                    $response->data["message"] = 'Peticion satisfactoria | Lista de mis reportes.';
+                } else if ($request->op === "2") {
+                    $idReport = $request->id;
+                    $idUser = $request->idUser;
+
+                    $users = User::find($idUser);
+                    $users->email = $request->correo;
+                    $users->phone = $request->telefono;
+                    $users->name = $request->nombre;
+                    $users->paternal_last_name = $request->app;
+                    $users->maternal_last_name = $request->apm;
+                    $users->curp = $request->curp;
+                    $users->sexo = $request->genero;
+                    $users->save();
+
+                    $reports = Report::find($request->id);
+                    $reports->fecha_reporte = $request->fecha;
+                    $reports->calle = $request->calle;
+                    $reports->num_ext = $request->num_ext;
+                    $reports->num_int = $request->num_int;
+                    $reports->cp = $request->cp;
+                    $reports->colonia = $request->colonia;
+                    $reports->localidad = $request->ciudad;
+                    $reports->estado = $request->estado;
+                    $reports->id_departamento = $request->depart;
+                    $reports->id_origen = $request->origen;
+                    $reports->updated_at = now();
+                    $reports->save();
+
+
+
+                    $reportsAsunt = ReportAsuntos::where("id_reporte", "=", $idReport)
+                        ->update([
+                            'observaciones' => $request->observaciones,
+                            'id_servicio' => $request->tipoServicio,
+                            'id_asunto' => $request->asunto
+                        ]);
+
+
+                    $response->data = ObjResponse::CorrectResponse();
+                    $response->dara["result"] = ["se actualizo correctamente" => $reportsAsunt];
+                    $response->data["message"] = 'Peticion satisfactoria | Lista de mis reportes.';
+                }
             } else {
                 $reports = new Report;
                 $reports->fecha_reporte = $request->fecha_reporte;
@@ -112,12 +159,22 @@ class ReportController extends Controller
                 $reports->created_at = now();
                 $reports->save();
             }
-
-
+        } catch (\Exception $ex) {
+            $response->data = ObjResponse::CatchResponse($ex->getMessage());
+        }
+        return response()->json($response, $response->data["status_code"]);
+    }
+    public function destroy(int $id, Response $response)
+    {
+        $response->data = ObjResponse::DefaultResponse();
+        try {
+            $deleteReport = Report::find($id);
+            $deleteReport->active = 0;
+            $deleteReport->save();
 
             $response->data = ObjResponse::CorrectResponse();
-            $response->dara["result"] = $result;
-            $response->data["message"] = 'Peticion satisfactoria | Lista de mis reportes.';
+            $response->data["message"] = 'peticion satisfactoria | usuario eliminado.';
+            $response->data["alert_text"] = "Usuario eliminado";
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
@@ -133,10 +190,10 @@ class ReportController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $list = Report::where('reportes_movil.active', true)->where('reportes_movil.id_user', $request->id_user)
-                ->join('tipos_reportes', 'reportes_movil.id_tipo_reporte', '=', 'tipos_reportes.id')
-                ->select('reportes_movil.*', 'tipos_reportes.tipo_nombre', 'tipos_reportes.bg_circle', 'tipos_reportes.bg_card', 'tipos_reportes.icono', 'tipos_reportes.letter_black')
-                ->orderBy('reportes_movil.id', 'desc')->get();
+            $list = Report::where('reportes.active', true)->where('reportes.id_user', $request->id_user)
+                ->join('tipos_reportes', 'reportes.id_tipo_reporte', '=', 'tipos_reportes.id')
+                ->select('reportes.*', 'tipos_reportes.tipo_nombre', 'tipos_reportes.bg_circle', 'tipos_reportes.bg_card', 'tipos_reportes.icono', 'tipos_reportes.letter_black')
+                ->orderBy('reportes.id', 'desc')->get();
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'Peticion satisfactoria | Lista de mis reportes.';
             $response->data["result"] = $list;
