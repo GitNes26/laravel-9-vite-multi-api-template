@@ -64,7 +64,7 @@ class BrandController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $duplicate = $this->validateAvailableData($request->username, $request->email, $request->id);
+            $duplicate = $this->validateAvailableData($request->brand, null);
             if ($duplicate["result"] == true) {
                 $response->data = $duplicate;
                 return response()->json($response);
@@ -121,6 +121,12 @@ class BrandController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
+            $duplicate = $this->validateAvailableData($request->brand, $request->id);
+            if ($duplicate["result"] == true) {
+                $response->data = $duplicate;
+                return response()->json($response);
+            }
+
             $imgName = "";
             if ($request->hasFile('imgFile')) {
                 $image = $request->file('imgFile');
@@ -175,7 +181,7 @@ class BrandController extends Controller
     }
 
 
-    private function validateAvailableData($level, $id)
+    private function validateAvailableData($brand, $id)
     {
         #este codigo se pone en las funciones de registro y edicion
         // $duplicate = $this->validateAvailableData($request->username, $request->email, $request->id);
@@ -183,9 +189,10 @@ class BrandController extends Controller
         //     $response->data = $duplicate;
         //     return response()->json($response);
         // }
-        $checkAvailable = new UserBecasController();
+
+        $checkAvailable = new UserController();
         // #VALIDACION DE DATOS REPETIDOS
-        $duplicate = $checkAvailable->checkAvailableData('levels', 'level', $level, 'El nivel', 'level', $id, null);
+        $duplicate = $checkAvailable->checkAvailableData('brands', 'brand', $brand, 'La marca', 'brand', $id, null);
         if ($duplicate["result"] == true) return $duplicate;
         return array("result" => false);
     }

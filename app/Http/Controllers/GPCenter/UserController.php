@@ -62,7 +62,7 @@ class UserController extends Controller
    public function logout(int $id, Response $response)
    {
       try {
-         DB::connection('mysql_becas')->table('personal_access_tokens')->where('tokenable_id', $id)->delete();
+         DB::connection('mysql_gp_center')->table('personal_access_tokens')->where('tokenable_id', $id)->delete();
 
          $response->data = ObjResponse::CorrectResponse();
          $response->data["message"] = 'peticion satisfactoria | sesión cerrada.';
@@ -125,7 +125,7 @@ class UserController extends Controller
       $response->data = ObjResponse::DefaultResponse();
       try {
          // $list = DB::select('SELECT * FROM users where active = 1');
-         // User::on('mysql_becas')->get();
+         // User::on('mysql_gp_center')->get();
          $list = User::where('users.active', true)
             ->join('roles', 'users.role_id', '=', 'roles.id')
             ->join('departments', 'users.department_id', '=', 'departments.id')
@@ -392,8 +392,9 @@ class UserController extends Controller
          $query = "SELECT count(*) as duplicate FROM $table WHERE $column='$value' AND active=1";
          if ($id != null) $query = "SELECT count(*) as duplicate FROM $table WHERE $column='$value' AND active=1 AND id!=$id";
       }
-      $result = DB::connection('mysql_becas')->select($query)[0];
-      // var_dump($result->duplicate);
+    //   echo $query;
+      $result = DB::connection('mysql_gp_center')->select($query)[0];
+    //   var_dump($result->duplicate);
       if ((int)$result->duplicate > 0) {
          // echo "entro al duplicate";
          $response = array(
