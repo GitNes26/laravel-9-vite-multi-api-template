@@ -170,6 +170,7 @@ class ReportController extends Controller
         try {
             $deleteReport = Report::find($id);
             $deleteReport->active = 0;
+            $deleteReport->deleted_at=now();
             $deleteReport->save();
 
             $response->data = ObjResponse::CorrectResponse();
