@@ -23,8 +23,11 @@ class BecaBecasController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $list = Beca::where('active', true)
-                ->select('becas.*')
+            $list = Beca::where('becas.active', true)
+                // ->join("users", "becas.user_id", "=", "users.id")
+                ->join('student_data', 'becas.student_data_id', '=', 'student_data.id')
+                ->join('schools', 'becas.school_id', '=', 'schools.id')
+                ->select('*')
                 ->orderBy('becas.id', 'asc')->get();
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'Peticion satisfactoria | Lista de becas.';
