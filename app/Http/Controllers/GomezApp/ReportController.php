@@ -7,6 +7,7 @@ use App\Models\GomezApp\Report;
 use App\Models\GomezApp\ReportView;
 use App\Models\GomezApp\InfoCards;
 use App\Models\GomezApp\ReportAsuntos;
+use App\Models\GomezApp\ResponseR;
 use App\Models\GomezApp\User;
 use App\Models\ObjResponse;
 use Illuminate\Http\Request;
@@ -142,7 +143,7 @@ class ReportController extends Controller
 
 
                     $response->data = ObjResponse::CorrectResponse();
-                    $response->dara["result"] = ["se actualizo correctamente" => $reportsAsunt];
+                    $response->data["result"] = ["se actualizo correctamente" => $reportsAsunt];
                     $response->data["message"] = 'Peticion satisfactoria | Lista de mis reportes.';
                 }
             } else {
@@ -170,12 +171,39 @@ class ReportController extends Controller
         try {
             $deleteReport = Report::find($id);
             $deleteReport->active = 0;
-            $deleteReport->deleted_at=now();
+            $deleteReport->deleted_at = now();
             $deleteReport->save();
 
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'peticion satisfactoria | usuario eliminado.';
             $response->data["alert_text"] = "Usuario eliminado";
+        } catch (\Exception $ex) {
+            $response->data = ObjResponse::CatchResponse($ex->getMessage());
+        }
+        return response()->json($response, $response->data["status_code"]);
+    }
+
+    public function saveResponse(Request $request, Response $response)
+    {
+        $response->data = ObjResponse::DefaultResponse();
+        $id = $request->idReport;
+        try {
+            $responseR = new ResponseR;
+            $responseR->id_reporte = $request->idReport;
+            $responseR->respuesta = $request->response;
+            $responseR->fecha_respuesta = now();
+            $responseR->save();
+
+            $updateEstatus = Report::find($id);
+            $updateEstatus->id_estatus = 2;
+            $updateEstatus->save();
+
+
+
+            $response->data = ObjResponse::CorrectResponse();
+            $response->data["message"] = 'peticion satisfactoria | usuario eliminado.';
+            $response->data["alert_text"] = "Respuesta enviada";
+            $response->data["result"] = ["se registro respuesta" =>  $request->idReport];
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }

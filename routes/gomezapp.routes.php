@@ -59,6 +59,7 @@ Route::controller(ReportController::class)->group(function () {
    Route::get('/reportsview', 'reportsview');
    Route::get('/icards', 'getCards');
    Route::post('/reports', 'saveReport');
+   Route::post('/reports/response', 'saveResponse');
    Route::get('/reports/user/{id_user}', 'reportsByUser');
 });
 
