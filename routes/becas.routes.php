@@ -110,9 +110,11 @@ Route::controller(StudentDataBecasController::class)->group(function () {
 Route::controller(BecaBecasController::class)->group(function () {
    Route::get('/becas', 'index');
    Route::get('/becas/selectIndex', 'selectIndex');
-   Route::get('/becas/{id}', 'show');
+   Route::get('/becas/id/{id}', 'show');
    Route::post('/becas', 'create');
    Route::put('/becas/{id?}', 'update');
    Route::delete('/becas/{id}', 'destroy');
+
+   Route::get('/becas/getLastFolio', 'getLastFolio');
 });
 // });

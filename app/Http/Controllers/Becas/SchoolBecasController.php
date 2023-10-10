@@ -23,9 +23,7 @@ class SchoolBecasController extends Controller
         try {
             $list = School::where('schools.active', true)
                 ->join('levels', 'schools.level_id', '=', 'levels.id')
-                ->join('cities', 'schools.city_id', '=', 'cities.id')
-                ->join('colonies', 'schools.colony_id', '=', 'colonies.id')
-                ->select('schools.*', 'levels.level', 'cities.city', 'colonies.colony')
+                ->select('schools.*', 'levels.level')
                 ->orderBy('schools.id', 'desc')->get();
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'Peticion satisfactoria | Lista de escuelas.';
@@ -48,7 +46,7 @@ class SchoolBecasController extends Controller
             $list = School::where('schools.active', true)
                 ->join('levels', 'schools.level_id', '=', 'levels.id')
                 // ->select('schools.id as value', 'schools.school as text')
-                ->select('schools.id as value', DB::raw("CONCAT(levels.level,' - ', schools.school) as text"))
+                ->select('schools.id as id', DB::raw("CONCAT(levels.level,' - ', schools.school) as label"))
                 ->orderBy('schools.school', 'asc')->get();
             // $list = School::select(DB::raw("CONCAT(levels.level,' - ', schools.school)"))->get();
             $response->data = ObjResponse::CorrectResponse();
@@ -75,9 +73,7 @@ class SchoolBecasController extends Controller
                 'level_id' => $request->level_id,
                 'school' => $request->school,
                 'community_id' => $request->community_id,
-                'city_id' => $request->city_id,
-                'colony_id' => $request->colony_id,
-                'address' => $request->address,
+                'street' => $request->street,
                 'phone' => $request->phone,
                 'director' => $request->director,
                 'loc_for' => $request->loc_for,
@@ -105,9 +101,7 @@ class SchoolBecasController extends Controller
         try {
             $school = School::where('schools.id', $id)
                 ->join('levels', 'schools.level_id', '=', 'levels.id')
-                ->join('cities', 'schools.city_id', '=', 'cities.id')
-                ->join('colonies', 'schools.colony_id', '=', 'colonies.id')
-                ->select('schools.*', 'levels.level', 'cities.city', 'colonies.colony')
+                ->select('schools.*', 'levels.level')
                 ->first();
 
             $response->data = ObjResponse::CorrectResponse();
@@ -135,9 +129,7 @@ class SchoolBecasController extends Controller
                     'level_id' => $request->level_id,
                     'school' => $request->school,
                     'community_id' => $request->community_id,
-                    'city_id' => $request->city_id,
-                    'colony_id' => $request->colony_id,
-                    'address' => $request->address,
+                    'street' => $request->street,
                     'phone' => $request->phone,
                     'director' => $request->director,
                     'loc_for' => $request->loc_for,

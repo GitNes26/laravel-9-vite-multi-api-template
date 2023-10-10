@@ -43,7 +43,7 @@ class LevelBecasController extends Controller
         $response->data = ObjResponse::DefaultResponse();
         try {
             $list = Level::where('active', true)
-                ->select('levels.id as value', 'levels.level as text')
+                ->select('levels.id as id', 'levels.level as label')
                 ->orderBy('levels.level', 'asc')->get();
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'Peticion satisfactoria | Lista de niveles';
@@ -64,6 +64,12 @@ class LevelBecasController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
+            $duplicate = $this->validateAvailableData($request->level, null);
+            if ($duplicate["result"] == true) {
+                $response->data = $duplicate;
+                return response()->json($response);
+            }
+
             $new_level = Level::create([
                 'level' => $request->level,
             ]);
@@ -109,6 +115,12 @@ class LevelBecasController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
+            $duplicate = $this->validateAvailableData($request->level, $request->id);
+            if ($duplicate["result"] == true) {
+                $response->data = $duplicate;
+                return response()->json($response);
+            }
+
             $level = Level::where('id', $request->id)
                 ->update([
                     'level' => $request->level,
@@ -145,5 +157,20 @@ class LevelBecasController extends Controller
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
         return response()->json($response, $response->data["status_code"]);
+    }
+
+    private function validateAvailableData($level, $id)
+    {
+        #este codigo se pone en las funciones de registro y edicion
+        // $duplicate = $this->validateAvailableData($request->username, $request->email, $request->id);
+        // if ($duplicate["result"] == true) {
+        //     $response->data = $duplicate;
+        //     return response()->json($response);
+        // }
+        $checkAvailable = new UserBecasController();
+        // #VALIDACION DE DATOS REPETIDOS
+        $duplicate = $checkAvailable->checkAvailableData('levels', 'level', $level, 'El nivel', 'level', $id, null);
+        if ($duplicate["result"] == true) return $duplicate;
+        return array("result" => false);
     }
 }
