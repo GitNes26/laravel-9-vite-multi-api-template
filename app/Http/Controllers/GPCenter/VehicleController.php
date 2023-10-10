@@ -4,7 +4,6 @@ namespace App\Http\Controllers\GPCenter;
 
 use App\Http\Controllers\Controller;
 use App\Models\GPCenter\Vehicle;
-use App\Models\GPCenter\VehiclePlate;
 use App\Models\ObjResponse;
 
 use Illuminate\Http\Request;
@@ -76,7 +75,8 @@ class VehicleController extends Controller
             $imgName = "";
             if ($request->hasFile('imgFile')) {
                 $image = $request->file('imgFile');
-                $imgName = time() . '.' . $image->getClientOriginalExtension();
+                // $imgName = time() . '.' . $image->getClientOriginalExtension();
+                $imgName = "$request->brand-$request->model-$request->year.PNG";
                 $image->move(public_path('GPCenter/vehicles'), $imgName);
             }
             $new_vehicle = Vehicle::create([
@@ -186,7 +186,8 @@ class VehicleController extends Controller
             $imgName = "";
             if ($request->hasFile('imgFile')) {
                 $image = $request->file('imgFile');
-                $imgName = time() . '.' . $image->getClientOriginalExtension();
+                // $imgName = time() . '.' . $image->getClientOriginalExtension();
+                $imgName = "$request->brand-$request->model-$request->year.PNG";
                 $image->move(public_path('GPCenter/vehicles'), $imgName);
             }
 
@@ -214,10 +215,10 @@ class VehicleController extends Controller
                     'description' => $request->description,
                 ]);
             }
-
-            if ($response->changePlates) {
-                $vehiclesPlatesController = new VehiclePlate();
-                $vehiclesPlatesController->create($request);
+            // dd($request);
+            if ($request->changePlates == true) {
+                $vehiclesPlatesController = new VehiclePlatesController();
+                // $vehiclesPlatesController->create($request);
             }
 
             $response->data = ObjResponse::CorrectResponse();

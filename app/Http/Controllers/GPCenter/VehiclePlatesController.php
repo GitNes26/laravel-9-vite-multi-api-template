@@ -129,26 +129,44 @@ class VehiclePlatesController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
      */
-    public function create(Request $request, Response $response)
+    // public function create(Request $request/* , Response $response */)
+    // {
+    //     $response->data = ObjResponse::DefaultResponse();
+    //     try {
+    //         $this->FailedPlates($request->vehicle_id);
+
+    //         $new_plates = VehiclePlate::create([
+    //             'vehicle_id' => $request->vehicle_id,
+    //             'plates' => $request->plates,
+    //             'initial_date' => $request->initial_date,
+    //             'due_date' => $request->due_date,
+    //             // 'expired' => $request->expired,
+    //         ]);
+    //         $response->data = ObjResponse::CorrectResponse();
+    //         $response->data["message"] = 'peticion satisfactoria | placas registradas.';
+    //         $response->data["alert_text"] = 'Placas registradas';
+    //     } catch (\Exception $ex) {
+    //         $response->data = ObjResponse::CatchResponse($ex->getMessage());
+    //     }
+    //     return response()->json($response, $response->data["status_code"]);
+    // }
+    public function create(Request $request)
     {
-        $response->data = ObjResponse::DefaultResponse();
         try {
-            $this->FailedPlates($request->vehicle_id);
+            $this->failedPlates($request->id);
 
             $new_plates = VehiclePlate::create([
-                'vehicle_id' => $request->vehicle_id,
+                'vehicle_id' => $request->id,
                 'plates' => $request->plates,
                 'initial_date' => $request->initial_date,
                 'due_date' => $request->due_date,
                 // 'expired' => $request->expired,
             ]);
-            $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'peticion satisfactoria | placas registradas.';
-            $response->data["alert_text"] = 'Placas registradas';
         } catch (\Exception $ex) {
-            $response->data = ObjResponse::CatchResponse($ex->getMessage());
+            error_log($ex->getMessage());
+            return 0;
         }
-        return response()->json($response, $response->data["status_code"]);
+        return 1;
     }
 
     /**
