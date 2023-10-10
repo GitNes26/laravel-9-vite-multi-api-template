@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Exception;
 use Illuminate\Http\Request;
 use App\Models\Facturacion;
-
+use PhpParser\Node\Stmt\Catch_;
 class FactuacionController extends Controller
 {
     public function index() {
@@ -71,6 +71,56 @@ class FactuacionController extends Controller
                             $result["data"] = $data;
                             $result["receive"] = $dataSend;
                         }
+                    }else if($op === 3){
+                        // BUSQUEDA POR MARGEN DE FECHAS
+                        if(isset($dataRec["initialDate"])){
+                            if(isset($dataRec["endlessDate"])){
+                                if ($this->ValidarFecha($dataRec["initialDate"])) {
+                                    $FechaInicio = $dataRec["initialDate"];
+                                    if($this->ValidarFecha($dataRec["endlessDate"])){
+                                        $FechaFin = $dataRec["endlessDate"];
+                                        try{
+                                            $data = Facturacion::whereBetween('dpa_fecha_doc', [$FechaInicio, $FechaFin])->get();
+                                            $result["result"] = true;
+                                            $result["message"] = "Se buscaron los registros dentro del margen de fechas solicitado";
+                                            $result["data"] = $data;
+                                            $result["receive"] = $dataSend;
+                                        } catch (\Exception $es){
+                                            $result["result"] = false;
+                                            $result["message"] = "Introduce un par de fechas validas. Formato correcto: AAAA-DD-MM HH:MM:SS.sss";
+                                            $result["receive"] = $dataSend;
+                                            $result["log"] = $es->getMessage().", ".$es->getLine().", ".$es->getFile();
+                                        }
+                                    }else{
+                                        $data = NULL;
+                                        $result["result"] = false;
+                                        $result["message"] = "El formato de la fecha final que se recibio es incorrecto";
+                                        $result["data"] = $data;
+                                        $result["log"] = "Formato correcto: AAAA-DD-MM HH:MM:SS.sss";
+                                        $result["receive"] = $dataSend;
+                                    }
+                                } else {
+                                    $data = NULL;
+                                    $result["result"] = false;
+                                    $result["message"] = "El formato de la fecha inicial que se recibio es incorrecto";
+                                    $result["data"] = $data;
+                                    $result["log"] = "Formato correcto: AAAA-DD-MM HH:MM:SS.sss";
+                                    $result["receive"] = $dataSend;
+                                }
+                            }else{
+                                $data = NULL;
+                                $result["result"] = false;
+                                $result["message"] = "No se recibio una fecha de fin";
+                                $result["data"] = $data;
+                                $result["receive"] = $dataSend;
+                            }
+                        }else{
+                            $data = NULL;
+                            $result["result"] = false;
+                            $result["message"] = "No se recibio ninguna Fecha Inicial";
+                            $result["data"] = $data;
+                            $result["receive"] = $dataSend;
+                        }
                     }else{
                         $data = NULL;
                         $result["result"] = false;
@@ -122,4 +172,16 @@ class FactuacionController extends Controller
         ));
     }
 
+    private function ValidarFecha($fecha){
+        try{
+            $expresion = "/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3}$/";
+            if(preg_match($expresion, $fecha)){
+                return true;
+            }else{
+                return false;
+            }
+        }catch(\Exception){
+            return false;
+        }
+    }
 }
