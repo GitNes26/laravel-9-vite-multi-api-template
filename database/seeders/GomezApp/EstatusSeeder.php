@@ -17,8 +17,10 @@ class EstatusSeeder extends Seeder
     public function run()
     {
         DB::connection('mysql_gomezapp')->table('estatus')->insert([
-            'estatus' => 'Activo'
-            
+            'estatus' => 'ALTA'
+        ]);
+        DB::connection('mysql_gomezapp')->table('estatus')->insert([
+            'estatus' => 'ATENDIDO'
         ]);
     }
 }
