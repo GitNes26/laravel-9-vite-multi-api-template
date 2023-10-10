@@ -263,6 +263,7 @@ Route::controller(ClosuremotifImmController::class)->group(function () {
 });
 
 Route::controller(UserProfileImmController::class)->group(function () {
+    Route::get('/updatestatus/{iduser}/{idstatus}','statusServiceProfile');
     Route::post('/userdatageneral/{id?}','createData');
     Route::post('/userprofile/{id}','createProfile');
     Route::post('/userviolence/{id}','createViolence');
@@ -275,6 +276,7 @@ Route::controller(UserProfileImmController::class)->group(function () {
     Route::get('/userviolence/{id}','getViolence');
     Route::get('/profileagressor/{id}','getprofileAgressor');
     Route::get('/userservice/{id}','getServices');
+    Route::get('/usereport/{id}','getUserAllData');
 
     
 });
