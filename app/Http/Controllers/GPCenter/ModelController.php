@@ -45,7 +45,7 @@ class ModelController extends Controller
         $response->data = ObjResponse::DefaultResponse();
         try {
             $list = mModel::where('models.active', true)->where('models.brand_id', $request->brand_id)
-                ->select('models.id as value', 'models.model as text')
+                ->select('models.id as id', 'models.model as label')
                 ->orderBy('models.model', 'asc')->get();
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'Peticion satisfactoria | Lista de modelos';

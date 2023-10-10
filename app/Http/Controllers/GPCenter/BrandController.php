@@ -43,7 +43,7 @@ class BrandController extends Controller
         $response->data = ObjResponse::DefaultResponse();
         try {
             $list = Brand::where('active', true)
-                ->select('brands.id as value', 'brands.brand as text')
+                ->select('brands.id as id', 'brands.brand as label')
                 ->orderBy('brands.brand', 'asc')->get();
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'Peticion satisfactoria | Lista de marcas';
@@ -64,6 +64,12 @@ class BrandController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
+            $duplicate = $this->validateAvailableData($request->brand, null);
+            if ($duplicate["result"] == true) {
+                $response->data = $duplicate;
+                return response()->json($response);
+            }
+
             $imgName = "";
             if ($request->hasFile('imgFile')) {
                 $image = $request->file('imgFile');
@@ -115,6 +121,12 @@ class BrandController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
+            $duplicate = $this->validateAvailableData($request->brand, $request->id);
+            if ($duplicate["result"] == true) {
+                $response->data = $duplicate;
+                return response()->json($response);
+            }
+
             $imgName = "";
             if ($request->hasFile('imgFile')) {
                 $image = $request->file('imgFile');
@@ -123,15 +135,15 @@ class BrandController extends Controller
             }
             if ($imgName != "") {
                 $brand = Brand::find($request->id)
-                ->update([
-                    'brand' => $request->brand,
-                    'img_path' => "GPCenter/brands/$imgName"
-                ]);
+                    ->update([
+                        'brand' => $request->brand,
+                        'img_path' => "GPCenter/brands/$imgName"
+                    ]);
             } else {
                 $brand = Brand::find($request->id)
-                ->update([
-                    'brand' => $request->brand,
-                ]);
+                    ->update([
+                        'brand' => $request->brand,
+                    ]);
             }
 
             $response->data = ObjResponse::CorrectResponse();
@@ -166,5 +178,22 @@ class BrandController extends Controller
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
         return response()->json($response, $response->data["status_code"]);
+    }
+
+
+    private function validateAvailableData($brand, $id)
+    {
+        #este codigo se pone en las funciones de registro y edicion
+        // $duplicate = $this->validateAvailableData($request->username, $request->email, $request->id);
+        // if ($duplicate["result"] == true) {
+        //     $response->data = $duplicate;
+        //     return response()->json($response);
+        // }
+
+        $checkAvailable = new UserController();
+        // #VALIDACION DE DATOS REPETIDOS
+        $duplicate = $checkAvailable->checkAvailableData('brands', 'brand', $brand, 'La marca', 'brand', $id, null);
+        if ($duplicate["result"] == true) return $duplicate;
+        return array("result" => false);
     }
 }
