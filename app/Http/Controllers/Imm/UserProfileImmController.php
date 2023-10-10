@@ -362,6 +362,7 @@ class UserProfileImmController extends Controller
             )
             ->leftjoin('user_proceedings', 'user_proceedings.user_datageneral_id', '=', 'user_datageneral.id')
             ->leftjoin('user_comunities', 'user_comunities.user_datageneral_id', '=', 'user_datageneral.id')
+            
             ->orderBy('user_datageneral.id', 'asc')
             ->get();
 
@@ -604,6 +605,215 @@ class UserProfileImmController extends Controller
             $response->data["alert_text"] ='Status Actualizado';
 
         } catch (\Exception $ex) {
+            $response->data = ObjResponse::CatchResponse($ex->getMessage());
+        }
+        return response()->json($response, $response->data["status_code"]);
+    }
+    public function getUserAllData(Request $request, Response $response,int $id){
+        $response->data = ObjResponse::DefaultResponse();
+        try {
+
+            $list = UserData::from('user_datageneral as dt')
+            ->select(        
+                'pro.procceding as Folio',
+                DB::raw("DATE_FORMAT(pro.dateIngress, '%d/%m/%Y') as `Fecha de ingreso`"),
+                DB::raw("TIME_FORMAT(pro.timeingress , '%h:%i %p') as `Hora de ingreso`"),
+                'dt.name as Nombre',
+                'dt.lastName as `Apellido Paterno`',
+                'dt.secondName as `Apellido Materno`',
+                DB::raw("IF(dt.sex = 0, 'Hombre', 'Mujer') as Sexo"),
+                'g.gender as Genero',
+                DB::raw("DATE_FORMAT(dt.birthdate, '%d/%m/%Y') as `Fecha de nacimiento`"),
+                'dt.age as Edad',
+                'dt.telephone as Telefono',
+                'dt.email as Correo',
+                'cv.civil_status as `Estado civil`',
+                'dt.numberdaughters as `Numero de hijos`',
+                'dt.numberchildrens as `Numero de hijas`',
+                DB::raw("IF(dt.pregnant = 0, 'Si', 'No') as `Esta Embarazada`"),
+                'com.street as `Calle`',
+                'com.number as `Numero`',
+                'com.colonies_id',
+                'com.statebirth',
+                DB::raw("IF(com.zone = 0, 'Urbana', 'Rural') as `Zona`"),
+                'act.activity as `Actividad que realiza`',
+                DB::raw("IF(pf.sourceofincome = 0, 'Si', 'No') as `Fuentes de ingresos`"),
+                'wk.workplace as `Lugar de trabajo`',
+                DB::raw("TIME_FORMAT(pf.entry_time, '%h:%i %p') as `Hora de entrada`"),
+                DB::raw("TIME_FORMAT(pf.departure_time, '%h:%i %p') as `Hora de salida`"),
+                'tr.training as `Formacion educativa`',
+                DB::raw("IF(pf.finish = 0, 'Si', 'No') as `¿Concluida?`"),
+                DB::raw("IF(pf.wantofindwork = 0, 'Si', 'No') as `¿Desea encontrar trabajo?`"),
+                DB::raw("IF(pf.wanttotrain = 0, 'Si', 'No') as `¿Desea Capacitarse?`"),
+                DB::raw("IF(pf.wantocontinuestudying = 0, 'Si', 'No') as `¿Desea seguir con sus estudios?`"),
+                'hous.household as Vivienda',
+                DB::raw("GROUP_CONCAT(DISTINCT  md.medicalservice) as `Serviciós medícos`"),
+                DB::raw("GROUP_CONCAT(DISTINCT  addic.addiction) as Adicciones"),
+                DB::raw("GROUP_CONCAT(DISTINCT  CONCAT('Enfermedad ', d.diseas, ' Origen ', ori.origin)) as `Enfermedades y origen`"),
+                DB::raw("GROUP_CONCAT(DISTINCT  CONCAT('Discapacidad ', disa.disability, ' Origen ', orig.origin)) as `Discapacidades y origen`"),
+                'vio.lowefecct as `Efectos de violencia`',
+                'vio.narrationfacts as `Narracion de hechos`',
+                DB::raw("DATE_FORMAT(vio.date, '%d/%m/%Y') as `Fecha de hechos`"),
+                'adi.addiction as `El agresor estaba bajo los efectos`',
+                DB::raw("IF(vio.weapons = 0, 'Si', 'No') as `¿Uso Armas?`"),
+                DB::raw("GROUP_CONCAT(DISTINCT  CONCAT('Tipo violencia ', typ.violence, ' Ambito violencia ', orig.origin)) as `Tipos de violencia y Ambitos`"),
+                DB::raw("'agresor' as `agresor`"),
+                'dg.name as agresor_Nombre',
+                'dg.lastName as `agresor_Apellido Paterno`',
+                'dg.secondName as `agresor_Apellido Materno`',
+                DB::raw("IF(dg.sex = 0, 'Hombre', 'Mujer') as agresor_Sexo"),
+                'gen.gender as agresor_Genero',
+                DB::raw("DATE_FORMAT(dg.birthdate, '%d/%m/%Y') as `agresor_Fecha de nacimiento`"),
+                'dg.age as agresor_Edad',
+                'dg.telephone as agresor_Telefono',
+                'comag.street as `agresor_Calle`',
+                'comag.number as `agresor_Numero`',
+                'comag.colonies_id as `agresor_colonies_id`',
+                DB::raw("IF(comag.zone = 0, 'Urbana', 'Rural') as `agresor_Zona`"),
+                'actag.activity as `agresor_Actividad que realiza`',
+                DB::raw("IF(pfag.sourceofincome = 0, 'Si', 'No') as `agresor_Fuentes de ingresos`"),
+                'wkag.workplace as `agresor_Lugar de trabajo`',
+                DB::raw("TIME_FORMAT(pfag.entry_time, '%h:%i %p') as `agresor_Hora de entrada`"),
+                DB::raw("TIME_FORMAT(pfag.departure_time, '%h:%i %p') as `agresor_Hora de salida`"),
+                'housag.household as agresor_Vivienda',
+                DB::raw("GROUP_CONCAT( DISTINCT  mdag.medicalservice) as `agresor_Serviciós medícos`"),
+                DB::raw("GROUP_CONCAT(DISTINCT  addicag.addiction) as agresor_Adicciones"),
+                DB::raw("GROUP_CONCAT(DISTINCT  CONCAT('Enfermedad ', dag.diseas, ' Origen ', oriag.origin)) as `agresor_Enfermedades y origen`"),
+                DB::raw("GROUP_CONCAT(DISTINCT  CONCAT('Discapacidad ', disbag.disability, ' Origen ', origg.origin)) as `agresor_Discapacidades y origen`"),
+                'serv.subservice as Subservicio',
+                'serv.lineacction as `Linea de acción`',
+                'serv.observations as Observaciones',
+                'ax.axi as Eje',
+                'axp.axisprogram as Programa',
+                's.status',
+                DB::raw("GROUP_CONCAT(DISTINCT  svc.service) as `Serviciós`"),
+
+            )
+            ->join('genders as g', 'dt.gender_id', '=', 'g.id')
+            ->join('civil_status as cv', 'dt.civil_status_id', '=', 'cv.id')
+            ->join('user_proceedings as pro', 'pro.user_datageneral_id', '=', 'dt.id')
+            ->join('user_comunities as com', 'com.user_datageneral_id', '=', 'dt.id')
+            ->join('user_profiles as pf', 'pf.user_datageneral_id', '=', 'dt.id')
+            ->join('activities as act', 'act.id', '=', 'pf.activity_id')
+            ->join('workplaces as wk', 'wk.id', '=', 'pf.workplace_id')
+            ->join('trainings as tr', 'tr.id', '=', 'pf.training_id')
+            ->join('households as hous', 'hous.id', '=', 'pf.household_id')
+            ->leftJoin('user_profiles_medicalservices as pfmd', 'pfmd.user_profiles_id', '=', 'pf.id')
+            ->leftJoin('user_profiles_adicttions as pfadd', 'pfadd.user_profiles_id', '=', 'pf.id')
+            ->leftJoin('medicalservices as md', 'md.id', '=', 'pfmd.medicalservice_id')
+            ->leftJoin('addictions as addic', 'addic.id', '=', 'pfadd.addiction_id')
+            ->leftJoin('user_diseases as dis', 'dis.user_datageneral_id', '=', 'dt.id')
+            ->leftJoin('diseases as d', 'd.id', '=', 'dis.diseas_id')
+            ->leftJoin('origins as ori', 'ori.id', '=', 'dis.origin_id')
+            ->leftJoin('user_disabilities as disab', 'disab.user_datageneral_id', '=', 'dt.id')
+            ->leftJoin('disabilities as disa', 'disa.id', '=', 'disab.disability_id')
+            ->leftJoin('origins as orig', 'orig.id', '=', 'disab.origin_id')
+            ->leftJoin('user_violences as vio', 'vio.user_datageneral_id', '=', 'dt.id')
+            ->leftJoin('addictions as adi', 'adi.id', '=', 'vio.addiction_id')
+            ->leftJoin('user_violence_fields as viofi', 'viofi.user_violences_id', '=', 'vio.id')
+            ->leftJoin('typesviolences as typ', 'typ.id', '=', 'viofi.typesviolence_id')
+            ->leftJoin('fieldsviolences as fields', 'fields.id', '=', 'viofi.fieldsviolence_id')
+            ->leftJoin('user_datageneral as dg', 'dg.user_violence', '=', 'vio.id')
+            ->leftJoin('genders as gen', 'dg.gender_id', '=', 'gen.id')
+            ->leftJoin('user_comunities as comag', 'comag.user_datageneral_id', '=', 'dg.id')
+            ->leftJoin('user_profiles as pfag', 'pfag.user_datageneral_id', '=', 'dg.id')
+            ->leftJoin('activities as actag', 'actag.id', '=', 'pfag.activity_id')
+            ->leftJoin('workplaces as wkag', 'wkag.id', '=', 'pfag.workplace_id')
+            ->leftJoin('households as housag', 'housag.id', '=', 'pfag.household_id')
+            ->leftJoin('user_profiles_medicalservices as pfmdag', 'pfmdag.user_profiles_id', '=', 'pf.id')
+            ->leftJoin('user_profiles_adicttions as pfaddag', 'pfaddag.user_profiles_id', '=', 'pfag.id')
+            ->leftJoin('medicalservices as mdag', 'mdag.id', '=', 'pfmdag.medicalservice_id')
+            ->leftJoin('addictions as addicag', 'addicag.id', '=', 'pfaddag.addiction_id')
+            ->leftJoin('user_diseases as disag', 'disag.user_datageneral_id', '=', 'dg.id')
+            ->leftJoin('diseases as dag', 'dag.id', '=', 'disag.diseas_id')
+            ->leftJoin('origins as oriag', 'oriag.id', '=', 'disag.origin_id')
+            ->leftJoin('user_disabilities as disabag', 'disabag.user_datageneral_id', '=', 'dg.id')
+            ->leftJoin('disabilities as disbag', 'disbag.id', '=', 'disabag.disability_id')
+            ->leftJoin('origins as origg', 'origg.id', '=', 'disabag.origin_id')
+            ->leftJoin('user_services as serv', 'serv.user_datageneral_id', '=', 'dt.id')
+            ->leftJoin('status as s', 's.id', '=', 'serv.status_id')
+            ->leftJoin('axis as ax', 'ax.id', '=', 'serv.axi_id')
+            ->leftJoin('axisprograms as axp', 'axp.id', '=', 'serv.axi_program_id')
+            ->leftJoin('user_services_references as seref', 'seref.user_service_id', '=', 'serv.id')
+            ->leftJoin('services as svc', 'svc.id', '=', 'seref.services_id')
+
+            ->where('dt.user_violence', null)
+            ->where('dt.active', 1)
+            ->where('dt.id', $id)
+           
+            ->groupBy(
+
+                'pro.procceding',
+                'pro.dateIngress',
+                'pro.timeingress',
+                'dt.name',
+                'dt.lastName',
+                'dt.secondName',
+                'dt.sex',
+                'g.gender',
+                'dt.birthdate',
+                'dt.age',
+                'dt.telephone',
+                'dt.email',
+                'cv.civil_status',
+                'dt.numberdaughters',
+                'dt.pregnant',
+                'dt.numberchildrens',
+                'com.street',
+                'com.number',
+                'com.colonies_id',
+                'com.statebirth',
+                'com.zone',
+                'act.activity',
+                'pf.sourceofincome',
+                'wk.workplace',
+                'pf.entry_time',
+                'pf.departure_time',
+                'tr.training',
+                'pf.finish',
+                'pf.wantofindwork',
+                'pf.wanttotrain',
+                'pf.wantocontinuestudying',
+                'hous.household',
+                'vio.lowefecct',
+                'vio.narrationfacts',
+                'vio.date',
+                'adi.addiction',
+                'vio.weapons',
+                'agresor',
+                'dg.name',
+                'dg.lastName',
+                'dg.secondName',
+                'dg.sex',
+                'gen.gender',
+                'dg.birthdate',
+                'dg.age',
+                'dg.telephone',
+                'comag.street',
+                'comag.number',
+                'comag.colonies_id',
+                'comag.zone',
+                'actag.activity',
+                'pfag.sourceofincome',
+                'wkag.workplace',
+                'pfag.entry_time',
+                'pfag.departure_time',
+                'housag.household',
+                'serv.subservice',
+                'serv.lineacction',
+                'serv.observations',
+                's.status',
+                'ax.axi',
+                'axp.axisprogram',
+               
+            )
+            ->get();
+            $response->data = ObjResponse::CorrectResponse();
+            $response->data["message"] = 'Peticion satisfactoria | Lista de servicios del usuario.';
+            $response->data["result"] = $list;
+
+        }
+        catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
         return response()->json($response, $response->data["status_code"]);

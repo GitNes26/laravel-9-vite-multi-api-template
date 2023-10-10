@@ -276,6 +276,7 @@ Route::controller(UserProfileImmController::class)->group(function () {
     Route::get('/userviolence/{id}','getViolence');
     Route::get('/profileagressor/{id}','getprofileAgressor');
     Route::get('/userservice/{id}','getServices');
+    Route::get('/usereport/{id}','getUserAllData');
 
     
 });
