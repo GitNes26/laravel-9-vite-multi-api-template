@@ -86,8 +86,11 @@ class UserBecasController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-
-            // if (!$this->validateAvailability('username',$request->username)->status) return;
+            $duplicate = $this->validateAvailableData($request->username, $request->email, null);
+            if ($duplicate["result"] == true) {
+                $response->data = $duplicate;
+                return response()->json($response);
+            }
 
             $new_user = User::create([
                 'email' => $request->email,

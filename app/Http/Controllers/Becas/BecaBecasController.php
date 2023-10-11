@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Becas\StudentDataBecasController;
+use App\Models\becas\BecasView;
 
 class BecaBecasController extends Controller
 {
@@ -23,12 +24,13 @@ class BecaBecasController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $list = Beca::where('becas.active', true)
-                // ->join("users", "becas.user_id", "=", "users.id")
-                ->join('student_data', 'becas.student_data_id', '=', 'student_data.id')
-                ->join('schools', 'becas.school_id', '=', 'schools.id')
-                ->select('*')
-                ->orderBy('becas.id', 'asc')->get();
+            // $list = Beca::where('becas.active', true)
+            //     // ->join("users", "becas.user_id", "=", "users.id")
+            //     ->join('student_data', 'becas.student_data_id', '=', 'student_data.id')
+            //     ->join('schools', 'becas.school_id', '=', 'schools.id')
+            //     ->select('*')
+            //     ->orderBy('becas.id', 'asc')->get();
+            $list = BecasView::all();
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'Peticion satisfactoria | Lista de becas.';
             $response->data["result"] = $list;
