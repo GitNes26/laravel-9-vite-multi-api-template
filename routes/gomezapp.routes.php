@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\GomezApp\appController;
 use App\Http\Controllers\GomezApp\UserController;
 use App\Http\Controllers\GomezApp\RoleController;
 use App\Http\Controllers\GomezApp\DepartmentController;
@@ -85,6 +86,12 @@ Route::controller(OrigenController::class)->group(function () {
 Route::controller(AsuntosDepController::class)->group(function () {
    Route::get('/asuntosdep', 'index');
    Route::get('/asuntosdep/{id}', 'show');
+});
+
+
+Route::controller(appController::class)->group(function () {
+   Route::get('/asuntos', 'index');
+
 });
 
 
