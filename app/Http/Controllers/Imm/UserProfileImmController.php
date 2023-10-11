@@ -21,7 +21,6 @@ use App\Models\imm\UserServicesReferences;
 
 use App\Models\imm\UserProfilesMedAdi;
 use App\Models\imm\UserService;
-use Carbon\Carbon;
 
 use PhpParser\Node\Stmt\Return_;
 
@@ -40,7 +39,7 @@ class UserProfileImmController extends Controller
             $userData->secondName = $request->secondName;
             $userData->sex = $request->sex;
             $userData->gender_id = intval($request->gender_id);
-            $userData->birthdate = Carbon::parse($request->birthdate)->format('Y-m-d');
+            $userData->birthdate = date('Y-m-d', strtotime($request->birthdate));
             $userData->age = intval($request->age);
             $userData->telephone = $request->telephone;
             $userData->email = $request->email;
@@ -48,6 +47,7 @@ class UserProfileImmController extends Controller
             $userData->numberchildrens = intval($request->numberchildrens);
             $userData->numberdaughters = intval($request->numberdaughters);
             $userData->pregnant = $request->pregnant;
+
 
             $userData->save();
 
@@ -171,7 +171,7 @@ class UserProfileImmController extends Controller
             // $userViolence->fieldsviolence_id = intval($request->fieldsviolence_id);
             $userViolence->lowefecct = $request->lowefecct;
             $userViolence->narrationfacts = $request->narrationfacts;
-            $userViolence->date = Carbon::parse($request->date)->format('Y-m-d');
+            $userViolence->date = date('Y-m-d', strtotime($request->date));
             $userViolence->location = $request->location;
             $userViolence->addiction_id = intval($request->addiction_id);
             $userViolence->weapons = $request->weapons;
@@ -227,7 +227,7 @@ class UserProfileImmController extends Controller
                 $userData->secondName = $request->secondName;
                 $userData->sex = $request->sex;
                 $userData->gender_id = intval($request->gender_id);
-                $userData->birthdate = Carbon::parse($request->birthdate)->format('Y-m-d');
+                $userData->birthdate = date('Y-m-d', strtotime($request->birthdate));
                 $userData->age = $request->age;
                 $userData->telephone = $request->telephone;
                 $userData->save();
@@ -660,13 +660,13 @@ class UserProfileImmController extends Controller
                 'vio.narrationfacts as `Narracion de hechos`',
                 DB::raw("DATE_FORMAT(vio.date, '%d/%m/%Y') as `Fecha de hechos`"),
                 'adi.addiction as `El agresor estaba bajo los efectos`',
-                DB::raw("IF(vio.weapons = 0, 'Si', 'No') as `¿Uso Armas?`"),
+                DB::raw("CASE WHEN vio.weapons = 0 THEN 'Si' WHEN vio.weapons = 1 THEN 'No' ELSE NULL END as `¿Uso Armas?`"),
                 DB::raw("GROUP_CONCAT(DISTINCT  CONCAT('Tipo violencia ', typ.violence, ' Ambito violencia ', orig.origin)) as `Tipos de violencia y Ambitos`"),
                 DB::raw("'agresor' as `agresor`"),
                 'dg.name as agresor_Nombre',
                 'dg.lastName as `agresor_Apellido Paterno`',
                 'dg.secondName as `agresor_Apellido Materno`',
-                DB::raw("IF(dg.sex = 0, 'Hombre', 'Mujer') as agresor_Sexo"),
+                DB::raw("(CASE WHEN dg.sex = 0 THEN 'Hombre' WHEN dg.sex = 1 THEN 'Mujer' ELSE NULL END) as agresor_Sexo"),
                 'gen.gender as agresor_Genero',
                 DB::raw("DATE_FORMAT(dg.birthdate, '%d/%m/%Y') as `agresor_Fecha de nacimiento`"),
                 'dg.age as agresor_Edad',
@@ -674,14 +674,14 @@ class UserProfileImmController extends Controller
                 'comag.street as `agresor_Calle`',
                 'comag.number as `agresor_Numero`',
                 'comag.colonies_id as `agresor_colonies_id`',
-                DB::raw("IF(comag.zone = 0, 'Urbana', 'Rural') as `agresor_Zona`"),
+                DB::raw("CASE WHEN comag.zone = 0 THEN 'Urbana' WHEN comag.zone = 1 THEN 'Rural' ELSE NULL END as agresor_Zona"),
                 'actag.activity as `agresor_Actividad que realiza`',
-                DB::raw("IF(pfag.sourceofincome = 0, 'Si', 'No') as `agresor_Fuentes de ingresos`"),
+                DB::raw("CASE WHEN pfag.sourceofincome = 0 THEN 'Si' WHEN pfag.sourceofincome = 1 THEN 'No' ELSE NULL END as `agresor_Fuentes de ingresos`"),
                 'wkag.workplace as `agresor_Lugar de trabajo`',
                 DB::raw("TIME_FORMAT(pfag.entry_time, '%h:%i %p') as `agresor_Hora de entrada`"),
                 DB::raw("TIME_FORMAT(pfag.departure_time, '%h:%i %p') as `agresor_Hora de salida`"),
                 'housag.household as agresor_Vivienda',
-                DB::raw("GROUP_CONCAT( DISTINCT  mdag.medicalservice) as `agresor_Serviciós medícos`"),
+                DB::raw("GROUP_CONCAT( DISTINCT mdag.medicalservice) as `agresor_Serviciós medícos`"),
                 DB::raw("GROUP_CONCAT(DISTINCT  addicag.addiction) as agresor_Adicciones"),
                 DB::raw("GROUP_CONCAT(DISTINCT  CONCAT('Enfermedad ', dag.diseas, ' Origen ', oriag.origin)) as `agresor_Enfermedades y origen`"),
                 DB::raw("GROUP_CONCAT(DISTINCT  CONCAT('Discapacidad ', disbag.disability, ' Origen ', origg.origin)) as `agresor_Discapacidades y origen`"),
@@ -725,7 +725,7 @@ class UserProfileImmController extends Controller
             ->leftJoin('activities as actag', 'actag.id', '=', 'pfag.activity_id')
             ->leftJoin('workplaces as wkag', 'wkag.id', '=', 'pfag.workplace_id')
             ->leftJoin('households as housag', 'housag.id', '=', 'pfag.household_id')
-            ->leftJoin('user_profiles_medicalservices as pfmdag', 'pfmdag.user_profiles_id', '=', 'pf.id')
+            ->leftJoin('user_profiles_medicalservices as pfmdag', 'pfmdag.user_profiles_id', '=', 'pfag.id')
             ->leftJoin('user_profiles_adicttions as pfaddag', 'pfaddag.user_profiles_id', '=', 'pfag.id')
             ->leftJoin('medicalservices as mdag', 'mdag.id', '=', 'pfmdag.medicalservice_id')
             ->leftJoin('addictions as addicag', 'addicag.id', '=', 'pfaddag.addiction_id')
