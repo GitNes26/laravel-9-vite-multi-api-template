@@ -123,14 +123,8 @@ class UserController extends Controller
     {
        $response->data = ObjResponse::DefaultResponse();
        try {
-          // $list = DB::select('SELECT * FROM users where active = 1');
-          // User::gomezapp')->get();
-          $list = User::where('users.active', true)
-             ->join('roles', 'users.role_id', '=', 'roles.id')
-             ->join('departments', 'users.department_id', '=', 'departments.id')
-             ->select('users.*', 'roles.role', 'departments.department', 'departments.description as department_description')
-             ->orderBy('users.id', 'desc')
-             ->get();
+         
+          $list = User::where('active',true)->get();
 
           $response->data = ObjResponse::CorrectResponse();
           $response->data["message"] = 'peticion satisfactoria | lista de usuarios.';
@@ -178,16 +172,18 @@ class UserController extends Controller
           $token = $request->bearerToken();
 
           if ($request->role_id <= 2) {
-             $new_user = User::create([
-                'username' => $request->username,
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
-                'role_id' => $request->role_id,
-                'department_id' => 1, //$request->department_id
-             ]);
+           
+
+            $new_user = new User;
+            $new_user->email =  $request->email;
+            $new_user->password =  Hash::make($request->password);
+            $new_user->role_id =  $request->role_id;
+            $new_user->save();
+
+
           } else {
              $new_user = User::create([
-                'username' => $request->username,
+           
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
                 'role_id' => $request->role_id,
@@ -195,11 +191,7 @@ class UserController extends Controller
                 'name' => $request->name,
                 'paternal_last_name' => $request->paternal_last_name,
                 'maternal_last_name' => $request->maternal_last_name,
-                'department_id' => $request->department_id,
-                'community_id' => $request->community_id,
-                'street' => $request->street,
-                'num_ext' => $request->num_ext,
-                'num_int' => $request->num_int,
+           
              ]);
           }
           $response->data = ObjResponse::CorrectResponse();
@@ -223,11 +215,7 @@ class UserController extends Controller
        $response->data = ObjResponse::DefaultResponse();
        try {
           // echo "el id: $request->id";
-          $user = User::where('users.id', $request->id)
-             ->join('roles', 'users.role_id', '=', 'roles.id')
-             ->join('departments', 'users.department_id', '=', 'departments.id')
-             ->select('users.*', 'roles.role', 'departments.department', 'departments.description as department_description')
-             ->first();
+          $user = User::where('users.id', $request->id)->first();
 
           $response->data = ObjResponse::CorrectResponse();
           $response->data["message"] = 'peticion satisfactoria | usuario encontrado.';
@@ -253,31 +241,23 @@ class UserController extends Controller
           if ($request->role_id < 2) {
              $user = User::find($request->id)
                 ->update([
-                   'username' => $request->username,
+       
                    'email' => $request->email,
                    'password' => Hash::make($request->password),
                    'role_id' => $request->role_id,
-                   'department_id' => 1, //$request->department_id
+            
                 ]);
           } else {
              $user = User::find($request->id)
                 ->update([
-                   'username' => $request->username,
+
                    'email' => $request->email,
                    'password' => Hash::make($request->password),
                    'role_id' => $request->role_id,
                    'phone' => $request->phone,
-                   'license_number' => $request->license_number,
-                   'license_due_date' => $request->license_due_date,
-                   'payroll_number' => $request->payroll_number,
-                   'department_id' => $request->department_id,
                    'name' => $request->name,
                    'paternal_last_name' => $request->paternal_last_name,
                    'maternal_last_name' => $request->maternal_last_name,
-                   'community_id' => $request->community_id,
-                   'street' => $request->street,
-                   'num_ext' => $request->num_ext,
-                   'num_int' => $request->num_int,
                 ]);
           }
 
@@ -300,11 +280,12 @@ class UserController extends Controller
     {
        $response->data = ObjResponse::DefaultResponse();
        try {
-          User::find($id)
-             ->update([
-                'active' => false,
-                'deleted_at' => date('Y-m-d H:i:s'),
-             ]);
+          $destroy = User::find($id);
+          
+          $destroy->active = false;
+          $destroy->deleted_at = date('Y-m-d H:i:s');
+          $destroy->save();
+           
           $response->data = ObjResponse::CorrectResponse();
           $response->data["message"] = 'peticion satisfactoria | usuario eliminado.';
           $response->data["alert_text"] = "Usuario eliminado";
