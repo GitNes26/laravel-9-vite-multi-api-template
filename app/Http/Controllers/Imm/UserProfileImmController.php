@@ -21,7 +21,6 @@ use App\Models\imm\UserServicesReferences;
 
 use App\Models\imm\UserProfilesMedAdi;
 use App\Models\imm\UserService;
-use Carbon\Carbon;
 
 use PhpParser\Node\Stmt\Return_;
 
@@ -40,7 +39,7 @@ class UserProfileImmController extends Controller
             $userData->secondName = $request->secondName;
             $userData->sex = $request->sex;
             $userData->gender_id = intval($request->gender_id);
-            $userData->birthdate = Carbon::parse($request->birthdate)->format('Y-m-d');
+            $userData->birthdate = date('Y-m-d', strtotime($request->birthdate));
             $userData->age = intval($request->age);
             $userData->telephone = $request->telephone;
             $userData->email = $request->email;
@@ -172,7 +171,7 @@ class UserProfileImmController extends Controller
             // $userViolence->fieldsviolence_id = intval($request->fieldsviolence_id);
             $userViolence->lowefecct = $request->lowefecct;
             $userViolence->narrationfacts = $request->narrationfacts;
-            $userViolence->date = Carbon::parse($request->date)->format('Y-m-d');
+            $userViolence->date = date('Y-m-d', strtotime($request->date));
             $userViolence->location = $request->location;
             $userViolence->addiction_id = intval($request->addiction_id);
             $userViolence->weapons = $request->weapons;
@@ -228,7 +227,7 @@ class UserProfileImmController extends Controller
                 $userData->secondName = $request->secondName;
                 $userData->sex = $request->sex;
                 $userData->gender_id = intval($request->gender_id);
-                $userData->birthdate = Carbon::parse($request->birthdate)->format('Y-m-d');
+                $userData->birthdate = date('Y-m-d', strtotime($request->birthdate));
                 $userData->age = $request->age;
                 $userData->telephone = $request->telephone;
                 $userData->save();
