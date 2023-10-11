@@ -20,7 +20,13 @@ class EstatusSeeder extends Seeder
             'estatus' => 'ALTA'
         ]);
         DB::connection('mysql_gomezapp')->table('estatus')->insert([
-            'estatus' => 'ATENDIDO'
+            'estatus' => 'EN TRAMITE'
+        ]);
+        DB::connection('mysql_gomezapp')->table('estatus')->insert([
+            'estatus' => 'NO PROCEDE'
+        ]);
+        DB::connection('mysql_gomezapp')->table('estatus')->insert([
+            'estatus' => 'TERMINADO'
         ]);
     }
 }

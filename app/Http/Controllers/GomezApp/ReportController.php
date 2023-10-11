@@ -183,20 +183,47 @@ class ReportController extends Controller
         return response()->json($response, $response->data["status_code"]);
     }
 
+    public function deleteResponse(Response $response, int $id)
+    {
+        $response->data = ObjResponse::DefaultResponse();
+        try {
+
+            $deleteResponse = ResponseR::where("id_reporte", $id)->delete();
+
+            $reportFind = Report::find($id);
+            $reportFind->id_estatus = 1;
+            $reportFind->save();
+
+            $response->data = ObjResponse::CorrectResponse();
+            $response->data["message"] = 'peticion satisfactoria | usuario eliminado.';
+            $response->data["alert_text"] = "Usuario eliminado";
+            $response->data["result"] = $deleteResponse;
+        } catch (\Exception $ex) {
+            $response->data = ObjResponse::CatchResponse($ex->getMessage());
+        }
+        return response()->json($response, $response->data["status_code"]);
+    }
+
     public function saveResponse(Request $request, Response $response)
     {
         $response->data = ObjResponse::DefaultResponse();
         $id = $request->idReport;
         try {
-            $responseR = new ResponseR;
-            $responseR->id_reporte = $request->idReport;
-            $responseR->respuesta = $request->response;
-            $responseR->fecha_respuesta = now();
-            $responseR->save();
+            if ($request->estatus == 3 || $request->estatus == 4) {
+                $responseR = new ResponseR;
+                $responseR->id_reporte = $request->idReport;
+                $responseR->respuesta = $request->response;
+                $responseR->fecha_respuesta = now();
+                $responseR->save();
 
-            $updateEstatus = Report::find($id);
-            $updateEstatus->id_estatus = 2;
-            $updateEstatus->save();
+                $updateEstatus = Report::find($id);
+                $updateEstatus->id_estatus = $request->estatus;
+                $updateEstatus->save();
+            } else {
+                $updateEstatus = Report::find($id);
+                $updateEstatus->id_estatus = $request->estatus;
+                $updateEstatus->save();
+            }
 
 
 
