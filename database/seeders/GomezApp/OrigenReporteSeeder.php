@@ -21,5 +21,8 @@ class OrigenReporteSeeder extends Seeder
         DB::connection('mysql_gomezapp')->table('origen_reporte')->insert([
             'origen' => 'Telefono',
         ]);
+        DB::connection('mysql_gomezapp')->table('origen_reporte')->insert([
+            'origen' => 'APP',
+        ]);
     }
 }

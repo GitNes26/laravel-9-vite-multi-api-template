@@ -30,7 +30,7 @@ return new class extends Migration
             $table->string('municipio')->nullable()->default('Gómez Palacio');
             $table->string('estado')->nullable()->default('Durango');
             $table->string('referencias')->nullable();
-            $table->string('id_departamento')->nullable();
+            $table->integer('id_departamento')->nullable();
             $table->foreignId('id_origen')->constrained('origen_reporte', 'id')->default(1); //WEB, APP, TELEFONICO ETC
             $table->foreignId('id_estatus')->constrained('estatus', 'id')->default(1);   // ASIGANDO, EN CURSO, ATENDIDO ETC
             $table->string('community_id')->nullable();

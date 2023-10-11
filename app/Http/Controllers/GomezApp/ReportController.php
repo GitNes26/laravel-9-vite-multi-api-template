@@ -154,11 +154,23 @@ class ReportController extends Controller
                 $reports->latitud = $request->latitud;
                 $reports->longitud = $request->longitud;
                 $reports->id_user = $request->id_user;
-                $reports->id_tipo_reporte = $request->id_tipo_reporte;
-                $reports->referencia = $request->referencia;
-                $reports->comentario = $request->comentario;
+                $reports->id_departamento = $request->id_departamento;
+                $reports->id_estatus = 1;
+                $reports->id_origen = 3;
+                $reports->referencias = $request->referencia;
                 $reports->created_at = now();
                 $reports->save();
+
+
+                $reportsAsunt2 = new ReportAsuntos();
+                $reportsAsunt2->id_reporte = $reports->id;
+                $reportsAsunt2->id_servicio = 1;
+                $reportsAsunt2->id_asunto = $request->id_asunto;
+                $reportsAsunt2->observaciones = $request->comentario;
+                $reportsAsunt2->save();
+
+                $response->data = ObjResponse::CorrectResponse();
+                $response->data["message"] = 'Peticion satisfactoria | Lista de mis reportes.';
             }
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
