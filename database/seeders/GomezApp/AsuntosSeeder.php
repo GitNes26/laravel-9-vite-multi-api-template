@@ -61,5 +61,14 @@ class AsuntosSeeder extends Seeder
             'active' => 1,
             'created_at' => now(),
         ]);
+        DB::connection('mysql_gomezapp')->table('asuntos')->insert([
+            'asunto' => 'OTRO',
+            'bg_circle' => 'pink',
+            'bg_card' => '#1F2227',
+            'icono' => '',
+            'letter_black' => 1,
+            'active' => 1,
+            'created_at' => now(),
+        ]);
     }
 }
