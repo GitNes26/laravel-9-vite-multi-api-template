@@ -7,7 +7,6 @@ use App\Models\ObjResponse;
 use App\Models\imm\UserProceedings;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
 
 
 class UserProceedingsImmController extends Controller
@@ -17,15 +16,15 @@ class UserProceedingsImmController extends Controller
         if($id){
                 $userProceeding =UserProceedings::where("user_datageneral_id",$id)->first();
                 $userProceeding->procceding = $request->procceding;
-                $userProceeding->dateingress = Carbon::createFromFormat('d/m/Y', $request->dateingress)->format('Y-m-d');
+                $userProceeding->dateingress = date('Y-m-d', strtotime(str_replace('/', '-', $request->dateingress)));
                 $userProceeding->timeingress = $request->timeingress;
                 $userProceeding->save();
              }
              else{
                  $userProceeding = new UserProceedings();
                  $userProceeding->procceding = $request->procceding;
-                 $userProceeding->dateingress = Carbon::createFromFormat('d/m/Y', $request->dateingress)->format('Y-m-d');
-                  $userProceeding->timeingress = Carbon::createFromFormat('h:i:s A', $request->timeingress)->format('H:i:s');
+                 $userProceeding->dateingress = date('Y-m-d', strtotime(str_replace('/', '-', $request->dateingress)));
+                 $userProceeding->timeingress = date('H:i:s', strtotime($request->timeingress));
                  $userProceeding->user_datageneral_id = $latestId;
  
                  $userProceeding->save();
