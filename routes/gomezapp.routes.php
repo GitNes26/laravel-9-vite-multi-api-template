@@ -3,8 +3,11 @@
 use App\Http\Controllers\GomezApp\UserController;
 use App\Http\Controllers\GomezApp\RoleController;
 use App\Http\Controllers\GomezApp\DepartmentController;
+use App\Http\Controllers\GomezApp\OrigenController;
 use App\Http\Controllers\GomezApp\ReportController;
 use App\Http\Controllers\GomezApp\TipoReporteController;
+use App\Http\Controllers\GomezApp\ServiceController;
+use App\Http\Controllers\GomezApp\AsuntosDepController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -52,8 +55,12 @@ Route::controller(DepartmentController::class)->group(function () {
 
 Route::controller(ReportController::class)->group(function () {
    Route::get('/reports', 'index');
+   Route::delete('/reports/{id}', 'destroy');
+   Route::get('/reportsview', 'reportsview');
    Route::get('/icards', 'getCards');
    Route::post('/reports', 'saveReport');
+   Route::post('/reports/response', 'saveResponse');
+   Route::delete('/reports/response/{id}', 'deleteResponse');
    Route::get('/reports/user/{id_user}', 'reportsByUser');
 });
 
@@ -64,6 +71,20 @@ Route::controller(TipoReporteController::class)->group(function () {
    Route::post('/reportTypes', 'create');
    Route::put('/reportTypes/{id?}', 'update');
    Route::delete('/reportTypes/{id}', 'destroy');
+});
+
+
+Route::controller(ServiceController::class)->group(function () {
+   Route::get('/services', 'index');
+});
+
+Route::controller(OrigenController::class)->group(function () {
+   Route::get('/origen', 'index');
+});
+
+Route::controller(AsuntosDepController::class)->group(function () {
+   Route::get('/asuntosdep', 'index');
+   Route::get('/asuntosdep/{id}', 'show');
 });
 
 

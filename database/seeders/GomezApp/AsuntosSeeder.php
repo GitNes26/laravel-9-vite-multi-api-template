@@ -4,9 +4,10 @@ namespace Database\Seeders\GomezApp;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use DB;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
-class TiposReportesSeeder extends Seeder
+class AsuntosSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,8 +16,8 @@ class TiposReportesSeeder extends Seeder
      */
     public function run()
     {
-        DB::connection('mysql_gomezapp')->table('tipos_reportes')->insert([
-            'tipo_nombre' => 'BACHEO',
+        DB::connection('mysql_gomezapp')->table('asuntos')->insert([
+            'asunto' => 'BACHEO',
             'bg_circle' => 'green',
             'bg_card' => '#1F2227',
             'icono' => '',
@@ -24,8 +25,8 @@ class TiposReportesSeeder extends Seeder
             'active' => 1,
             'created_at' => now(),
         ]);
-        DB::connection('mysql_gomezapp')->table('tipos_reportes')->insert([
-            'tipo_nombre' => 'BASURA',
+        DB::connection('mysql_gomezapp')->table('asuntos')->insert([
+            'asunto' => 'BASURA',
             'bg_circle' => 'yellow',
             'bg_card' => '#1F2227',
             'icono' => '',
@@ -33,8 +34,8 @@ class TiposReportesSeeder extends Seeder
             'active' => 1,
             'created_at' => now(),
         ]);
-        DB::connection('mysql_gomezapp')->table('tipos_reportes')->insert([
-            'tipo_nombre' => 'ECOLOGIA',
+        DB::connection('mysql_gomezapp')->table('asuntos')->insert([
+            'asunto' => 'ECOLOGIA',
             'bg_circle' => 'coral',
             'bg_card' => '#1F2227',
             'icono' => '',
@@ -42,8 +43,8 @@ class TiposReportesSeeder extends Seeder
             'active' => 1,
             'created_at' => now(),
         ]);
-        DB::connection('mysql_gomezapp')->table('tipos_reportes')->insert([
-            'tipo_nombre' => 'ALUMBRADO PUBLICO',
+        DB::connection('mysql_gomezapp')->table('asuntos')->insert([
+            'asunto' => 'ALUMBRADO PUBLICO',
             'bg_circle' => 'red',
             'bg_card' => '#1F2227',
             'icono' => '',
@@ -51,8 +52,8 @@ class TiposReportesSeeder extends Seeder
             'active' => 1,
             'created_at' => now(),
         ]);
-        DB::connection('mysql_gomezapp')->table('tipos_reportes')->insert([
-            'tipo_nombre' => 'VIGILANCIA',
+        DB::connection('mysql_gomezapp')->table('asuntos')->insert([
+            'asunto' => 'VIGILANCIA',
             'bg_circle' => 'blue',
             'bg_card' => '#1F2227',
             'icono' => '',

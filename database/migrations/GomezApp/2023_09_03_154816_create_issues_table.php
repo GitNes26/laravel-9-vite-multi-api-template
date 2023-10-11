@@ -16,7 +16,13 @@ return new class extends Migration
         Schema::connection('mysql_gomezapp')->create('asuntos', function (Blueprint $table) {
             $table->id();
             $table->string('asunto');
-           
+            $table->string('bg_circle');
+            $table->string('bg_card');
+            $table->string('icono');
+            $table->boolean('letter_black');
+            $table->boolean('active')->default(true);
+            $table->timestamps();
+            $table->dateTime('deleted_at')->nullable();
         });
     }
 

@@ -11,13 +11,13 @@
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+-  [Simple, fast routing engine](https://laravel.com/docs/routing).
+-  [Powerful dependency injection container](https://laravel.com/docs/container).
+-  Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
+-  Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
+-  Database agnostic [schema migrations](https://laravel.com/docs/migrations).
+-  [Robust background job processing](https://laravel.com/docs/queues).
+-  [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
 Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
@@ -31,30 +31,26 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 
 ## MIS COMANDOS
 
-- Correr migraciones
+-  Correr migraciones
 
   ```
   php artisan migrate:fresh --path=database/migrations/Becas --database=mysql_becas
 
   php artisan migrate:fresh --path=database/migrations/GPCenter --database=mysql_gp_center
-
+  
   php artisan migrate:fresh --path=database/migrations/GomezApp --database=mysql_gomezapp
 
   php artisan migrate:fresh --path=database/migrations/imm --database=mysql_imm
 
 
-  ```
-- Correr seeders
-
+   ```
+-  Correr seeders
   ```
   php artisan db:seed --class=DatabaseBecasSeeder
-  
   php artisan db:seed --class=DatabaseGPCenterSeeder
-
-  php artisan db:seed --class=DatabaseGomezAppSeeder
-
+  php artisan db:seed --class=DatabaseGPCenterSeeder
   php artisan db:seed --class=DatabaseImmSeeder
+  php artisan db:seed --class=DatabaseGomezAppSeeder
+  php artisan migrate --path=app/database/migrations/2023_09_03_154825_create_respuestas_table.php
 
-    SAMUEL GARZA
   ```
-

@@ -13,19 +13,27 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::connection('mysql_gomezapp')->create('reportes_movil', function (Blueprint $table) {
+        Schema::connection('mysql_gomezapp')->create('reportes', function (Blueprint $table) {
             $table->id();
-            $table->date('fecha_reporte');
-            $table->string('img_reporte');
-            $table->integer('folio');
-            $table->string('latitud'); //->unique();
-            $table->string('longitud');
-            $table->foreignId('id_user')->constrained('users','id');
-            $table->foreignId('id_tipo_reporte')->constrained('tipos_reportes','id');
-            $table->foreignId('id_direccion')->constrained('direcciones_reportes','id');
-            $table->foreignId('id_origen')->constrained('origen_reporte','id')->default(1);
-            $table->foreignId('id_estatus')->constrained('estatus','id')->default(1);
-            $table->foreignId('id_servicio')->constrained('servicios','id')->default(1);
+            $table->date('fecha_reporte')->nullable();
+            $table->string('img_reporte')->nullable();
+            $table->string('folio')->nullable();
+            $table->string('latitud')->nullable(); //->unique();
+            $table->string('longitud')->nullable();
+            $table->foreignId('id_user')->constrained('users', 'id');
+            $table->string('cp')->nullable();
+            $table->string('calle')->nullable();
+            $table->string('num_ext')->nullable();
+            $table->string('num_int')->nullable();
+            $table->string('colonia')->nullable();
+            $table->string('localidad')->nullable()->default('Gómez Palacio');
+            $table->string('municipio')->nullable()->default('Gómez Palacio');
+            $table->string('estado')->nullable()->default('Durango');
+            $table->string('referencias')->nullable();
+            $table->string('id_departamento')->nullable();
+            $table->foreignId('id_origen')->constrained('origen_reporte', 'id')->default(1); //WEB, APP, TELEFONICO ETC
+            $table->foreignId('id_estatus')->constrained('estatus', 'id')->default(1);   // ASIGANDO, EN CURSO, ATENDIDO ETC
+            $table->string('community_id')->nullable();
             $table->boolean('active')->default(true);
             $table->timestamps();
             $table->dateTime('deleted_at')->nullable();
@@ -39,6 +47,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::connection('mysql_gomezapp')->dropIfExists('reportes_movil');
+        Schema::connection('mysql_gomezapp')->dropIfExists('reportes');
     }
 };
