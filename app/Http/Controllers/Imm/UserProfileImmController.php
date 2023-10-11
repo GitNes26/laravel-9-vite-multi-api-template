@@ -41,12 +41,12 @@ class UserProfileImmController extends Controller
             $userData->sex = $request->sex;
             $userData->gender_id = intval($request->gender_id);
             $userData->birthdate = Carbon::parse($request->birthdate)->format('Y-m-d');
-            $userData->age = $request->age;
+            $userData->age = intval($request->age);
             $userData->telephone = $request->telephone;
             $userData->email = $request->email;
             $userData->civil_status_id = intval($request->civil_status_id);
-            $userData->numberchildrens = $request->numberchildrens;
-            $userData->numberdaughters = $request->numberdaughters;
+            $userData->numberchildrens = intval($request->numberchildrens);
+            $userData->numberdaughters = intval($request->numberdaughters);
             $userData->pregnant = $request->pregnant;
 
             $userData->save();
@@ -579,7 +579,12 @@ class UserProfileImmController extends Controller
             ->leftjoin('services', 'services.id', '=', 'user_services_references.services_id')
             ->groupBy(
                 'user_services.id',
-               
+                'user_services.subservice',
+                'user_services.axi_id',
+                'user_services.axi_program_id',
+                'user_services.lineacction',
+                'user_services.observations',
+                'user_services.status_id',
               
             )
             ->get();
