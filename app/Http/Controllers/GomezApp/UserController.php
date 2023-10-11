@@ -24,19 +24,17 @@ class UserController extends Controller
      */
     public function login(Request $request, Response $response)
     {
-       $field = 'username';
-       $value = $request->username;
-       if ($request->email) {
+
           $field = 'email';
           $value = $request->email;
-       }
+    
 
        $request->validate([
           $field => 'required',
           'password' => 'required'
        ]);
        $user = User::where("$field", "$value")->first();
-
+       return $user;
 
        if (!$user || !Hash::check($request->password, $user->password)) {
 
@@ -89,7 +87,7 @@ class UserController extends Controller
           // if (!$this->validateAvailability('username',$request->username)->status) return;
 
           $new_user = User::create([
-             'username' => $request->username,
+      
              'email' => $request->email,
              'password' => Hash::make($request->password),
              'role_id' => 3, //usuario normal
@@ -98,10 +96,7 @@ class UserController extends Controller
              'paternal_last_name' => $request->paternal_last_name,
              'maternal_last_name' => $request->maternal_last_name,
              'department_id' => 1,
-            //  'community_id' => $request->community_id,
-            //  'street' => $request->street,
-            //  'num_ext' => $request->num_ext,
-            //  'num_int' => $request->num_int,
+            
           ]);
           $response->data = ObjResponse::CorrectResponse();
           $response->data["message"] = 'peticion satisfactoria | usuario registrado.';
@@ -182,17 +177,17 @@ class UserController extends Controller
 
 
           } else {
-             $new_user = User::create([
+             $new_user = new User;
            
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
-                'role_id' => $request->role_id,
-                'phone' => $request->phone,
-                'name' => $request->name,
-                'paternal_last_name' => $request->paternal_last_name,
-                'maternal_last_name' => $request->maternal_last_name,
-           
-             ]);
+             $new_user->email = $request->email;
+             $new_user->password = Hash::make($request->password);
+             $new_user->role_id = $request->role_id;
+             $new_user->phone = $request->phone;
+             $new_user->name = $request->name;
+             $new_user->paternal_last_name = $request->paternal_last_name;
+             $new_user->maternal_last_name = $request->maternal_last_name;
+             $new_user->save();
+       
           }
           $response->data = ObjResponse::CorrectResponse();
           $response->data["message"] = 'peticion satisfactoria | usuario registrado.';
