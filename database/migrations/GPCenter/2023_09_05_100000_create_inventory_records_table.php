@@ -15,10 +15,12 @@ return new class extends Migration
     {
         Schema::connection('mysql_gp_center')->create('inventory_records', function (Blueprint $table) {
             $table->id();
-            $table->enum('transaction',["Entrada","Salida"]);
+            $table->enum('transaction', ["Entrada", "Salida"]);
             $table->foreignId('material_id')->constrained('inventory', 'id');
             $table->decimal('quantity')->comment("positiva para entradas, negativa para salida");
             $table->string('unit')->comment("unidad de medida (lts, metros, pzas, kgs...)");
+
+            $table->foreignId('user_id')->constrained('users', 'id');
             $table->text('comments')->nullable();
             $table->boolean('active')->default(true);
             $table->timestamps();
