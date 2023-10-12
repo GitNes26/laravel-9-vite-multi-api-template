@@ -255,14 +255,12 @@ class ReportController extends Controller
      *
      * @return \Illuminate\Http\Response $response
      */
-    public function reportsByUser(Request $request, Response $response)
+    public function reportsByUser(Request $request, Response $response, $id_user)
     {
+
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $list = Report::where('reportes.active', true)->where('reportes.id_user', $request->id_user)
-                ->join('tipos_reportes', 'reportes.id_tipo_reporte', '=', 'tipos_reportes.id')
-                ->select('reportes.*', 'tipos_reportes.tipo_nombre', 'tipos_reportes.bg_circle', 'tipos_reportes.bg_card', 'tipos_reportes.icono', 'tipos_reportes.letter_black')
-                ->orderBy('reportes.id', 'desc')->get();
+            $list = ReportView::where("id_user", $id_user)->get();
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'Peticion satisfactoria | Lista de mis reportes.';
             $response->data["result"] = $list;
