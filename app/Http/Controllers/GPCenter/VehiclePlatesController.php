@@ -84,9 +84,11 @@ class VehiclePlatesController extends Controller
     private function failedPlates(int $vehicle_id)
     {
         try {
-            $plates_id = VehiclePlate::where("vehicle_id", $vehicle_id)->where("expired", 0)->where("active", 1)->select('id')->orderBy("id", "desc")->first();
-            if ($plates_id > 0) {
-                VehiclePlate::find($plates_id)
+            // echo "el failed...: $vehicle_id";
+            $plates = VehiclePlate::where("vehicle_id", $vehicle_id)->where("expired", 0)->where("active", 1)->select('id')->orderBy("id", "desc")->first();
+
+            if ($plates->id > 0) {
+                VehiclePlate::find($plates->id)
                     ->update([
                         'expired' => true,
                     ]);
@@ -97,30 +99,76 @@ class VehiclePlatesController extends Controller
             // return 0;
         }
     }
+
+    /**
+     * Actualizar placas desde el vehiculo.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response $response
+     */
+    private function edit(Request $request)
+    {
+        try {
+            $plates = VehiclePlate::where("vehicle_id", $request->id)->where("expired", 0)->where("active", 1)->select('id')->orderBy("id", "desc")->first();
+
+            $plates = VehiclePlate::find($plates->id)
+                ->update([
+                    'plates' => $request->plates,
+                    'initial_date' => $request->initial_date,
+                    'due_date' => $request->due_date,
+                ]);
+        } catch (\Exception $ex) {
+            echo "Ocurrio un error al intentar dar de baja la placa $ex";
+        }
+    }
+
+
     /**
      * Crear placas desde el vehicluo y dar de baja si hay placa anterior.
      *
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
      */
-    public function createByVehicle(Request $request, int $vehicle_id)
+    public function createByVehicle(Request $request, int $vehicle_id, bool $replaqueo=false)
     {
         try {
-            // $vehicle_id = 3;
-            // $this->failedPlates($vehicle_id);
-            $new_plates = VehiclePlate::create([
-                'vehicle_id' => $vehicle_id,
-                'plates' => $request->plates,
-                'initial_date' => $request->initial_date,
-                'due_date' => $request->due_date,
-                // 'expired' => $request->expired,
-            ]);
-            // echo "el nuevo plaqueo: $new_plates";
+            if ($vehicle_id > 0) { // NUEVO REGISTRO
+                $new_plates = VehiclePlate::create([
+                    'vehicle_id' => $vehicle_id,
+                    'plates' => $request->plates,
+                    'initial_date' => $request->initial_date,
+                    'due_date' => $request->due_date
+                ]);
+            } else { // MODIFICACION
+                if ($replaqueo){
+                    $this->failedPlates($request->id);
+                    $new_plates = VehiclePlate::create([
+                        'vehicle_id' => $request->id,
+                        'plates' => $request->plates,
+                        'initial_date' => $request->initial_date,
+                        'due_date' => $request->due_date
+                    ]);
+                } else {
+                    $this->edit($request);
+                }
+            }
         } catch (\Exception $ex) {
             return ($ex->getMessage());
         }
         // return response()->json($response, $response->data["status_code"]);
     }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     /**
@@ -129,27 +177,6 @@ class VehiclePlatesController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
      */
-    // public function create(Request $request/* , Response $response */)
-    // {
-    //     $response->data = ObjResponse::DefaultResponse();
-    //     try {
-    //         $this->FailedPlates($request->vehicle_id);
-
-    //         $new_plates = VehiclePlate::create([
-    //             'vehicle_id' => $request->vehicle_id,
-    //             'plates' => $request->plates,
-    //             'initial_date' => $request->initial_date,
-    //             'due_date' => $request->due_date,
-    //             // 'expired' => $request->expired,
-    //         ]);
-    //         $response->data = ObjResponse::CorrectResponse();
-    //         $response->data["message"] = 'peticion satisfactoria | placas registradas.';
-    //         $response->data["alert_text"] = 'Placas registradas';
-    //     } catch (\Exception $ex) {
-    //         $response->data = ObjResponse::CatchResponse($ex->getMessage());
-    //     }
-    //     return response()->json($response, $response->data["status_code"]);
-    // }
     public function create(Request $request)
     {
         try {

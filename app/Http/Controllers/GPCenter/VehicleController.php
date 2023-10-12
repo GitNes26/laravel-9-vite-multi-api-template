@@ -76,9 +76,10 @@ class VehicleController extends Controller
             if ($request->hasFile('imgFile')) {
                 $image = $request->file('imgFile');
                 // $imgName = time() . '.' . $image->getClientOriginalExtension();
-                $imgName = "$request->brand-$request->model-$request->year.PNG";
-                $image->move(public_path('GPCenter/vehicles'), $imgName);
+                $dir = public_path('GPCenter/vehicles');
+                $imgName = "hay imagen";
             }
+
             $new_vehicle = Vehicle::create([
                 'stock_number' => $request->stock_number,
                 'brand_id' => $request->brand_id,
@@ -87,11 +88,17 @@ class VehicleController extends Controller
                 'registration_date' => $request->registration_date,
                 'vehicle_status_id' => $request->vehicle_status_id,
                 'description' => $request->description,
+            ]);
+
+            $instance = new UserController();
+            $imgName = $instance->ImgUpload($image, $dir, $new_vehicle->id);
+            Vehicle::find($new_vehicle->id)
+                ->update([
                 'img_path' => "GPCenter/vehicles/$imgName"
             ]);
 
             $vehiclesPlatesController = new VehiclePlatesController();
-            $vehiclesPlatesController->createByVehicle($request, $new_vehicle->id);
+            $vehiclesPlatesController->createByVehicle($request, $new_vehicle->id, false);
 
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'peticion satisfactoria | vehículo registrado.';
@@ -187,8 +194,10 @@ class VehicleController extends Controller
             if ($request->hasFile('imgFile')) {
                 $image = $request->file('imgFile');
                 // $imgName = time() . '.' . $image->getClientOriginalExtension();
-                $imgName = "$request->brand-$request->model-$request->year.PNG";
-                $image->move(public_path('GPCenter/vehicles'), $imgName);
+                $dir = public_path('GPCenter/vehicles');
+                $imgName = "$request->id";
+                $instance = new UserController();
+                $imgName = $instance->ImgUpload($image, $dir, $imgName);
             }
 
             if ($imgName != "") {
@@ -216,10 +225,8 @@ class VehicleController extends Controller
                 ]);
             }
             // dd($request);
-            if ($request->changePlates == true) {
-                $vehiclesPlatesController = new VehiclePlatesController();
-                // $vehiclesPlatesController->create($request);
-            }
+            $vehiclesPlatesController = new VehiclePlatesController();
+            $vehiclesPlatesController->createByVehicle($request, 0, $request->changePlates == 1 ? true : false);
 
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'peticion satisfactoria | vehículo actualizado.';
