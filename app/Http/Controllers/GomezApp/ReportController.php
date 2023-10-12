@@ -38,7 +38,14 @@ class ReportController extends Controller
 
     public function saveReport(Request $request, Response $response)
     {
-
+        $longitud = "";
+        $latitud = "";
+        $url = "";
+        if ($request->url != "") {
+            $url = explode("@", $request->url);
+            $latitud = substr($url[1], 0, 10);
+            $longitud = substr($url[1], 11, 11);
+        }
         $longitud_cadena = 5;
         $caracteres_alfabeticos = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $caracter_alfabetico = $caracteres_alfabeticos[mt_rand(0, strlen($caracteres_alfabeticos) - 1)];
@@ -83,6 +90,8 @@ class ReportController extends Controller
                     $reports->colonia = $request->colonia;
                     $reports->localidad = $request->ciudad;
                     $reports->municipio = "";
+                    $reports->latitud = $latitud;
+                    $reports->longitud = $longitud;
                     $reports->estado = $request->estado;
                     $reports->id_departamento = $request->depart;
                     $reports->id_origen = $request->origen;
@@ -129,6 +138,8 @@ class ReportController extends Controller
                     $reports->estado = $request->estado;
                     $reports->id_departamento = $request->depart;
                     $reports->id_origen = $request->origen;
+                    $reports->latitud = $latitud;
+                    $reports->longitud = $longitud;
                     $reports->updated_at = now();
                     $reports->save();
 
