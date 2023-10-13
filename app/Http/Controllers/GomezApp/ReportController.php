@@ -287,4 +287,18 @@ class ReportController extends Controller
         }
         return response()->json($response, $response->data["status_code"]);
     }
+    public function reportsById(Response $response, $id)
+    {
+
+        $response->data = ObjResponse::DefaultResponse();
+        try {
+            $list = ReportView::where("id", $id)->first();
+            $response->data = ObjResponse::CorrectResponse();
+            $response->data["message"] = 'Peticion satisfactoria | Lista de mis reportes.';
+            $response->data["result"] = $list;
+        } catch (\Exception $ex) {
+            $response->data = ObjResponse::CatchResponse($ex->getMessage());
+        }
+        return response()->json($response, $response->data["status_code"]);
+    }
 }
