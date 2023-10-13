@@ -62,6 +62,7 @@ Route::controller(ReportController::class)->group(function () {
    Route::post('/reports/response', 'saveResponse');
    Route::delete('/reports/response/{id}', 'deleteResponse');
    Route::get('/reports/user/{id_user}', 'reportsByUser');
+   Route::get('/reports/{id}', 'reportsById');
 });
 
 Route::controller(TipoReporteController::class)->group(function () {
