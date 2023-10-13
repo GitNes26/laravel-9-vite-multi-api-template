@@ -13,6 +13,7 @@ use App\Models\ObjResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Js;
 use Illuminate\Support\Str;
 
 class ReportController extends Controller
@@ -38,14 +39,21 @@ class ReportController extends Controller
 
     public function saveReport(Request $request, Response $response)
     {
-        $longitud = "";
         $latitud = "";
+        $longitud = "";
+        $lat="";
+        $long="";
         $url = "";
+        $pattern = "/[^0-9.-]/";
         if ($request->url != "") {
             $url = explode("@", $request->url);
-            $latitud = substr($url[1], 0, 10);
-            $longitud = substr($url[1], 11, 11);
+            $url2 = explode(",",$url[1]);
+            $lat = $url2[0];
+            $long = $url2[1];
         }
+
+
+
         $longitud_cadena = 5;
         $caracteres_alfabeticos = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $caracter_alfabetico = $caracteres_alfabeticos[mt_rand(0, strlen($caracteres_alfabeticos) - 1)];
@@ -90,8 +98,8 @@ class ReportController extends Controller
                     $reports->colonia = $request->colonia;
                     $reports->localidad = $request->ciudad;
                     $reports->municipio = "";
-                    $reports->latitud = $latitud;
-                    $reports->longitud = $longitud;
+                    $reports->latitud = $lat;
+                    $reports->longitud = $long;
                     $reports->estado = $request->estado;
                     $reports->id_departamento = $request->depart;
                     $reports->id_origen = $request->origen;
@@ -138,8 +146,8 @@ class ReportController extends Controller
                     $reports->estado = $request->estado;
                     $reports->id_departamento = $request->depart;
                     $reports->id_origen = $request->origen;
-                    $reports->latitud = $latitud;
-                    $reports->longitud = $longitud;
+                    $reports->latitud = $lat;
+                    $reports->longitud = $long;
                     $reports->updated_at = now();
                     $reports->save();
 
@@ -168,7 +176,7 @@ class ReportController extends Controller
                 $reports->id_departamento = $request->id_departamento;
                 $reports->id_estatus = 1;
                 $reports->id_origen = 3;
-                $reports->referencias = $request->referencia;
+                $reports->referencias = $request->referencias;
                 $reports->created_at = now();
                 $reports->save();
 
