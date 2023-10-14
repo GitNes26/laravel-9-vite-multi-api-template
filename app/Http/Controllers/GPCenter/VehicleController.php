@@ -138,7 +138,7 @@ class VehicleController extends Controller
                 $response->data["result"] = $vehicle;
             } else {
                 $response->data["message"] = 'peticion satisfactoria | vehículo NO encontrado.';
-                $response->data["result"] = [];
+                $response->data["result"] = null;
                 $response->data["alert_icon"] = "information";
                 $response->data["alert_title"] = "No se encontro vehículo con esa información";
             }
@@ -260,5 +260,27 @@ class VehicleController extends Controller
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
         return response()->json($response, $response->data["status_code"]);
+    }
+
+
+    /**
+     * Actualizar estatus del vehículo.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response $response
+     */
+    public function updateStatus(int $id, int $vehicle_status_id)
+    {
+        try {
+            $vehicle = Vehicle::find($id)
+            ->update([
+                'vehicle_status_id' => $vehicle_status_id,
+            ]);
+            return 1;
+
+        } catch (\Exception $ex) {
+            error_log($ex->getMessage());
+            return 0;
+        }
     }
 }

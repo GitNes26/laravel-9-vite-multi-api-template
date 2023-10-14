@@ -73,8 +73,10 @@ class ServiceController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
+            $folio = $this->getLastFolio();
+
             $new_service = Service::create([
-                'folio' => $request->folio,
+                'folio' => (int)$folio+1,
                 'vehicle_id' => $request->vehicle_id,
                 'contact_name' => $request->contact_name,
                 'contact_phone' => $request->contact_phone,
@@ -83,9 +85,15 @@ class ServiceController extends Controller
                 // 'final_diagnosis' => $request->final_diagnosis,
                 // 'evidence_img_path' => $request->evidence_img_path,
             ]);
+
+            $vehicleInstance = new VehicleController();
+            $vehicleInstance->updateStatus($request->vehicle_id, 5); //En Taller
+
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'peticion satisfactoria | servicio registrado.';
-            $response->data["alert_text"] = 'Servicio registrado';
+            $response->data["alert_text"] = "Servicio registrado <br> tu folio es <b>$new_service->folio</b>" ;
+            $response->data["result"] = $new_service;
+
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
@@ -180,5 +188,23 @@ class ServiceController extends Controller
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
         return response()->json($response, $response->data["status_code"]);
+    }
+
+    /**
+     * Obtener el ultimo folio.
+     *
+     * @return \Illuminate\Http\Int $folio
+     */
+    private function getLastFolio()
+    {
+        try {
+            $folio = Service::max('folio');
+            if ($folio == null) return 0;
+            return $folio;
+        } catch (\Exception $ex) {
+            $msg =  "Error al obtener el ultimo folio: " . $ex->getMessage();
+            echo "$msg";
+            return $msg;
+        }
     }
 }
