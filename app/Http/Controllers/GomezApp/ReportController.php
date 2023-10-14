@@ -46,7 +46,7 @@ class ReportController extends Controller
         $long = $request->longitud == "" ? "" : $request->longitud;
         $url = "";
         $pattern = "/[^0-9.-]/";
-        if ($request->has('url')) {
+        if ($request->url != "") {
             $url = explode("@", $request->url);
             $url2 = explode(",", $url[1]);
             $lat = $url2[0];
