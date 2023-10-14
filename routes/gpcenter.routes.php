@@ -9,6 +9,7 @@ use App\Http\Controllers\GPCenter\RoleController;
 use App\Http\Controllers\GPCenter\DepartmentController;
 use App\Http\Controllers\GPCenter\BrandController;
 use App\Http\Controllers\GPCenter\ModelController;
+use App\Http\Controllers\GPCenter\ServiceController;
 use App\Http\Controllers\GPCenter\VehicleController;
 use App\Http\Controllers\GPCenter\VehiclePlatesController;
 use App\Http\Controllers\GPCenter\VehicleStatusController;
@@ -98,6 +99,20 @@ Route::controller(VehiclePlatesController::class)->group(function () {
    Route::get('/vehiclesPlates/history/{vehicle_id}', 'history');
 });
 
+
+Route::controller(ServiceController::class)->group(function () {
+    Route::get('/services', 'index');
+    Route::get('/services/selectIndex', 'selectIndex');
+    Route::get('/services/{id}', 'show');
+    Route::get('/services/{searchBy?}/{value}', 'showBy');
+    Route::post('/services', 'create');
+    // Route::post('/services/{id}', 'update'); // por si quiero subir una imagen
+    Route::put('/services/{id?}', 'update');
+    Route::delete('/services/{id}', 'destroy');
+
+    Route::post('/services/{id?}', 'update');
+
+ });
 
 
 // });
