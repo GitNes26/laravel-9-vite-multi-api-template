@@ -45,7 +45,7 @@ class UserController extends Controller
          $response->data = ObjResponse::CorrectResponse();
          $response->data["message"] = 'peticion satisfactoria | usuario logeado.';
          //  $response->data["result"]["token"] = $token;
-         $response->data["result"]["user"]["id"] = $user->id;
+         $response->data["result"] = $user;
          return response()->json($response, $response->data["status_code"]);
       }
    }
