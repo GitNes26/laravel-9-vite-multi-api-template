@@ -28,7 +28,6 @@ class UserController extends Controller
       $field = 'email';
       $value = $request->email;
 
-
       $request->validate([
          $field => 'required',
          'password' => 'required'
@@ -43,7 +42,6 @@ class UserController extends Controller
          //  $token = $user->createToken($user->email, ['user'])->plainTextToken;
          $response->data = ObjResponse::CorrectResponse();
          $response->data["message"] = 'peticion satisfactoria | usuario logeado.';
-         //  $response->data["result"]["token"] = $token;
          $response->data["result"]["user"]["id"] = $user->id;
          return response()->json($response, $response->data["status_code"]);
       }
