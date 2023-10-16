@@ -39,6 +39,11 @@ class UserController extends Controller
 
 
        if (!$user || !Hash::check($request->password, $user->password)) {
+      $request->validate([
+         $field => 'required',
+         'password' => 'required'
+      ]);
+      $user = User::where("$field", "$value")->first();
 
           throw ValidationException::withMessages([
              'message' => 'Credenciales incorrectas',
