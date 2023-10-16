@@ -28,13 +28,11 @@ class UserController extends Controller
       $field = 'email';
       $value = $request->email;
 
-
       $request->validate([
          $field => 'required',
          'password' => 'required'
       ]);
       $user = User::where("$field", "$value")->first();
-      // if ($user != "") return "vacio";
 
       if (!$user || !Hash::check($request->password, $user->password)) {
          $response->data = ObjResponse::DefaultResponse();
