@@ -41,13 +41,13 @@ class ReportController extends Controller
     {
         $latitud = "";
         $longitud = "";
-        $lat="";
-        $long="";
+        $lat = $request->latitud == "" ? "" : $request->latitud;
+        $long = $request->longitud == "" ? "" : $request->longitud;
         $url = "";
         $pattern = "/[^0-9.-]/";
         if ($request->url != "") {
             $url = explode("@", $request->url);
-            $url2 = explode(",",$url[1]);
+            $url2 = explode(",", $url[1]);
             $lat = $url2[0];
             $long = $url2[1];
         }
