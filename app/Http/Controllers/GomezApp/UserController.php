@@ -34,7 +34,6 @@ class UserController extends Controller
          'password' => 'required'
       ]);
       $user = User::where("$field", "$value")->first();
-      // if ($user != "") return "vacio";
 
       if (!$user || !Hash::check($request->password, $user->password)) {
          $response->data = ObjResponse::DefaultResponse();
