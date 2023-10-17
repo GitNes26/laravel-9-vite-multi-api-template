@@ -32,7 +32,7 @@ class ServiceController extends Controller
                 })
                 ->join('users', 'services.mechanic_id', '=', 'users.id')
                 ->select('services.*','vehicles.stock_number','vehicles.year','vehicles.registration_date','vehicles.description', 'brands.brand', 'models.model', 'vehicle_status.vehicle_status', 'vehicle_status.bg_color', 'vehicle_status.letter_black', 'plates', 'initial_date', 'due_date','users.username')
-                ->orderBy('services.id', 'asc')->get();
+                ->orderBy('services.id', 'desc')->get();
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'Peticion satisfactoria | Lista de servicios.';
             $response->data["result"] = $list;
