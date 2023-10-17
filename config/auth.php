@@ -36,6 +36,12 @@ return [
     */
 
     'guards' => [
+        'api' => [
+            'driver' => 'passport',
+            'provider' => 'users',
+            'hash' => false,
+            'expire_in' => 60, // Token expiration time in minutes
+        ],
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
@@ -45,7 +51,13 @@ return [
         'db_imm' => [
             'driver' => 'session',
             'provider' => 'imm',
-            'connection' => 'mysql_imm', // Especifica la conexión deseada para 'db_imm'
+            'connection' => 'mysql_imm', // Reemplaza 'nombre_de_la_conexion' con el nombre de tu conexión de base de datos
+
+        ],
+        'bd_imm' => [
+            'driver' => 'sanctum',
+            'provider' => 'imm', // Nombre de tu proveedor de autenticación
+            'connection' => 'mysql_imm', // Reemplaza 'nombre_de_la_conexion' con el nombre de tu conexión de base de datos
 
         ],
       
@@ -71,17 +83,14 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => App\Models\Imm\User::class, 
+            'model' => App\Models\User::class, 
         ],
         'imm' => [
             'driver' => 'eloquent',
             'model' => App\Models\Imm\User::class, 
         ],
      
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+      
     ],
 
     /*

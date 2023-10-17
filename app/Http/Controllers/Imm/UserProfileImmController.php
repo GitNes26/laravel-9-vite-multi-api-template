@@ -294,11 +294,13 @@ class UserProfileImmController extends Controller
         $response->data = ObjResponse::DefaultResponse();
         try {
             $list = UserData::where('user_datageneral.active', true)
-            ->select('user_proceedings.procceding as folio', 'user_datageneral.id', 'user_datageneral.name as nombre', 'user_datageneral.lastName as apellido paterno', 'user_datageneral.secondName as apellido materno',
+            ->select('user_proceedings.procceding as folio', 'user_datageneral.id','user_violences.id as idviolence', 'user_datageneral.name as nombre', 'user_datageneral.lastName as apellido paterno', 'user_datageneral.secondName as apellido materno',
                 'status.status as status')
             ->join('user_proceedings', 'user_proceedings.user_datageneral_id', '=', 'user_datageneral.id')
             ->join('user_services', 'user_services.user_datageneral_id', '=', 'user_datageneral.id')
             ->join('status', 'status.id', '=', 'user_services.status_id')
+            ->leftjoin('user_violences', 'user_violences.user_datageneral_id', '=', 'user_datageneral.id')
+
             ->orderBy('user_datageneral.id', 'asc')
             ->get();
 
@@ -656,7 +658,7 @@ class UserProfileImmController extends Controller
                 DB::raw("DATE_FORMAT(vio.date, '%d/%m/%Y') as `Fecha de hechos`"),
                 'adi.addiction as `El agresor estaba bajo los efectos`',
                 DB::raw("CASE WHEN vio.weapons = 0 THEN 'Si' WHEN vio.weapons = 1 THEN 'No' ELSE NULL END as `¿Uso Armas?`"),
-                DB::raw("GROUP_CONCAT(DISTINCT  CONCAT('Tipo violencia ', typ.violence, ' Ambito violencia ', orig.origin)) as `Tipos de violencia y Ambitos`"),
+                DB::raw("GROUP_CONCAT(DISTINCT  CONCAT('Tipo violencia ', typ.violence, ' Ambito violencia ', fields.fieldviolence)) as `Tipos de violencia y Ambitos`"),
                 DB::raw("'agresor' as `agresor`"),
                 'dg.name as agresor_Nombre',
                 'dg.lastName as `agresor_Apellido Paterno`',

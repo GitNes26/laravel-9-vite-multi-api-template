@@ -291,7 +291,7 @@ Route::get('/auth/emails', [UserImmController::class, 'emails']);
 
 
 
-Route::middleware('auth:db_imm')->get('/user', function (Request $request) {
+Route::middleware('auth:bd_imm')->get('/user', function (Request $request) {
     
     return 'Texto de ejemplo'; // Puedes reemplazar 'Texto de ejemplo' con el texto que desees mostrar.
 });
