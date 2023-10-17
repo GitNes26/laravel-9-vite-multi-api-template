@@ -5,11 +5,12 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Auth;
+
 use App\Models\ObjResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 
 class UserImmController extends Controller
 {
@@ -30,27 +31,31 @@ class UserImmController extends Controller
     //     return response()->json(['id' => $user->id, 'token' => $token]);
     // }    
     // }
-    public function emails(Response $response)
-    {
-        /**
-         * Mostrar lista de todos los generos activos.
-         *
-         * @return \Illuminate\Http\Response $response
-         */
-        $response->data = ObjResponse::DefaultResponse();
-        try {
-            $list = User::where('active', true)
-            ->select('users.email')
-            ->orderBy('users.email', 'asc')->get();
-            $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'Peticion satisfactoria | Lista de correos.';
-            $response->data["result"] = $list;
-        }
-        catch (\Exception $ex) {
-            $response->data = ObjResponse::CatchResponse($ex->getMessage());
-        }
-        return response()->json($response, $response->data["status_code"]);
-    }
+   
+    // public function login(Request $request)
+    // {
+    //     if (Auth::guard('db_imm')->attempt(['email' => $request->email, 'password' => $request->password])) {
+    //         $field = 'username';
+    //         $value = $request->username;        
+    //         if ($request->email) {
+    //             $field = 'email';
+    //             $value = $request->email;
+    //         } 
+    //         $request->validate([
+    //             $field=>'required',
+    //             'password'=>'required'
+    //         ]);
+
+    //         $user = User::where("$field", "$value")->first();            
+    //         $token = $user->createToken('token-name')->plainTextToken;
+
+    //         return response(['token' => $token], 200);
+    //     }
+    
+    //     return response(['message' => 'Unauthorized'], 401);
+    // }
+
+
     public function login(Request $request, Response $response)
     {
         $field = 'username';
@@ -89,7 +94,7 @@ class UserImmController extends Controller
         try {
             $token = $request->bearerToken();
             
-            $new_user = User::create([
+            $user = User::create([
                 // 'name' => $request->name,
                 // 'last_name' => $request->last_name,
                 'name' => $request->name,
@@ -99,6 +104,7 @@ class UserImmController extends Controller
                 // 'phone' => $request->phone,
                 // 'role_id' => $request->role_id,
             ]);
+
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'peticion satisfactoria | usuario registrado.';
             $response->data["alert_text"] = "Usuario registrado";

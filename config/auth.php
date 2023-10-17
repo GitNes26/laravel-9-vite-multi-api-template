@@ -36,6 +36,12 @@ return [
     */
 
     'guards' => [
+        'api' => [
+            'driver' => 'passport',
+            'provider' => 'users',
+            'hash' => false,
+            'expire_in' => 60, // Token expiration time in minutes
+        ],
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
@@ -71,17 +77,14 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => App\Models\Imm\User::class, 
+            'model' => App\Models\User::class, 
         ],
         // 'imm' => [
         //     'driver' => 'eloquent',
         //     'model' => App\Models\Imm\User::class, 
         // ],
      
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+      
     ],
 
     /*
