@@ -21,11 +21,16 @@ return new class extends Migration
             $table->string('tutor_phone');
             $table->boolean('single_mother')->nullable();
 
-            $table->foreignId('student_data_id')->constrained('student_data', 'id');
+            $table->foreignId('student_data_id')->constrained('beca_1_student_data', 'id');
+            $table->foreignId('school_id')->constrained('schools', 'id')->nullable();
+            $table->integer('grade')->nullable();
+            $table->decimal('average', 8, 2)->nullable();
 
-            $table->foreignId('school_id')->constrained('schools', 'id');
-            $table->integer('grade');
-            $table->decimal('average', 8, 2);
+            $table->decimal('extra_income', 11, 2)->nullable();
+            $table->decimal('monthly_income', 11, 2)->nullable();
+
+            $table->decimal('total_expenses', 11, 2)->nullable();
+
             $table->text('comments')->nullable();
 
             $table->enum('socioeconomic_study', ['BAJO', 'MEDIO-BAJO', 'NORMAL'])->nullable();
