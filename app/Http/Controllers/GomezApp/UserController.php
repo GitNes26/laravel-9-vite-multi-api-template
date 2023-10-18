@@ -53,7 +53,7 @@ class UserController extends Controller
     * @param int $id
     * @return \Illuminate\Http\Response $response
     */
-   public function logout(int $id, Response $response)
+   public function logout(Response $response, $id,)
    {
       try {
          DB::connection('mysql_gomezapp')->table('personal_access_tokens')->where('tokenable_id', $id)->delete();
