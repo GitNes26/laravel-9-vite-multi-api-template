@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('house_is');
             $table->string('roof_material');
             $table->string('floor_material');
+            $table->int('score');
             $table->boolean('active')->default(true);
             $table->timestamps();
             $table->dateTime('deleted_at')->nullable();

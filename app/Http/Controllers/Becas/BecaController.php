@@ -4,16 +4,15 @@ namespace App\Http\Controllers\Becas;
 
 use App\Http\Controllers\Controller;
 use App\Models\becas\Beca;
-use App\Models\becas\StudentData;
 use App\Models\ObjResponse;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Becas\StudentDataBecasController;
+use App\Http\Controllers\Becas\Beca1StudentDataController;
 use App\Models\becas\BecasView;
 
-class BecaBecasController extends Controller
+class BecaController extends Controller
 {
     /**
      * Mostrar lista de becas activas.
@@ -24,6 +23,7 @@ class BecaBecasController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
+
             // $list = Beca::where('becas.active', true)
             //     // ->join("users", "becas.user_id", "=", "users.id")
             //     ->join('student_data', 'becas.student_data_id', '=', 'student_data.id')
@@ -71,7 +71,7 @@ class BecaBecasController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $studentDataController = new StudentDataBecasController();
+            $studentDataController = new Beca1StudentDataController();
             $student_data = $studentDataController->createOrUpdateByBeca($request);
 
             $folio = $this->getLastFolio($response);

@@ -31,7 +31,8 @@ return new class extends Migration
             $table->boolean('pavement');
             $table->boolean('automobile');
             $table->boolean('phone_line');
-            $table->boolean('internet');            
+            $table->boolean('internet');
+            $table->int('score');
 
             $table->boolean('active')->default(true);
             $table->timestamps();
