@@ -294,11 +294,13 @@ class UserProfileImmController extends Controller
         $response->data = ObjResponse::DefaultResponse();
         try {
             $list = UserData::where('user_datageneral.active', true)
-            ->select('user_proceedings.procceding as folio', 'user_datageneral.id','user_violences.id as idviolence', 'user_datageneral.name as nombre', 'user_datageneral.lastName as apellido paterno', 'user_datageneral.secondName as apellido materno',
+            ->select('user_proceedings.procceding as folio', 'user_datageneral.id','user_violences.id as idviolence', 'user_profiles.caseviolence as caso_violencia', 'user_datageneral.name as nombre', 'user_datageneral.lastName as apellido paterno', 'user_datageneral.secondName as apellido materno',
                 'status.status as status')
             ->join('user_proceedings', 'user_proceedings.user_datageneral_id', '=', 'user_datageneral.id')
             ->join('user_services', 'user_services.user_datageneral_id', '=', 'user_datageneral.id')
             ->join('status', 'status.id', '=', 'user_services.status_id')
+            ->join('user_profiles', 'user_profiles.user_datageneral_id', '=', 'user_datageneral.id')
+
             ->leftjoin('user_violences', 'user_violences.user_datageneral_id', '=', 'user_datageneral.id')
 
             ->orderBy('user_datageneral.id', 'asc')
