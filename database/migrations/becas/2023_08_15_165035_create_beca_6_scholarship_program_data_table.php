@@ -13,12 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::connection("mysql_becas")->create('beca_form_elements', function (Blueprint $table) {
+        Schema::connection("mysql_becas")->create('beca_6_scholarship_program', function (Blueprint $table) {
             $table->id();
             $table->integer("beca_id");
-            $table->integer('question_1')->default(0);
-            $table->integer('question_2')->default(0);
-            $table->integer('question_3')->default(0);
+            $table->boolean('beca_transport')->default(false);
+            $table->boolean('beca_benito_juarez')->default(false);
+            $table->string('other')->nullable();
+
             $table->boolean('active')->default(true);
             $table->timestamps();
             $table->dateTime('deleted_at')->nullable();
@@ -32,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::connection('mysql_becas')->dropIfExists('beca_form_elements');
+        Schema::connection('mysql_becas')->dropIfExists('beca_6_scholarship_program');
     }
 };

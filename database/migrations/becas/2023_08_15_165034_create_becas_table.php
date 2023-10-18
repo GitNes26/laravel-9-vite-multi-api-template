@@ -30,6 +30,7 @@ return new class extends Migration
             $table->decimal('monthly_income', 11, 2)->nullable();
 
             $table->decimal('total_expenses', 11, 2)->nullable();
+            $table->boolean('under_protest');
 
             $table->text('comments')->nullable();
 

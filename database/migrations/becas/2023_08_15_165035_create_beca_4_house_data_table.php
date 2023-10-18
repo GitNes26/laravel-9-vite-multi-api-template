@@ -16,9 +16,9 @@ return new class extends Migration
         Schema::connection("mysql_becas")->create('beca_4_house_data', function (Blueprint $table) {
             $table->id();
             $table->integer("beca_id");
-            $table->integer('question_1')->default(0);
-            $table->integer('question_2')->default(0);
-            $table->integer('question_3')->default(0);
+            $table->string('house_is');
+            $table->string('roof_material');
+            $table->string('floor_material');
             $table->boolean('active')->default(true);
             $table->timestamps();
             $table->dateTime('deleted_at')->nullable();
