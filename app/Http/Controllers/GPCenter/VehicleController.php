@@ -72,6 +72,12 @@ class VehicleController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
+            $duplicate = $this->validateAvailableData($request->stock_number, null);
+            if ($duplicate["result"] == true) {
+                $response->data = $duplicate;
+                return response()->json($response);
+            }
+
             $imgName = "";
             if ($request->hasFile('imgFile')) {
                 $image = $request->file('imgFile');
@@ -90,12 +96,14 @@ class VehicleController extends Controller
                 'description' => $request->description,
             ]);
 
-            $instance = new UserController();
-            $imgName = $instance->ImgUpload($image, $dir, $new_vehicle->id);
+            if ($imgName != "") {
+                $instance = new UserController();
+                $imgName = $instance->ImgUpload($image, $dir, $new_vehicle->id);
+            } else $imgName = "sinImagen";
             Vehicle::find($new_vehicle->id)
                 ->update([
-                'img_path' => "GPCenter/vehicles/$imgName"
-            ]);
+                    'img_path' => "GPCenter/vehicles/$imgName"
+                ]);
 
             $vehiclesPlatesController = new VehiclePlatesController();
             $vehiclesPlatesController->createByVehicle($request, $new_vehicle->id, false);
@@ -128,7 +136,7 @@ class VehicleController extends Controller
                     $join->on('vehicle_plates.vehicle_id', '=', 'vehicles.id')
                         ->where('vehicle_plates.expired', '=', 0);
                 })
-                ->select('vehicles.*', 'brands.brand','brands.img_path as img_brand', 'models.model', 'vehicle_status.vehicle_status', 'vehicle_status.bg_color', 'vehicle_status.letter_black', 'plates', 'initial_date', 'due_date')
+                ->select('vehicles.*', 'brands.brand', 'brands.img_path as img_brand', 'models.model', 'vehicle_status.vehicle_status', 'vehicle_status.bg_color', 'vehicle_status.letter_black', 'plates', 'initial_date', 'due_date')
                 ->first();
 
             $response->data = ObjResponse::CorrectResponse();
@@ -190,6 +198,12 @@ class VehicleController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
+            $duplicate = $this->validateAvailableData($request->stock_number, $request->id);
+            if ($duplicate["result"] == true) {
+                $response->data = $duplicate;
+                return response()->json($response);
+            }
+
             $imgName = "";
             if ($request->hasFile('imgFile')) {
                 $image = $request->file('imgFile');
@@ -202,27 +216,27 @@ class VehicleController extends Controller
 
             if ($imgName != "") {
                 $vehicle = Vehicle::find($request->id)
-                ->update([
-                    'stock_number' => $request->stock_number,
-                    'brand_id' => $request->brand_id,
-                    'model_id' => $request->model_id,
-                    'year' => $request->year,
-                    'registration_date' => $request->registration_date,
-                    'vehicle_status_id' => $request->vehicle_status_id,
-                    'description' => $request->description,
-                    'img_path' => "GPCenter/vehicles/$imgName"
-                ]);
+                    ->update([
+                        'stock_number' => $request->stock_number,
+                        'brand_id' => $request->brand_id,
+                        'model_id' => $request->model_id,
+                        'year' => $request->year,
+                        'registration_date' => $request->registration_date,
+                        'vehicle_status_id' => $request->vehicle_status_id,
+                        'description' => $request->description,
+                        'img_path' => "GPCenter/vehicles/$imgName"
+                    ]);
             } else {
                 $vehicle = Vehicle::find($request->id)
-                ->update([
-                    'stock_number' => $request->stock_number,
-                    'brand_id' => $request->brand_id,
-                    'model_id' => $request->model_id,
-                    'year' => $request->year,
-                    'registration_date' => $request->registration_date,
-                    'vehicle_status_id' => $request->vehicle_status_id,
-                    'description' => $request->description,
-                ]);
+                    ->update([
+                        'stock_number' => $request->stock_number,
+                        'brand_id' => $request->brand_id,
+                        'model_id' => $request->model_id,
+                        'year' => $request->year,
+                        'registration_date' => $request->registration_date,
+                        'vehicle_status_id' => $request->vehicle_status_id,
+                        'description' => $request->description,
+                    ]);
             }
             // dd($request);
             $vehiclesPlatesController = new VehiclePlatesController();
@@ -273,14 +287,30 @@ class VehicleController extends Controller
     {
         try {
             $vehicle = Vehicle::find($id)
-            ->update([
-                'vehicle_status_id' => $vehicle_status_id,
-            ]);
+                ->update([
+                    'vehicle_status_id' => $vehicle_status_id,
+                ]);
             return 1;
-
         } catch (\Exception $ex) {
             error_log($ex->getMessage());
             return 0;
         }
+    }
+
+
+    private function validateAvailableData($stock_number, $id)
+    {
+        #este codigo se pone en las funciones de registro y edicion
+        // $duplicate = $this->validateAvailableData($request->username, $request->email, $request->id);
+        // if ($duplicate["result"] == true) {
+        //     $response->data = $duplicate;
+        //     return response()->json($response);
+        // }
+
+        $checkAvailable = new UserController();
+        // #VALIDACION DE DATOS REPETIDOS
+        $duplicate = $checkAvailable->checkAvailableData('vehicles', 'stock_number', $stock_number, 'El número de inventario', 'stock_number', $id, null);
+        if ($duplicate["result"] == true) return $duplicate;
+        return array("result" => false);
     }
 }

@@ -80,12 +80,14 @@ class BrandController extends Controller
             $new_brand = Brand::create([
                 'brand' => $request->brand,
             ]);
-            $instance = new UserController();
-            $imgName = $instance->ImgUpload($image, $dir, $new_brand->id);
+            if ($imgName != "") {
+                $instance = new UserController();
+                $imgName = $instance->ImgUpload($image, $dir, $new_brand->id);
+            } else $imgName = "sinImagen";
             Brand::find($new_brand->id)
                 ->update([
-                'img_path' => "GPCenter/brands/$imgName"
-            ]);
+                    'img_path' => "GPCenter/brands/$imgName"
+                ]);
 
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'peticion satisfactoria | marca registrada.';
