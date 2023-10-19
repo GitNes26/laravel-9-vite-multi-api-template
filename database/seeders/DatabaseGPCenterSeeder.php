@@ -19,6 +19,8 @@ class DatabaseGPCenterSeeder extends Seeder
             GPCenter\MenuSeeder::class,
             GPCenter\RoleSeeder::class,
             GPCenter\DepartamentSeeder::class,
+            GPCenter\BrandSeeder::class,
+            GPCenter\ModelSeeder::class,
             GPCenter\VehicleStatusSeeder::class,
             GPCenter\UserSeeder::class,
        

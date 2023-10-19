@@ -74,11 +74,11 @@ class UserController extends Controller
    }
 
    /**
-    * Reegistrarse como jugador.
-    *
-    * @param  \Illuminate\Http\Request $request
-    * @return \Illuminate\Http\Response $response
-    */
+   * Registrarse como jugador.
+   *
+   * @param  \Illuminate\Http\Request $request
+   * @return \Illuminate\Http\Response $response
+   */
    public function signup(Request $request, Response $response)
    {
       $response->data = ObjResponse::DefaultResponse();
@@ -372,6 +372,32 @@ class UserController extends Controller
    }
 
 
+   public function ImgUpload($image, $dir, $imgName) {
+    try {
+        $type = "JPG";
+        $permissions = 0777;
+
+        if (file_exists("$dir/$imgName.PNG")) {
+            // Establecer permisos
+            if (chmod("$dir/$imgName.PNG", $permissions)) {
+                @unlink("$dir/$imgName.PNG");
+            }
+            $type = "JPG";
+        }
+        elseif (file_exists("$dir/$imgName.JPG")) {
+            // Establecer permisos
+            if (chmod("$dir/$imgName.JPG", $permissions)) {
+                @unlink("$dir/$imgName.JPG");
+            }
+            $type = "PNG";
+        }
+        $imgName = "$imgName.$type";
+        $image->move($dir, $imgName);
+        return $imgName;
+    } catch (\Error $err) {
+        error_log("error en imgUpload(): ". $err->getMessage());
+    }
+   }
 
    private function validateAvailableData($username, $email, $id)
    {

@@ -73,13 +73,20 @@ class BrandController extends Controller
             $imgName = "";
             if ($request->hasFile('imgFile')) {
                 $image = $request->file('imgFile');
-                $imgName = time() . '.' . $image->getClientOriginalExtension();
-                $image->move(public_path('GPCenter/brands'), $imgName);
+                // $imgName = time() . '.' . $image->getClientOriginalExtension();
+                $dir = public_path('GPCenter/brands');
+                $imgName = "hay imagen";
             }
             $new_brand = Brand::create([
                 'brand' => $request->brand,
+            ]);
+            $instance = new UserController();
+            $imgName = $instance->ImgUpload($image, $dir, $new_brand->id);
+            Brand::find($new_brand->id)
+                ->update([
                 'img_path' => "GPCenter/brands/$imgName"
             ]);
+
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'peticion satisfactoria | marca registrada.';
             $response->data["alert_text"] = 'Marca registrado';
@@ -130,8 +137,11 @@ class BrandController extends Controller
             $imgName = "";
             if ($request->hasFile('imgFile')) {
                 $image = $request->file('imgFile');
-                $imgName = time() . '.' . $image->getClientOriginalExtension();
-                $image->move(public_path('GPCenter/brands'), $imgName);
+                // $imgName = time() . '.' . $image->getClientOriginalExtension();
+                $dir = public_path('GPCenter/brands');
+                $imgName = "$request->id";
+                $instance = new UserController();
+                $imgName = $instance->ImgUpload($image, $dir, $imgName);
             }
             if ($imgName != "") {
                 $brand = Brand::find($request->id)

@@ -14,7 +14,7 @@ use App\Models\ingresos\ClavesCat;
 class SiditController extends Controller
 {
     public function index(Response $response){
-       
+
         try {
 
             $tramites = tramitesSidit::all()->first();
@@ -23,10 +23,10 @@ class SiditController extends Controller
 
         }
         catch (\Exception $ex) {
-          
+
             return response()->json("Error: ".$ex->getMessage());
         }
-     
+
     }
 
     public function create ( Request $request ) {
@@ -51,7 +51,7 @@ class SiditController extends Controller
                             $PVGI = $objeto["PVGI"];
                             $PVI = $objeto["PVI"];
                             if (isset($PVGI)) {
-                                if (isset($PVI)) {                                 
+                                if (isset($PVI)) {
                                     DB::beginTransaction();
                                     try {
                                         foreach ($PVGI as $item) {
@@ -72,7 +72,7 @@ class SiditController extends Controller
                                                 'UsuarioSolicita' => $item['UsuarioSolicita'],
                                                 'Estatus' => $item['Estatus'],
                                                 'ReciboOficial' => $item['ReciboOficial'],
-                                                'Observaciones' => $item['Observaciones'],                                  
+                                                'Observaciones' => $item['Observaciones'],
                                             ];
                                             tramitesSidit::insert($tempItem);
                                         }
@@ -123,7 +123,7 @@ class SiditController extends Controller
                             $response["Result"] = true;
                             $response["Message"] = "Consulta a la tabla detalle de pagos concluida con exito";
                             $id = $objeto["idFolio"];
-                            
+
                             $detalle = detalleTramitesSidit::all();
                             $response["PV"] = $detalle;
                         } else if($opcion === 4){
@@ -177,26 +177,26 @@ class SiditController extends Controller
                         } else {
                             //RESPUESTA POR DEFECTO EN CASO DE NO ENCAJAR CON LAS OPCIONES
                             $response["Result"] = false;
-                            $response["Message"] = "La opcion recibida es invalida"; 
+                            $response["Message"] = "La opcion recibida es invalida";
                         }
                     } else {
                             $response["Result"] = false;
-                            $response["Message"] = "No se recibio la opcion";   
+                            $response["Message"] = "No se recibio la opcion";
                     }
                 } else {
                     $response["Result"] = false;
-                    $response["Message"] = "La informacion recibida es ilegible";                 
+                    $response["Message"] = "La informacion recibida es ilegible";
                 }
             } else {
                 $response["Result"] = false;
                 $response["Message"] = "La informacion recibida es invalida";
             }
-        } 
+        }
         catch (\Exception $ex) {
             $response["Result"] = false;
             $response["Message"] = "ERROR: 500";
             $response["data"] = $ex->getMessage().", ".$ex->getLine().", ".$ex->getFile();
-        }  
+        }
         return response()->json( $response );
     }
 }
