@@ -99,7 +99,7 @@ class VehicleController extends Controller
             if ($imgName != "") {
                 $instance = new UserController();
                 $imgName = $instance->ImgUpload($image, $dir, $new_vehicle->id);
-            } else $imgName = "sinImagen";
+            } else $imgName = "sinImagen.jpg";
             Vehicle::find($new_vehicle->id)
                 ->update([
                     'img_path' => "GPCenter/vehicles/$imgName"
