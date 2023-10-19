@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use App\Models\ObjResponse;
 use App\Models\imm\UserProfile;
 use App\Models\imm\UserData;
+use App\Models\imm\UserWorkshops;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use App\Models\imm\UserDiseases;
@@ -30,6 +31,9 @@ class UserProfileImmController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
+            
+            // Verifica si hay archivos en "files" y si son imágenes válidas
+          
             $userData = UserData::where("id", $id)->first();
             if (!$userData) {
                 $userData = new UserData();
@@ -38,24 +42,48 @@ class UserProfileImmController extends Controller
             $userData->lastName = $request->lastName;
             $userData->secondName = $request->secondName;
             $userData->sex = $request->sex;
+            if ($request->module == 1) {
             $userData->gender_id = intval($request->gender_id);
+            $userData->civil_status_id = intval($request->civil_status_id);
+            }
             $userData->birthdate = date('Y-m-d', strtotime($request->birthdate));
             $userData->age = intval($request->age);
             $userData->telephone = $request->telephone;
             $userData->email = $request->email;
-            $userData->civil_status_id = intval($request->civil_status_id);
             $userData->numberchildrens = intval($request->numberchildrens);
             $userData->numberdaughters = intval($request->numberdaughters);
             $userData->pregnant = $request->pregnant;
+            $userData->module = $request->module;
 
 
             $userData->save();
 
 
+            if ($request->module == 1) {
+                $procceding = new UserProceedingsImmController();
+                $procceding->create($request,$response,$userData->id,$id);
+            }
+            else if($request->module==2)
+            {
+                $userWorkshops = UserWorkshops::where("user_datageneral_id", $id)->first();
+                if (!$userWorkshops) {
+                    $userWorkshops = new UserWorkshops();
+                    $userWorkshops->user_datageneral_id = $id;    
+                }
+                $userWorkshops->date = date('Y-m-d', strtotime($request->date));
+                $userWorkshops->location = $request->location;
+                $userWorkshops->agent = $request->agent;
+                $userWorkshops->colaboration = $request->colaboration;
+                $userWorkshops->ponent = $request->ponent;
+                $userWorkshops->issue = $request->issue;
+                $userWorkshops->user_datageneral_id = intval($userData->id);
+                $userWorkshops->axi_id = intval($request->axi_id);
+                $userWorkshops->axi_program_id = intval($request->axi_program_id);
+                $userWorkshops->observations = $request->observations;
+                $userWorkshops->save();
 
-           $procceding = new UserProceedingsImmController();
-            $comunity = new UserComunityImmController();
-            $procceding->create($request,$response,$userData->id,$id);
+            }
+           $comunity = new UserComunityImmController();
             $comunity->create($request,$response,$userData->id,$id);
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'peticion satisfactoria | datos de usuario registrado.';
@@ -302,6 +330,7 @@ class UserProfileImmController extends Controller
             ->join('user_profiles', 'user_profiles.user_datageneral_id', '=', 'user_datageneral.id')
 
             ->leftjoin('user_violences', 'user_violences.user_datageneral_id', '=', 'user_datageneral.id')
+            ->where('user_datageneral.module', 1)
 
             ->orderBy('user_datageneral.id', 'asc')
             ->get();
