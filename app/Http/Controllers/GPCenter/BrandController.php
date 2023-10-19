@@ -83,7 +83,7 @@ class BrandController extends Controller
             if ($imgName != "") {
                 $instance = new UserController();
                 $imgName = $instance->ImgUpload($image, $dir, $new_brand->id);
-            } else $imgName = "sinImagen";
+            } else $imgName = "sinImagen.jpg";
             Brand::find($new_brand->id)
                 ->update([
                     'img_path' => "GPCenter/brands/$imgName"
