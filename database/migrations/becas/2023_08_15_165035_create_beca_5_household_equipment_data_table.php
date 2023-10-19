@@ -16,14 +16,14 @@ return new class extends Migration
         Schema::connection("mysql_becas")->create('beca_5_household_equipment_data', function (Blueprint $table) {
             $table->id();
             $table->integer("beca_id");
-            $table->int('beds');
-            $table->int('washing_machines');
-            $table->int('boilers');
-            $table->int('tvs');
-            $table->int('pcs');
-            $table->int('music_player');
-            $table->int('stoves');
-            $table->int('refrigerators');
+            $table->integer('beds');
+            $table->integer('washing_machines');
+            $table->integer('boilers');
+            $table->integer('tvs');
+            $table->integer('pcs');
+            $table->integer('music_player');
+            $table->integer('stoves');
+            $table->integer('refrigerators');
 
             $table->boolean('drinking_water');
             $table->boolean('electric_light');
@@ -32,7 +32,7 @@ return new class extends Migration
             $table->boolean('automobile');
             $table->boolean('phone_line');
             $table->boolean('internet');
-            $table->int('score');
+            $table->integer('score');
 
             $table->boolean('active')->default(true);
             $table->timestamps();

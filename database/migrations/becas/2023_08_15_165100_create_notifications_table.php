@@ -13,11 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::connection('mysql_becas')->create('cities', function (Blueprint $table) {
+        Schema::connection("mysql_becas")->create('notifications', function (Blueprint $table) {
             $table->id();
-            $table->string('code');
-            $table->string('city');
-            // $table->string('location')->nullable()->comment('algo asi como una dirección');
+            $table->foreignId('user_id')->constrained('users', 'id');
+            $table->string('title');
+            $table->text('message');
+            $table->boolean('read')->nullable();
+
             $table->boolean('active')->default(true);
             $table->timestamps();
             $table->dateTime('deleted_at')->nullable();
@@ -31,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::connection('mysql_becas')->dropIfExists('cities');
+        Schema::connection('mysql_becas')->dropIfExists('notifications');
     }
 };

@@ -13,7 +13,7 @@ return new class extends Migration
     public function up()
     {
         DB::connection('mysql_becas')->statement("
-            CREATE OR REPLACE VIEW becas_view AS
+            CREATE VIEW becas_view AS
             SELECT b.*, usr.email,
             sd.curp, sd.name, sd.paternal_last_name, sd.maternal_last_name, sd.birthdate, sd.gender, sd.community_id as student_community_id, 
             sd.street as student_street, sd.num_ext as student_num_ext, sd.num_int as student_num_int, sd.disability_id, d.disability, 

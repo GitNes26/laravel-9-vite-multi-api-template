@@ -5,7 +5,7 @@ namespace App\Models\becas;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class City extends Model
+class Relationship extends Model
 {
     use HasFactory;
 
@@ -14,16 +14,14 @@ class City extends Model
      * @var string
      */
     protected $connection = "mysql_becas";
-    
+
     /**
      * Los atributos que se pueden solicitar.
      * @var array<int, string>
      */
     protected $fillable = [
         'id',
-        'code',
-        'city',
-        // 'location',
+        'relationship',
         'active',
         'deleted_at'
     ];
@@ -32,7 +30,7 @@ class City extends Model
      * Nombre de la tabla asociada al modelo.
      * @var string
      */
-    protected $table = 'cities';
+    protected $table = 'relationships';
 
     /**
      * LlavePrimaria asociada a la tabla.

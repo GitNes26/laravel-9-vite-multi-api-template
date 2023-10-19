@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::connection("mysql_becas")->create('beca_1_tutor_data', function (Blueprint $table) {
             $table->id();
-            $table->string('relationship')->comment("parentesco con el alumno");
+            $table->foreignId('relationship_id')->constrained('relationships', 'id');
             $table->string('curp');
             $table->string('name');
             $table->string('paternal_last_name');

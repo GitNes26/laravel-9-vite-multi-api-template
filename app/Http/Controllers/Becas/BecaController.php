@@ -71,17 +71,18 @@ class BecaController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
+            $tutorDataController = new Beca1TutorDataController();
             $studentDataController = new Beca1StudentDataController();
+            $tutor_data = $tutorDataController->createOrUpdateByBeca($request);
             $student_data = $studentDataController->createOrUpdateByBeca($request);
 
             $folio = $this->getLastFolio($response);
 
             $new_beca = Beca::create([
                 'folio' => (int)$folio + 1,
-                'tutor_id' => $request->tutor_id,
-                'tutor_full_name' => $request->tutor_full_name,
-                'tutor_phone' => $request->tutor_phone,
+                'user_id' => $request->tutor_id,
                 // 'single_mother' => $request->single_mother,
+                'tutor_data_id' => $tutor_data->id,
                 'student_data_id' => $student_data->id,
                 'school_id' => $request->school_id,
                 'grade' => $request->grade,
