@@ -1,10 +1,11 @@
 <?php
-namespace App\Http\Controllers\imm;
+namespace App\Http\Controllers\Imm;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\ObjResponse;
 use App\Models\imm\UserProfile;
 use App\Models\imm\UserData;
+use App\Models\imm\UserWorkshops;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use App\Models\imm\UserDiseases;
@@ -30,6 +31,9 @@ class UserProfileImmController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
+            
+            // Verifica si hay archivos en "files" y si son imágenes válidas
+          
             $userData = UserData::where("id", $id)->first();
             if (!$userData) {
                 $userData = new UserData();
@@ -38,24 +42,50 @@ class UserProfileImmController extends Controller
             $userData->lastName = $request->lastName;
             $userData->secondName = $request->secondName;
             $userData->sex = $request->sex;
+            if ($request->module == 1) {
             $userData->gender_id = intval($request->gender_id);
+            $userData->civil_status_id = intval($request->civil_status_id);
+            }
             $userData->birthdate = date('Y-m-d', strtotime($request->birthdate));
             $userData->age = intval($request->age);
             $userData->telephone = $request->telephone;
             $userData->email = $request->email;
-            $userData->civil_status_id = intval($request->civil_status_id);
             $userData->numberchildrens = intval($request->numberchildrens);
             $userData->numberdaughters = intval($request->numberdaughters);
             $userData->pregnant = $request->pregnant;
+            $userData->module = $request->module;
 
+        
+        
 
             $userData->save();
 
 
+            if ($request->module == 1) {
+                $procceding = new UserProceedingsImmController();
+                $procceding->create($request,$response,$userData->id,$id);
+            }
+            else if($request->module==2)
+            {
+                $userWorkshops = UserWorkshops::where("user_datageneral_id", $id)->first();
+                if (!$userWorkshops) {
+                    $userWorkshops = new UserWorkshops();
+                    $userWorkshops->user_datageneral_id = $id;    
+                }
+                $userWorkshops->date = date('Y-m-d', strtotime($request->date));
+                $userWorkshops->location = $request->location;
+                $userWorkshops->agent = $request->agent;
+                $userWorkshops->colaboration = $request->colaboration;
+                $userWorkshops->ponent = $request->ponent;
+                $userWorkshops->issue = $request->issue;
+                $userWorkshops->user_datageneral_id = intval($userData->id);
+                $userWorkshops->axi_id = intval($request->axi_id);
+                $userWorkshops->axi_program_id = intval($request->axi_program_id);
+                $userWorkshops->observations = $request->observations;
+                $userWorkshops->save();
 
-           $procceding = new UserProceedingsImmController();
-            $comunity = new UserComunityImmController();
-            $procceding->create($request,$response,$userData->id,$id);
+            }
+           $comunity = new UserComunityImmController();
             $comunity->create($request,$response,$userData->id,$id);
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'peticion satisfactoria | datos de usuario registrado.';
@@ -230,6 +260,8 @@ class UserProfileImmController extends Controller
                 $userData->birthdate = date('Y-m-d', strtotime($request->birthdate));
                 $userData->age = $request->age;
                 $userData->telephone = $request->telephone;
+                $userData->module = $request->module;
+
                 $userData->save();
                 
                 $comunity = new UserComunityImmController();
@@ -302,12 +334,39 @@ class UserProfileImmController extends Controller
             ->join('user_profiles', 'user_profiles.user_datageneral_id', '=', 'user_datageneral.id')
 
             ->leftjoin('user_violences', 'user_violences.user_datageneral_id', '=', 'user_datageneral.id')
+            ->where('user_datageneral.module', 1)
 
             ->orderBy('user_datageneral.id', 'asc')
             ->get();
 
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'Peticion satisfactoria | Lista de tipos de violencia.';
+            $response->data["result"] = $list;
+
+        }
+        catch (\Exception $ex) {
+            $response->data = ObjResponse::CatchResponse($ex->getMessage());
+        }
+        return response()->json($response, $response->data["status_code"]);
+    }
+    public function allUsersModule2(Response $response)
+    {
+        $response->data = ObjResponse::DefaultResponse();
+        try {
+            $list = UserData::where('user_datageneral.active', true)
+            ->select('user_workshops.id as id_taller','user_datageneral.id','user_datageneral.name as nombre', 'user_datageneral.lastName as apellido paterno', 'user_datageneral.secondName as apellido materno',
+            'user_comunities.dependece'
+            )
+            ->join('user_comunities', 'user_comunities.user_datageneral_id', '=', 'user_datageneral.id')
+            ->join('user_workshops', 'user_workshops.user_datageneral_id', '=', 'user_datageneral.id')
+
+            ->where('user_datageneral.module', 2)
+
+            ->orderBy('user_datageneral.id', 'asc')
+            ->get();
+
+            $response->data = ObjResponse::CorrectResponse();
+            $response->data["message"] = 'Peticion satisfactoria | Lista de usuarios en talleres.';
             $response->data["result"] = $list;
 
         }
@@ -353,6 +412,7 @@ class UserProfileImmController extends Controller
                 'user_datageneral.numberchildrens',
                 'user_datageneral.numberdaughters',
                 'user_datageneral.pregnant',
+                'user_datageneral.module',
                 'user_proceedings.procceding',
                 'user_proceedings.timeingress',
 
@@ -821,6 +881,112 @@ class UserProfileImmController extends Controller
             $response->data["message"] = 'Peticion satisfactoria | Lista de servicios del usuario.';
             $response->data["result"] = $list;
 
+        }
+        catch (\Exception $ex) {
+            $response->data = ObjResponse::CatchResponse($ex->getMessage());
+        }
+        return response()->json($response, $response->data["status_code"]);
+    }
+    public function getDataModule2(Request $request, Response $response,int $id){
+        $response->data = ObjResponse::DefaultResponse();
+        try {
+            $list = UserData::where('user_datageneral.id', $id)
+            ->select(
+                'user_workshops.date',
+                'user_workshops.location',
+                'user_workshops.agent',
+                'user_workshops.colaboration',
+                'user_workshops.ponent',
+                'user_workshops.issue',
+                'user_workshops.axi_id',
+                'user_workshops.axi_program_id',
+                'user_workshops.observations',
+                'user_datageneral.id',
+                'user_datageneral.name',
+                'user_datageneral.lastName',
+                'user_datageneral.secondName',
+                'user_datageneral.sex',
+                'user_datageneral.telephone',
+                'user_datageneral.email',
+                'user_datageneral.module',
+                'user_comunities.colonies_id',
+                'user_comunities.dependece',
+            )
+            ->join('user_comunities', 'user_comunities.user_datageneral_id', '=', 'user_datageneral.id')
+            ->join('user_workshops', 'user_workshops.user_datageneral_id', '=', 'user_datageneral.id')
+            // ->join('user_comunities', 'user_comunities.user_datageneral_id', '=', 'user_datageneral.id')
+           
+            ->orderBy('user_datageneral.id', 'asc')
+            ->get();
+    
+    
+            $response->data = ObjResponse::CorrectResponse();
+            $response->data["message"] = 'Peticion satisfactoria | Lista de tipos de usuarios.';
+            $response->data["result"] = $list;
+    
+        }
+        catch (\Exception $ex) {
+            $response->data = ObjResponse::CatchResponse($ex->getMessage());
+        }
+        return response()->json($response, $response->data["status_code"]);
+    }
+    public function getUserAllDataModule2(Request $request, Response $response,int $id){
+        $response->data = ObjResponse::DefaultResponse();
+        try {
+            $list = UserData::where('user_datageneral.id', $id)
+            ->select(
+                DB::raw("DATE_FORMAT(user_workshops.date, '%d/%m/%Y') as `Fecha`"),
+                'user_workshops.location as Lugar',
+                'user_workshops.agent as Agente',
+                'user_workshops.colaboration as Colaboración',
+                'user_workshops.ponent as Ponentes',
+                'user_workshops.issue as Temas',
+                'ax.axi as Eje',
+                'axp.axisprogram as Programa',
+                'user_workshops.observations as Observación',
+                'user_datageneral.name as Nombre',
+                'user_datageneral.lastName as Apellido Paterno',
+                'user_datageneral.secondName as Apellido Materno',
+                DB::raw("IF(user_datageneral.sex = 0, 'Hombre', 'Mujer') as Sexo"),
+                'user_datageneral.telephone as Telefono',
+                'user_datageneral.email as Correó',
+                'user_comunities.colonies_id',
+                'user_comunities.dependece as Dependecia o Institucion',
+                DB::raw("GROUP_CONCAT(DISTINCT  file.url) as imagenes"),
+            )
+            ->join('user_comunities', 'user_comunities.user_datageneral_id', '=', 'user_datageneral.id')
+            ->join('user_workshops', 'user_workshops.user_datageneral_id', '=', 'user_datageneral.id')
+            ->Join('axis as ax', 'ax.id', '=', 'user_workshops.axi_id')
+            ->join('axisprograms as axp', 'axp.id', '=', 'user_workshops.axi_program_id')
+            ->join('user_files as file', 'file.user_workshops_id', '=', 'user_workshops.id')
+            ->groupBy(
+            'user_workshops.date',
+            'user_workshops.location',
+            'user_workshops.agent',
+            'user_workshops.colaboration',
+            'user_workshops.ponent',
+            'user_workshops.issue',
+            'ax.axi',
+            'axp.axisprogram',
+            'user_workshops.observations',
+            'user_datageneral.id',
+            'user_datageneral.name',
+            'user_datageneral.lastName',
+            'user_datageneral.secondName',
+            'user_datageneral.sex',
+            'user_datageneral.telephone',
+            'user_datageneral.email',
+            'user_comunities.colonies_id',
+            'user_comunities.dependece',
+            )
+            ->orderBy('user_datageneral.id', 'asc')
+            ->get();
+    
+    
+            $response->data = ObjResponse::CorrectResponse();
+            $response->data["message"] = 'Peticion satisfactoria | Lista de tipos de usuarios.';
+            $response->data["result"] = $list;
+    
         }
         catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());

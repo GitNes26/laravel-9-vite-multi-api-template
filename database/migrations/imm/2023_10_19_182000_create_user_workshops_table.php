@@ -13,15 +13,18 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::connection('mysql_imm')->create('user_comunities', function (Blueprint $table) {
+        Schema::connection('mysql_imm')->create('user_workshops', function (Blueprint $table) {
             $table->id();
-            $table->string('street')->nullable()->default(null);
-            $table->integer('number')->nullable()->default(null);
-            $table->integer('colonies_id');
-            $table->string('zone',2)->nullable()->default(null);
-            $table->string('dependece')->nullable()->default(null);
-            $table->integer('statebirth')->nullable()->default(null);
+            $table->date('date');
+            $table->string('location');
+            $table->string('agent');
+            $table->string('colaboration');
+            $table->string('ponent');
+            $table->string('issue');
             $table->foreignId('user_datageneral_id')->constrained('user_datageneral','id');
+            $table->foreignId('axi_id')->constrained('axis','id');
+            $table->foreignId('axi_program_id')->constrained('axisprograms','id');
+            $table->string('observations');
             $table->boolean('active')->default(true);
             $table->timestamps();
             $table->dateTime('deleted_at')->nullable();
@@ -35,12 +38,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::connection('mysql_imm')->dropIfExists('user_comunities');
+        Schema::connection('mysql_imm')->dropIfExists('user_workshops');
     }
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-  
 };

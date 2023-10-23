@@ -21,8 +21,10 @@ class UserComunityImmController extends Controller
             }
             $userCommunity->street = $request->street;
             $userCommunity->number = $request->number;
-            $userCommunity->colonies_id = intval    ($request->colonies_id);
+            $userCommunity->colonies_id = intval($request->colonies_id);
             $userCommunity->zone = $request->zone;
+            $userCommunity->dependece = $request->dependece;
+
             if (\is_int($request->statebirth)) 
                     $userCommunity->statebirth = $request->statebirth;
                     $userCommunity->statebirth = intval($request->statebirth);
@@ -34,6 +36,7 @@ class UserComunityImmController extends Controller
             $userCommunity->number = $request->number;
             $userCommunity->colonies_id = intval($request->colonies_id);
             $userCommunity->zone = $request->zone;
+            $userCommunity->dependece = $request->dependece;
             $userCommunity->statebirth = intval($request->statebirth);
             $userCommunity->user_datageneral_id = $latestId;
             $userCommunity->save();
