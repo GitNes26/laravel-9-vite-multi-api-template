@@ -36,7 +36,7 @@ class UserFilesImmController extends Controller
                 $archivo->move(public_path("IMM/{$idFiles->id}/"),$nuevoNombreArchivo);
                 UserFiles::create([
                     'user_workshops_id' => $idFiles->id,
-                    'url'=> "https://api.gomezpalacio.gob.mx/"."/IMM/".$idFiles->id."/".$nuevoNombreArchivo,
+                    'url'=> "https://api.gomezpalacio.gob.mx"."/IMM/".$idFiles->id."/".$nuevoNombreArchivo,
                 ]);
 
                 $nombresArchivos[] = $nombreArchivo;
