@@ -7,6 +7,7 @@ use App\Models\imm\UserWorkshops;
 
 use App\Models\ObjResponse;
 use Illuminate\Http\Response;
+
 class UserFilesImmController extends Controller
 {
     public function create(Request $request, Response $response)
@@ -35,7 +36,7 @@ class UserFilesImmController extends Controller
                 $archivo->move(public_path("IMM/{$idFiles->id}/"),$nuevoNombreArchivo);
                 UserFiles::create([
                     'user_workshops_id' => $idFiles->id,
-                    'url'=> $url."/IMM/".$idFiles->id."/".$nuevoNombreArchivo,
+                    'url'=> "https://api.gomezpalacio.gob.mx"."/IMM/".$idFiles->id."/".$nuevoNombreArchivo,
                 ]);
 
                 $nombresArchivos[] = $nombreArchivo;
