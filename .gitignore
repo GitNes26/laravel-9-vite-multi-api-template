@@ -6,6 +6,8 @@
 /public/GomezApp
 /storage/*.key
 /vendor
+/config
+/app/Http/Kernel.php
 .env
 .env.backup
 .env.production
