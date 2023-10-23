@@ -31,6 +31,8 @@ use App\Http\Controllers\imm\TypeViolenceImmController;
 use App\Http\Controllers\imm\UserImmController;
 use App\Http\Controllers\imm\UserProceedingsImmController;
 use App\Http\Controllers\imm\UserProfileImmController;
+use App\Http\Controllers\imm\UserFilesImmController;
+
 //SE USA
 Route::controller(GenderImmController::class)->group(function () {
     Route::get('/genders','index');
@@ -270,6 +272,7 @@ Route::controller(UserProfileImmController::class)->group(function () {
     Route::post('/profileagressor/{id}','profileAgressor');
     Route::post('/userservice/{id}','createService');
     Route::get('/users','index');
+    Route::get('/usersmodule2','allUsersModule2');
     Route::delete('/users/{id}','destroy');
     Route::get('/userdatageneral/{id}','getData');
     Route::get('/userprofile/{id}','getProfile');
@@ -277,13 +280,22 @@ Route::controller(UserProfileImmController::class)->group(function () {
     Route::get('/profileagressor/{id}','getprofileAgressor');
     Route::get('/userservice/{id}','getServices');
     Route::get('/usereport/{id}','getUserAllData');
-
+    Route::get('/userworkshop/{id}','getDataModule2');
+    Route::get('/usereportmodule2/{id}','getUserAllDataModule2');
+    
+    
     
 });
 Route::controller(UserProceedingsImmController::class)->group(function () {
     Route::get('/proceding','index');
 
 });
+Route::controller(UserFilesImmController::class)->group(function () {
+    Route::post('/userfiles','create');
+    Route::get('/userfiles/{id}','index');
+
+});
+
 Route::post('/auth/login', [UserImmController::class, 'login']);
 Route::post('/auth/register', [UserImmController::class, 'register']);
 Route::delete('/auth/logout/{id}', [UserImmController::class,'logout']); //cerrar sesión (eliminar los tokens creados)

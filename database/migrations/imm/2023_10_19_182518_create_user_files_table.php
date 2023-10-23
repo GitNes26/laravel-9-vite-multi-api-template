@@ -13,10 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('user_files', function (Blueprint $table) {
+        Schema::connection('mysql_imm')->create('user_files', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_workshops_id')->constrained('user_workshops','id');
             $table->string('url');
+            $table->boolean('active')->default(true);
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_files');
+        Schema::connection('mysql_imm')->dropIfExists('user_files');
     }
 };
