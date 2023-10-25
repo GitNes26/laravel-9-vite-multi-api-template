@@ -23,17 +23,17 @@ class Beca1TutorDataController extends Controller
             if (!$tutor_data) $tutor_data = new Beca();
             $isTutor = true;
 
-            $tutor_data->relationship_id = $request->relationship_id;
-            $tutor_data->curp = $request->curp;
-            $tutor_data->name = $request->name;
-            $tutor_data->paternal_last_name = $request->paternal_last_name;
-            $tutor_data->maternal_last_name = $request->maternal_last_name;
+            $tutor_data->tutor_relationship_id = $request->tutor_relationship_id;
+            $tutor_data->tutor_curp = $request->tutor_curp;
+            $tutor_data->tutor_name = $request->tutor_name;
+            $tutor_data->tutor_paternal_last_name = $request->tutor_paternal_last_name;
+            $tutor_data->tutor_maternal_last_name = $request->tutor_maternal_last_name;
 
-            if ($request->relationship_id === 1 || $request->relationship_id === 2) $isTutor = false;
+            if ($request->tutor_relationship_id === 1 || $request->tutor_relationship_id === 2) $isTutor = false;
 
             if ($isTutor) {
-                $tutor_data->ine_path = $request->ine_path;
-                $tutor_data->power_letter_path = $request->power_letter_path;
+                $tutor_data->tutor_img_ine = $request->tutor_img_ine;
+                $tutor_data->tutor_img_power_letter = $request->tutor_img_power_letter;
             }
 
             $tutor_data->save();
@@ -55,10 +55,10 @@ class Beca1TutorDataController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $list = Beca::where('tutor_data.active', true)
-                ->join('disabilities', 'tutor_data.disability_id', '=', 'disabilities.id')
-                ->select('tutor_data.*', 'disabilities.disability', 'disabilities.description')
-                ->orderBy('tutor_data.id', 'desc')->get();
+            $list = Beca::where('beca_1_tutor_data.active', true)
+                ->join('relationships', 'beca_1_tutor_data.tutor_relationship_id', '=', 'relationships.id')
+                ->select('beca_1_tutor_data.*', 'relationships.relationship')
+                ->orderBy('beca_1_tutor_data.id', 'desc')->get();
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'Peticion satisfactoria | Lista de estudiantes.';
             $response->data["result"] = $list;

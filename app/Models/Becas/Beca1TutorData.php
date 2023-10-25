@@ -21,13 +21,13 @@ class Beca1TutorData extends Model
      */
     protected $fillable = [
         'id',
-        'relationship',
-        'curp',
-        'name',
-        'paternal_last_name',
-        'maternal_last_name',
-        'ine_path',
-        'power_letter_path',
+        'tutor_relationship',
+        'tutor_curp',
+        'tutor_name',
+        'tutor_paternal_last_name',
+        'tutor_maternal_last_name',
+        'tutor_img_ine',
+        'tutor_img_power_letter',
         'active',
         'deleted_at'
     ];

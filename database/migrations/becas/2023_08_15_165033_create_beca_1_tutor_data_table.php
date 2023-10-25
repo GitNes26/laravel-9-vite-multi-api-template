@@ -15,14 +15,14 @@ return new class extends Migration
     {
         Schema::connection("mysql_becas")->create('beca_1_tutor_data', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('relationship_id')->constrained('relationships', 'id');
-            $table->string('curp');
-            $table->string('name');
-            $table->string('paternal_last_name');
-            $table->string('maternal_last_name');
+            $table->foreignId('tutor_relationship_id')->constrained('relationships', 'id');
+            $table->string('tutor_curp');
+            $table->string('tutor_name');
+            $table->string('tutor_paternal_last_name');
+            $table->string('tutor_maternal_last_name');
             // $table->boolean('single_mother')->nullable();
-            $table->string('ine_path')->nullable();
-            $table->string('power_letter_path')->nullable();
+            $table->string('tutor_img_ine')->nullable();
+            $table->string('tutor_img_power_letter')->nullable();
             $table->boolean('active')->default(true);
             $table->timestamps();
             $table->dateTime('deleted_at')->nullable();
