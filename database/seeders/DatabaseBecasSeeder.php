@@ -18,11 +18,10 @@ class DatabaseBecasSeeder extends Seeder
             becas\RoleSeeder::class,
             becas\UserSeeder::class,
             becas\PerimeterSeeder::class,
-            becas\CitySeeder::class,
-            becas\ColonySeeder::class,
             becas\LevelSeeder::class,
             becas\SchoolSeeder::class,
-            becas\DisabilitySeeder::class
+            becas\DisabilitySeeder::class,
+            becas\RelationshipSeeder::class
         ]);
         // \App\Models\User::factory(10)->create();
 

@@ -5,7 +5,7 @@ namespace App\Models\becas;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class City extends Model
+class Beca2FamilyData extends Model
 {
     use HasFactory;
 
@@ -14,16 +14,18 @@ class City extends Model
      * @var string
      */
     protected $connection = "mysql_becas";
-    
+
     /**
      * Los atributos que se pueden solicitar.
      * @var array<int, string>
      */
     protected $fillable = [
         'id',
-        'code',
-        'city',
-        // 'location',
+        'beca_id',
+        'relationship',
+        'age',
+        'occupation',
+        'monthly_income',
         'active',
         'deleted_at'
     ];
@@ -32,13 +34,23 @@ class City extends Model
      * Nombre de la tabla asociada al modelo.
      * @var string
      */
-    protected $table = 'cities';
+    protected $table = 'beca_2_family_data';
 
     /**
      * LlavePrimaria asociada a la tabla.
      * @var string
      */
     protected $primaryKey = 'id';
+
+
+    // /**
+    //  * Obtener discapacidad asociada con el alumno.
+    //  */
+    // public function disability()
+    // {   //primero se declara FK y despues la PK del modelo asociado
+    //     return $this->belongsTo(Disability::class, 'disability_id', 'id');
+    // }
+
 
     /**
      * Obtener los usuarios relacionados a un rol.

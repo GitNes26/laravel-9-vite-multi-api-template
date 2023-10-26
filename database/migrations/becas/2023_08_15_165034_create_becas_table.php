@@ -16,16 +16,20 @@ return new class extends Migration
         Schema::connection("mysql_becas")->create('becas', function (Blueprint $table) {
             $table->id();
             $table->integer('folio');
-            $table->foreignId('tutor_id')->constrained('users', 'id');
-            $table->string('tutor_full_name');
-            $table->string('tutor_phone');
-            $table->boolean('single_mother')->nullable();
+            $table->foreignId('user_id')->constrained('users', 'id');
+            $table->foreignId('tutor_data_id')->constrained('beca_1_tutor_data', 'id');
 
-            $table->foreignId('student_data_id')->constrained('student_data', 'id');
+            $table->foreignId('student_data_id')->constrained('beca_1_student_data', 'id');
+            $table->foreignId('school_id')->constrained('schools', 'id')->nullable();
+            $table->integer('grade')->nullable();
+            $table->decimal('average', 8, 2)->nullable();
 
-            $table->foreignId('school_id')->constrained('schools', 'id');
-            $table->integer('grade');
-            $table->decimal('average', 8, 2);
+            $table->decimal('extra_income', 11, 2)->nullable();
+            $table->decimal('monthly_income', 11, 2)->nullable();
+
+            $table->decimal('total_expenses', 11, 2)->nullable();
+            $table->boolean('under_protest')->comment("aceptando bajo protesta");
+
             $table->text('comments')->nullable();
 
             $table->enum('socioeconomic_study', ['BAJO', 'MEDIO-BAJO', 'NORMAL'])->nullable();

@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\Becas;
 
 use App\Http\Controllers\Controller;
-use App\Models\becas\StudentData;
+use App\Models\becas\Beca1StudentData;
 use App\Models\ObjResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 
-class StudentDataBecasController extends Controller
+class Beca1StudentDataController extends Controller
 {
     /**
      * Crear o Actualizar estudiante desde formulario beca.
@@ -19,8 +19,8 @@ class StudentDataBecasController extends Controller
     public function createOrUpdateByBeca($request)
     {
         try {
-            $student_data = StudentData::where('curp', $request->curp)->first();
-            if (!$student_data) $student_data = new StudentData();
+            $student_data = Beca1StudentData::where('curp', $request->curp)->first();
+            if (!$student_data) $student_data = new Beca();
 
             $student_data->curp = $request->curp;
             $student_data->name = $request->name;
@@ -53,7 +53,7 @@ class StudentDataBecasController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $list = StudentData::where('student_data.active', true)
+            $list = Beca::where('student_data.active', true)
                 ->join('disabilities', 'student_data.disability_id', '=', 'disabilities.id')
                 ->select('student_data.*', 'disabilities.disability', 'disabilities.description')
                 ->orderBy('student_data.id', 'desc')->get();
@@ -75,7 +75,7 @@ class StudentDataBecasController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $list = StudentData::where('active', true)
+            $list = Beca::where('active', true)
                 ->select('student_data.id as id', 'student_data.name as label')
                 ->orderBy('student_data.name', 'asc')->get();
             $response->data = ObjResponse::CorrectResponse();
@@ -97,7 +97,7 @@ class StudentDataBecasController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $new_estudent_data = StudentData::create([
+            $new_estudent_data = Beca::create([
                 'curp' => $request->curp,
                 'name' => $request->name,
                 'paternal_last_name' => $request->paternal_last_name,
@@ -136,8 +136,8 @@ class StudentDataBecasController extends Controller
                 $field = 'student_data.curp';
                 $value = $request->curp;
             }
-            // $student_data = StudentData::where('student_data.id', $request->id)
-            $student_data = StudentData::where("$field", "$value")
+            // $student_data = Beca1StudentData::where('student_data.id', $request->id)
+            $student_data = Beca1StudentData::where("$field", "$value")
                 ->join('disabilities', 'student_data.disability_id', '=', 'disabilities.id')
                 ->select('student_data.*', 'disabilities.disability', 'disabilities.description')
                 ->first();
@@ -161,7 +161,7 @@ class StudentDataBecasController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $student_data = StudentData::find($request->id)
+            $student_data = Beca1StudentData::find($request->id)
                 ->update([
                     'curp' => $request->curp,
                     'name' => $request->name,
@@ -196,7 +196,7 @@ class StudentDataBecasController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            StudentData::find($request->id)
+            Beca1StudentData::find($request->id)
                 ->update([
                     'active' => false,
                     'deleted_at' => date('Y-m-d H:i:s'),

@@ -5,7 +5,7 @@ namespace App\Models\becas;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class StudentData extends Model
+class Beca1TutorData extends Model
 {
     use HasFactory;
 
@@ -21,17 +21,13 @@ class StudentData extends Model
      */
     protected $fillable = [
         'id',
-        'curp',
-        'name',
-        'paternal_last_name',
-        'maternal_last_name',
-        'birthdate',
-        'gender',
-        'community_id',
-        'street',
-        'num_ext',
-        'num_int',
-        'disability_id',
+        'tutor_relationship',
+        'tutor_curp',
+        'tutor_name',
+        'tutor_paternal_last_name',
+        'tutor_maternal_last_name',
+        'tutor_img_ine',
+        'tutor_img_power_letter',
         'active',
         'deleted_at'
     ];
@@ -40,7 +36,7 @@ class StudentData extends Model
      * Nombre de la tabla asociada al modelo.
      * @var string
      */
-    protected $table = 'student_data';
+    protected $table = 'beca_1_tutor_data';
 
     /**
      * LlavePrimaria asociada a la tabla.
@@ -49,13 +45,13 @@ class StudentData extends Model
     protected $primaryKey = 'id';
 
 
-    /**
-     * Obtener discapacidad asociada con el alumno.
-     */
-    public function disability()
-    {   //primero se declara FK y despues la PK del modelo asociado
-        return $this->belongsTo(Disability::class, 'disability_id', 'id');
-    }
+    // /**
+    //  * Obtener discapacidad asociada con el alumno.
+    //  */
+    // public function disability()
+    // {   //primero se declara FK y despues la PK del modelo asociado
+    //     return $this->belongsTo(Disability::class, 'disability_id', 'id');
+    // }
 
 
     /**

@@ -5,7 +5,7 @@ namespace App\Models\becas;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Colony extends Model
+class Beca5HouseholdEquipmentData extends Model
 {
     use HasFactory;
 
@@ -14,17 +14,30 @@ class Colony extends Model
      * @var string
      */
     protected $connection = "mysql_becas";
-    
+
     /**
      * Los atributos que se pueden solicitar.
      * @var array<int, string>
      */
     protected $fillable = [
         'id',
-        'code',
-        'colony',
-        'cp',
-        'perimeter_id',
+        'beca_id',
+        'beds',
+        'washing_machines',
+        'boilers',
+        'tvs',
+        'pcs',
+        'music_player',
+        'stoves',
+        'refrigerators',
+        'drinking_water',
+        'electric_light',
+        'sewer_system',
+        'pavement',
+        'automobile',
+        'phone_line',
+        'internet',
+        'score',
         'active',
         'deleted_at'
     ];
@@ -33,13 +46,23 @@ class Colony extends Model
      * Nombre de la tabla asociada al modelo.
      * @var string
      */
-    protected $table = 'colonies';
+    protected $table = 'beca_5_household_equipment_data';
 
     /**
      * LlavePrimaria asociada a la tabla.
      * @var string
      */
     protected $primaryKey = 'id';
+
+
+    // /**
+    //  * Obtener discapacidad asociada con el alumno.
+    //  */
+    // public function disability()
+    // {   //primero se declara FK y despues la PK del modelo asociado
+    //     return $this->belongsTo(Disability::class, 'disability_id', 'id');
+    // }
+
 
     /**
      * Obtener los usuarios relacionados a un rol.

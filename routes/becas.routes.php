@@ -12,8 +12,10 @@ use App\Http\Controllers\Becas\ColonyBecasController;
 use App\Http\Controllers\Becas\DisabilityBecasController;
 use App\Http\Controllers\Becas\LevelBecasController;
 use App\Http\Controllers\Becas\SchoolBecasController;
-use App\Http\Controllers\Becas\BecaBecasController;
-use App\Http\Controllers\Becas\StudentDataBecasController;
+use App\Http\Controllers\Becas\Beca1StudentDataController;
+use App\Http\Controllers\Becas\BecaController;
+use App\Http\Controllers\Becas\RelationshipController;
+use App\Models\becas\Beca1TutorData;
 
 #endregion CONTROLLERS BECAS
 
@@ -51,24 +53,6 @@ Route::controller(PerimeterBecasController::class)->group(function () {
    Route::delete('/perimeters/{id}', 'destroy');
 });
 
-Route::controller(CityBecasController::class)->group(function () {
-   Route::get('/cities', 'index');
-   Route::get('/cities/selectIndex', 'selectIndex');
-   Route::get('/cities/{id}', 'show');
-   Route::post('/cities', 'create');
-   Route::put('/cities/{id?}', 'update');
-   Route::delete('/cities/{id}', 'destroy');
-});
-
-Route::controller(ColonyBecasController::class)->group(function () {
-   Route::get('/colonies', 'index');
-   Route::get('/colonies/selectIndex', 'selectIndex');
-   Route::get('/colonies/{id}', 'show');
-   Route::post('/colonies', 'create');
-   Route::put('/colonies/{id?}', 'update');
-   Route::delete('/colonies/{id}', 'destroy');
-});
-
 Route::controller(LevelBecasController::class)->group(function () {
    Route::get('/levels', 'index');
    Route::get('/levels/selectIndex', 'selectIndex');
@@ -97,7 +81,26 @@ Route::controller(DisabilityBecasController::class)->group(function () {
    Route::delete('/disabilities/{id}', 'destroy');
 });
 
-Route::controller(StudentDataBecasController::class)->group(function () {
+Route::controller(RelationshipController::class)->group(function () {
+   Route::get('/relationships', 'index');
+   Route::get('/relationships/selectIndex', 'selectIndex');
+   Route::get('/relationships/{id}', 'show');
+   Route::post('/relationships', 'create');
+   Route::put('/relationships/{id?}', 'update');
+   Route::delete('/relationships/{id}', 'destroy');
+});
+
+Route::controller(Beca1TutorData::class)->group(function () {
+   Route::get('/tutors', 'index');
+   Route::get('/tutors/selectIndex', 'selectIndex');
+   Route::get('/tutors/{id}', 'show');
+   Route::get('/tutors/curp/{curp}', 'show');
+   Route::post('/tutors', 'create');
+   Route::put('/tutors/{id?}', 'update');
+   Route::delete('/tutors/{id}', 'destroy');
+});
+
+Route::controller(Beca1StudentDataController::class)->group(function () {
    Route::get('/students', 'index');
    Route::get('/students/selectIndex', 'selectIndex');
    Route::get('/students/{id}', 'show');
@@ -107,7 +110,7 @@ Route::controller(StudentDataBecasController::class)->group(function () {
    Route::delete('/students/{id}', 'destroy');
 });
 
-Route::controller(BecaBecasController::class)->group(function () {
+Route::controller(BecaController::class)->group(function () {
    Route::get('/becas', 'index');
    Route::get('/becas/selectIndex', 'selectIndex');
    Route::get('/becas/id/{id}', 'show');

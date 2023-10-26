@@ -13,11 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::connection('mysql_becas')->create('cities', function (Blueprint $table) {
+        Schema::connection("mysql_becas")->create('relationships', function (Blueprint $table) {
             $table->id();
-            $table->string('code');
-            $table->string('city');
-            // $table->string('location')->nullable()->comment('algo asi como una dirección');
+            $table->string('relationship');
             $table->boolean('active')->default(true);
             $table->timestamps();
             $table->dateTime('deleted_at')->nullable();
@@ -31,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::connection('mysql_becas')->dropIfExists('cities');
+        Schema::connection('mysql_becas')->dropIfExists('relationships');
     }
 };
