@@ -13,9 +13,9 @@ return new class extends Migration
     public function up()
     {
         DB::connection('mysql_becas')->statement("
-        CREATE VIEW becas_view AS
+        CREATE OR REPLACE VIEW becas_view AS
         SELECT b.*, usr.email,
-        td.curp tutor_curp, td.name tutor_name, td.paternal_last_name tutor_paternal_last_name, td.maternal_last_name tutor_maternal_last_name, td.ine_path, td.power_letter_path,
+        td.tutor_curp tutor_curp, td.tutor_name tutor_name, td.tutor_paternal_last_name tutor_paternal_last_name, td.tutor_maternal_last_name tutor_maternal_last_name, td.tutor_img_ine, td.tutor_img_power_letter,
         sd.curp, sd.name, sd.paternal_last_name, sd.maternal_last_name, sd.birthdate, sd.gender, sd.community_id as student_community_id, 
         sd.street as student_street, sd.num_ext as student_num_ext, sd.num_int as student_num_int, sd.disability_id, d.disability, 
         d.description, s.code, s.level_id, l.level, s.school, s.community_id as school_community_id, 
