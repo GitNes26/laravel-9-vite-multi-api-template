@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 class Beca1TutorDataController extends Controller
 {
     /**
-     * Crear o Actualizar estudiante desde formulario beca.
+     * Crear o Actualizar tutor desde formulario beca.
      *
      * @return \Illuminate\Http\Response $response
      */
@@ -28,12 +28,16 @@ class Beca1TutorDataController extends Controller
             $tutor_data->tutor_name = $request->tutor_name;
             $tutor_data->tutor_paternal_last_name = $request->tutor_paternal_last_name;
             $tutor_data->tutor_maternal_last_name = $request->tutor_maternal_last_name;
+            $tutor_data->tutor_phone = $request->tutor_phone;
 
             if ($request->tutor_relationship_id === 1 || $request->tutor_relationship_id === 2) $isTutor = false;
 
             if ($isTutor) {
-                $tutor_data->tutor_img_ine = $request->tutor_img_ine;
-                $tutor_data->tutor_img_power_letter = $request->tutor_img_power_letter;
+                $tutor_img_ine = $this->ImageUp($request, "tutor_img_ine", $tutor_data->id, true);
+                $tutor_img_power_letter = $this->ImageUp($request, "tutor_img_power_letter", $tutor_data->id, true);
+
+                $tutor_data->tutor_img_ine = $tutor_img_ine;
+                $tutor_data->tutor_img_power_letter = $tutor_img_power_letter;
             }
 
             $tutor_data->save();
@@ -46,8 +50,24 @@ class Beca1TutorDataController extends Controller
         }
     }
 
+
+    private function ImageUp($request, $requestFile, $id, $create)
+    {
+        $dir_path = "GPCenter/brands";
+        $dir = public_path($dir_path);
+        $img_name = "";
+        if ($request->hasFile($requestFile)) {
+            $img_file = $request->file($requestFile);
+            $instance = new UserController();
+            $img_name = $instance->ImgUpload($img_file, $dir, $dir_path, "$id");
+        } else {
+            if ($create) $img_name = "$dir_path/noBrand.png";
+        }
+        return $img_name;
+    }
+
     /**
-     * Mostrar lista de estudiantes activos.
+     * Mostrar lista de tutores activos.
      *
      * @return \Illuminate\Http\Response $response
      */
@@ -60,7 +80,7 @@ class Beca1TutorDataController extends Controller
                 ->select('beca_1_tutor_data.*', 'relationships.relationship')
                 ->orderBy('beca_1_tutor_data.id', 'desc')->get();
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'Peticion satisfactoria | Lista de estudiantes.';
+            $response->data["message"] = 'Peticion satisfactoria | Lista de tutores.';
             $response->data["result"] = $list;
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
@@ -78,10 +98,10 @@ class Beca1TutorDataController extends Controller
         $response->data = ObjResponse::DefaultResponse();
         try {
             $list = Beca::where('active', true)
-                ->select('tutor_data.id as id', 'tutor_data.name as label')
-                ->orderBy('tutor_data.name', 'asc')->get();
+                ->select('beca_1_tutor_data.id as id', 'beca_1_tutor_data.tutor_name as label')
+                ->orderBy('beca_1_tutor_data.name', 'asc')->get();
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'Peticion satisfactoria | Lista de estudiantes';
+            $response->data["message"] = 'Peticion satisfactoria | Lista de tutores';
             $response->data["result"] = $list;
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
@@ -90,7 +110,7 @@ class Beca1TutorDataController extends Controller
     }
 
     /**
-     * Crear estudiante.
+     * Crear tutor.
      *
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
@@ -113,7 +133,7 @@ class Beca1TutorDataController extends Controller
                 'disability_id' => $request->disability_id,
             ]);
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'peticion satisfactoria | estudiante registrado.';
+            $response->data["message"] = 'peticion satisfactoria | tutor registrado.';
             $response->data["alert_text"] = 'Estudiante registrado';
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
@@ -122,7 +142,7 @@ class Beca1TutorDataController extends Controller
     }
 
     /**
-     * Mostrar estudiante.
+     * Mostrar tutor.
      *
      * @param   int $id
      * @param  \Illuminate\Http\Request $request
@@ -132,20 +152,17 @@ class Beca1TutorDataController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $field = 'tutor_data.id';
+            $field = 'id';
             $value = $request->id;
-            if ($request->curp) {
-                $field = 'tutor_data.curp';
-                $value = $request->curp;
+            if ($request->tutor_curp) {
+                $field = 'tutor_curp';
+                $value = $request->tutor_curp;
             }
             // $tutor_data = Beca1TutorData::where('tutor_data.id', $request->id)
-            $tutor_data = Beca1TutorData::where("$field", "$value")
-                ->join('disabilities', 'tutor_data.disability_id', '=', 'disabilities.id')
-                ->select('tutor_data.*', 'disabilities.disability', 'disabilities.description')
-                ->first();
+            $tutor_data = Beca1TutorData::where("$field", "$value")->first();
 
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'peticion satisfactoria | estudiante encontrada.';
+            $response->data["message"] = 'peticion satisfactoria | tutor encontrado.';
             $response->data["result"] = $tutor_data;
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
@@ -154,7 +171,7 @@ class Beca1TutorDataController extends Controller
     }
 
     /**
-     * Actualizar estudiante.
+     * Actualizar tutor.
      *
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response $response
@@ -179,7 +196,7 @@ class Beca1TutorDataController extends Controller
                 ]);
 
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'peticion satisfactoria | estudiante actualizado.';
+            $response->data["message"] = 'peticion satisfactoria | tutor actualizado.';
             $response->data["alert_text"] = 'Estudiante actualizado';
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
@@ -188,7 +205,7 @@ class Beca1TutorDataController extends Controller
     }
 
     /**
-     * Eliminar (cambiar estado activo=false) estudiante.
+     * Eliminar (cambiar estado activo=false) tutor.
      *
      * @param  int $id
      * @param  \Illuminate\Http\Request $request
@@ -204,7 +221,7 @@ class Beca1TutorDataController extends Controller
                     'deleted_at' => date('Y-m-d H:i:s'),
                 ]);
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'peticion satisfactoria | estudiante eliminado.';
+            $response->data["message"] = 'peticion satisfactoria | tutor eliminado.';
             $response->data["alert_text"] = 'Estudiante eliminado';
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());

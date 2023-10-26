@@ -166,7 +166,7 @@ class RelationshipController extends Controller
         //     $response->data = $duplicate;
         //     return response()->json($response);
         // }
-        $checkAvailable = new UserBecasController();
+        $checkAvailable = new UserController();
         // #VALIDACION DE DATOS REPETIDOS
         $duplicate = $checkAvailable->checkAvailableData('relationships', 'relationship', $relationship, 'El parentesco', 'relationship', $id, null);
         if ($duplicate["result"] == true) return $duplicate;

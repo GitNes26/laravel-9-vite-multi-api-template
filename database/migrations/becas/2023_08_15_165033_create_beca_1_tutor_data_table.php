@@ -23,6 +23,7 @@ return new class extends Migration
             // $table->boolean('single_mother')->nullable();
             $table->string('tutor_img_ine')->nullable();
             $table->string('tutor_img_power_letter')->nullable();
+            $table->string('tutor_phone')->nullable();
             $table->boolean('active')->default(true);
             $table->timestamps();
             $table->dateTime('deleted_at')->nullable();

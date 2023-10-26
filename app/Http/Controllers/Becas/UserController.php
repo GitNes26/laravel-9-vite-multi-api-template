@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\VarDumper\VarDumper;
 
-class UserBecasController extends Controller
+class UserController extends Controller
 {
 
     /**
@@ -278,6 +278,41 @@ class UserBecasController extends Controller
 
 
 
+    /**
+     * Funcion para guardar una imagen en directorio fisico, elimina y guarda la nueva al editar la imagen para no guardar muchas
+     * imagenes y genera el path que se guardara en la BD
+     * 
+     * @param $image File es el archivo de la imagen
+     * @param $destination String ruta donde se guardara fisicamente el archivo
+     * @param $dir String ruta que mandara a la BD
+     * @param $imgName String Nombre de como se guardará el archivo fisica y en la BD
+     */
+    public function ImgUpload($image, $destination, $dir, $imgName)
+    {
+        try {
+            $type = "JPG";
+            $permissions = 0777;
+
+            if (file_exists("$dir/$imgName.PNG")) {
+                // Establecer permisos
+                if (chmod("$dir/$imgName.PNG", $permissions)) {
+                    @unlink("$dir/$imgName.PNG");
+                }
+                $type = "JPG";
+            } elseif (file_exists("$dir/$imgName.JPG")) {
+                // Establecer permisos
+                if (chmod("$dir/$imgName.JPG", $permissions)) {
+                    @unlink("$dir/$imgName.JPG");
+                }
+                $type = "PNG";
+            }
+            $imgName = "$imgName.$type";
+            $image->move($destination, $imgName);
+            return "$dir/$imgName";
+        } catch (\Error $err) {
+            error_log("error en imgUpload(): " . $err->getMessage());
+        }
+    }
 
     private function validateAvailableData($username, $email, $id)
     {
@@ -298,8 +333,9 @@ class UserBecasController extends Controller
             $query = "SELECT count(*) as duplicate FROM $table WHERE $column='$value' AND active=1";
             if ($id != null) $query = "SELECT count(*) as duplicate FROM $table WHERE $column='$value' AND active=1 AND id!=$id";
         }
-        $result = DB::connection('mysql_becas')->select($query)[0];
-        // var_dump($result->duplicate);
+        //   echo $query;
+        $result = DB::connection("mysql_becas")->select($query)[0];
+        //   var_dump($result->duplicate);
         if ((int)$result->duplicate > 0) {
             // echo "entro al duplicate";
             $response = array(

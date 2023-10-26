@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Becas;
 
 use App\Http\Controllers\Controller;
 use App\Models\becas\Beca1StudentData;
+use App\Models\becas\Beca1TutorData;
 use App\Models\ObjResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -53,10 +54,10 @@ class Beca1StudentDataController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $list = Beca::where('student_data.active', true)
-                ->join('disabilities', 'student_data.disability_id', '=', 'disabilities.id')
-                ->select('student_data.*', 'disabilities.disability', 'disabilities.description')
-                ->orderBy('student_data.id', 'desc')->get();
+            $list = Beca1TutorData::where('beca_1_student_data.active', true)
+                ->join('disabilities', 'beca_1_student_data.disability_id', '=', 'disabilities.id')
+                ->select('beca_1_student_data.*', 'disabilities.disability', 'disabilities.description')
+                ->orderBy('beca_1_student_data.id', 'desc')->get();
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'Peticion satisfactoria | Lista de estudiantes.';
             $response->data["result"] = $list;
@@ -75,9 +76,9 @@ class Beca1StudentDataController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $list = Beca::where('active', true)
-                ->select('student_data.id as id', 'student_data.name as label')
-                ->orderBy('student_data.name', 'asc')->get();
+            $list = Beca1TutorData::where('beca_1_student_data.active', true)
+                ->select('beca_1_student_data.id as id', 'beca_1_student_data.name as label')
+                ->orderBy('beca_1_student_data.name', 'asc')->get();
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'Peticion satisfactoria | Lista de estudiantes';
             $response->data["result"] = $list;
@@ -97,7 +98,7 @@ class Beca1StudentDataController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $new_estudent_data = Beca::create([
+            $new_estudent_data = Beca1StudentData::create([
                 'curp' => $request->curp,
                 'name' => $request->name,
                 'paternal_last_name' => $request->paternal_last_name,
@@ -130,16 +131,16 @@ class Beca1StudentDataController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $field = 'student_data.id';
+            $field = 'beca_1_student_data.id';
             $value = $request->id;
             if ($request->curp) {
-                $field = 'student_data.curp';
+                $field = 'beca_1_student_data.curp';
                 $value = $request->curp;
             }
-            // $student_data = Beca1StudentData::where('student_data.id', $request->id)
+            // $student_data = Beca1StudentData::where('beca_1_student_data.id', $request->id)
             $student_data = Beca1StudentData::where("$field", "$value")
-                ->join('disabilities', 'student_data.disability_id', '=', 'disabilities.id')
-                ->select('student_data.*', 'disabilities.disability', 'disabilities.description')
+                ->join('disabilities', 'beca_1_student_data.disability_id', '=', 'disabilities.id')
+                ->select('beca_1_student_data.*', 'disabilities.disability', 'disabilities.description')
                 ->first();
 
             $response->data = ObjResponse::CorrectResponse();

@@ -87,8 +87,12 @@ class BecaController extends Controller
                 'school_id' => $request->school_id,
                 'grade' => $request->grade,
                 'average' => $request->average,
+                'extra_income' => $request->extra_income,
+                'monthly_income' => $request->monthly_income,
+                'total_expenses' => $request->total_expenses,
+                'under_protest' => $request->under_protest,
                 'comments' => $request->comments,
-                'socioeconomic_study' => $request->socioeconomic_study,
+                // 'socioeconomic_study' => $request->socioeconomic_study,
             ]);
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'peticion satisfactoria | beca registrada.';
@@ -135,14 +139,18 @@ class BecaController extends Controller
             $beca = Beca::find($request->id)
                 ->update([
                     'folio' => $request->folio,
-                    'tutor_id' => $request->tutor_id,
-                    'tutor_full_name' => $request->tutor_full_name,
-                    'tutor_phone' => $request->tutor_phone,
+                    'user_id' => $request->tutor_id,
                     // 'single_mother' => $request->single_mother,
+                    'tutor_data_id' => $request->tutor_data_id,
                     'student_data_id' => $request->student_data_id,
                     'school_id' => $request->school_id,
                     'grade' => $request->grade,
                     'average' => $request->average,
+                    'extra_income' => $request->extra_income,
+                    'monthly_income' => $request->monthly_income,
+                    'total_expenses' => $request->total_expenses,
+                    'under_protest' => $request->under_protest,
+                    'comments' => $request->comments,
                     'comments' => $request->comments,
                     'socioeconomic_study' => $request->socioeconomic_study,
                 ]);

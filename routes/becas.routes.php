@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 #region CONTROLLERS BECAS
 use App\Http\Controllers\Becas\RoleBecasController;
-use App\Http\Controllers\Becas\UserBecasController;
+use App\Http\Controllers\Becas\UserController;
 use App\Http\Controllers\Becas\PerimeterBecasController;
 use App\Http\Controllers\Becas\CityBecasController;
 use App\Http\Controllers\Becas\ColonyBecasController;
@@ -19,14 +19,14 @@ use App\Models\becas\Beca1TutorData;
 
 #endregion CONTROLLERS BECAS
 
-Route::post('/login', [UserBecasController::class, 'login']);
-Route::post('/signup', [UserBecasController::class, 'signup']);
+Route::post('/login', [UserController::class, 'login']);
+Route::post('/signup', [UserController::class, 'signup']);
 
 // Route::middleware('auth:sanctum')->group(function () {
-// Route::get('/getUser/{token}', [UserBecasController::class,'getUser']); //cerrar sesión (eliminar los tokens creados)
-Route::delete('/logout/{id}', [UserBecasController::class, 'logout']); //cerrar sesión (eliminar los tokens creados)
+// Route::get('/getUser/{token}', [UserController::class,'getUser']); //cerrar sesión (eliminar los tokens creados)
+Route::delete('/logout/{id}', [UserController::class, 'logout']); //cerrar sesión (eliminar los tokens creados)
 
-Route::controller(UserBecasController::class)->group(function () {
+Route::controller(UserController::class)->group(function () {
    Route::get('/users', 'index');
    Route::get('/users/selectIndex', 'selectIndex');
    Route::get('/users/{id}', 'show');
@@ -94,7 +94,7 @@ Route::controller(Beca1TutorData::class)->group(function () {
    Route::get('/tutors', 'index');
    Route::get('/tutors/selectIndex', 'selectIndex');
    Route::get('/tutors/{id}', 'show');
-   Route::get('/tutors/curp/{curp}', 'show');
+   Route::get('/tutors/tutor_curp/{tutor_curp}', 'show');
    Route::post('/tutors', 'create');
    Route::put('/tutors/{id?}', 'update');
    Route::delete('/tutors/{id}', 'destroy');

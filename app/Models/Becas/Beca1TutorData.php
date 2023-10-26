@@ -26,6 +26,7 @@ class Beca1TutorData extends Model
         'tutor_name',
         'tutor_paternal_last_name',
         'tutor_maternal_last_name',
+        'tutor_phone',
         'tutor_img_ine',
         'tutor_img_power_letter',
         'active',

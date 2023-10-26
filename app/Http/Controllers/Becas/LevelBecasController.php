@@ -167,7 +167,7 @@ class LevelBecasController extends Controller
         //     $response->data = $duplicate;
         //     return response()->json($response);
         // }
-        $checkAvailable = new UserBecasController();
+        $checkAvailable = new UserController();
         // #VALIDACION DE DATOS REPETIDOS
         $duplicate = $checkAvailable->checkAvailableData('levels', 'level', $level, 'El nivel', 'level', $id, null);
         if ($duplicate["result"] == true) return $duplicate;
