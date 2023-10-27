@@ -16,7 +16,7 @@ class UserFilesImmController extends Controller
     try {
         $data = $request->all();
         $nombresArchivos = [];
-    $idFiles = UserWorkshops::where("user_datageneral_id", $request->id)->first(); // Obtener el resultado de la consulta
+    $idFiles = UserWorkshops::where("user_datageneral_id", $request->id)->first(); 
          UserFiles::where("user_workshops_id",$idFiles->id)->delete();
 
         $folderPath = public_path("IMM/{$idFiles->id}");

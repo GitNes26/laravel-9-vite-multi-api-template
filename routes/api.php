@@ -20,7 +20,7 @@ use App\Http\Controllers\becas\SchoolBecasController;
 
 #region CONTROLLERS INGRESOS
 use App\Http\Controllers\Ingresos\SiditController;
-
+use App\Http\Controllers\websockets\Websocketglobal;
 #endregion CONTROLLERS INGRESOS
 
 
@@ -36,6 +36,7 @@ Route::post('pdf', [ oficiosController::class,'pdf']);
 Route::get('pdf', function(){
     return 1 ;
 });
+Route::get('test', [Websocketglobal::class,'socketGlobal']);
 
 
 Route::prefix('becas')->group(function () {
