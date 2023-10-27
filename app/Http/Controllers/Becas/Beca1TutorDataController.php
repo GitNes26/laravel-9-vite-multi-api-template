@@ -162,7 +162,7 @@ class Beca1TutorDataController extends Controller
             $tutor_data = Beca1TutorData::where("$field", "$value")->first();
 
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'peticion satisfactoria | tutor encontrado.';
+            $response->data["message"] = $tutor_data == null ? 'peticion satisfactoria | tutor encontrado.' : 'peticion satisfactoria | NO se encontro tutor.';
             $response->data["result"] = $tutor_data;
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());

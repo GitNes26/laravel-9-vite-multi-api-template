@@ -13,9 +13,9 @@ use App\Http\Controllers\Becas\DisabilityBecasController;
 use App\Http\Controllers\Becas\LevelBecasController;
 use App\Http\Controllers\Becas\SchoolBecasController;
 use App\Http\Controllers\Becas\Beca1StudentDataController;
+use App\Http\Controllers\Becas\Beca1TutorDataController;
 use App\Http\Controllers\Becas\BecaController;
 use App\Http\Controllers\Becas\RelationshipController;
-use App\Models\becas\Beca1TutorData;
 
 #endregion CONTROLLERS BECAS
 
@@ -90,7 +90,7 @@ Route::controller(RelationshipController::class)->group(function () {
    Route::delete('/relationships/{id}', 'destroy');
 });
 
-Route::controller(Beca1TutorData::class)->group(function () {
+Route::controller(Beca1TutorDataController::class)->group(function () {
    Route::get('/tutors', 'index');
    Route::get('/tutors/selectIndex', 'selectIndex');
    Route::get('/tutors/{id}', 'show');
