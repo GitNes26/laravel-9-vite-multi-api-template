@@ -32,7 +32,8 @@ use App\Http\Controllers\imm\UserImmController;
 use App\Http\Controllers\imm\UserProceedingsImmController;
 use App\Http\Controllers\imm\UserProfileImmController;
 use App\Http\Controllers\imm\UserFilesImmController;
-
+use App\Http\Controllers\imm\CaptureImmActivitiesController;
+use App\Http\Controllers\imm\ExpendentImmController;
 //SE USA
 Route::controller(GenderImmController::class)->group(function () {
     Route::get('/genders','index');
@@ -280,6 +281,8 @@ Route::controller(UserProfileImmController::class)->group(function () {
     Route::get('/profileagressor/{id}','getprofileAgressor');
     Route::get('/userservice/{id}','getServices');
     Route::get('/usereport/{id}','getUserAllData');
+    Route::get('/usereport2/{id}','getUserData');
+    Route::get('/users2','usersM4Module1');
     Route::get('/userworkshop/{id}','getDataModule2');
     Route::get('/usereportmodule2/{id}','getUserAllDataModule2');
     
@@ -295,6 +298,28 @@ Route::controller(UserFilesImmController::class)->group(function () {
     Route::get('/userfiles/{id}','index');
 
 });
+Route::controller(CaptureImmActivitiesController::class)->group(function () {
+    Route::get('/captureactivities','index');
+    Route::get('/activitiesdata/{id}','getDataModule3');
+    Route::get('/captureactivities/{id}','show');
+    Route::post('/captureactivities','create');
+    Route::post('/captureactivities/{id}','update');
+     Route::delete('/captureactivities/{id}','destroy');
+
+});
+Route::controller(ExpendentImmController::class)->group(function () {
+    Route::post('/expendent','create');
+    Route::get('/expedentproblem','selectIndexProblem');
+    Route::get('/expendentclose','selectIndexMotiveClosed');
+    Route::get('/expendentviolence','selectIndexTypeViolece');
+    Route::get('/expendents','index');
+    Route::get('/expendent/{id}','show');
+    Route::get('/expendentpdf/{id}','pdf');
+    Route::post('/expendentupdate/{id}','update');
+    Route::delete('/expendent/{id}','destroy');
+
+});
+
 
 Route::post('/auth/login', [UserImmController::class, 'login']);
 Route::post('/auth/register', [UserImmController::class, 'register']);

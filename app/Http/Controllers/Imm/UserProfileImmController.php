@@ -326,7 +326,7 @@ class UserProfileImmController extends Controller
         $response->data = ObjResponse::DefaultResponse();
         try {
             $list = UserData::where('user_datageneral.active', true)
-            ->select('user_proceedings.procceding as folio', 'user_datageneral.id','user_violences.id as idviolence', 'user_profiles.caseviolence as caso_violencia', 'user_datageneral.name as nombre', 'user_datageneral.lastName as apellido paterno', 'user_datageneral.secondName as apellido materno',
+            ->select('user_proceedings.procceding as Folio', 'user_datageneral.id','user_violences.id as idviolence', 'user_profiles.caseviolence as caso_violencia', 'user_datageneral.name as Nombre', 'user_datageneral.lastName as Apellido paterno', 'user_datageneral.secondName as Apellido materno',
                 'status.status as status')
             ->join('user_proceedings', 'user_proceedings.user_datageneral_id', '=', 'user_datageneral.id')
             ->join('user_services', 'user_services.user_datageneral_id', '=', 'user_datageneral.id')
@@ -349,13 +349,48 @@ class UserProfileImmController extends Controller
         }
         return response()->json($response, $response->data["status_code"]);
     }
+    public function usersM4Module1(Response $response)
+    {
+        $response->data = ObjResponse::DefaultResponse();
+        try {
+            $list = UserData::where('user_datageneral.active', true)
+            ->select('user_proceedings.procceding as Folio', 'user_datageneral.id','user_violences.id as idviolence', 'user_profiles.caseviolence as caso_violencia', 'user_datageneral.name as Nombre', 'user_datageneral.lastName as Apellido paterno', 'user_datageneral.secondName as Apellido materno',
+                'status.status as status')
+            ->join('user_proceedings', 'user_proceedings.user_datageneral_id', '=', 'user_datageneral.id')
+            ->join('user_services', 'user_services.user_datageneral_id', '=', 'user_datageneral.id')
+            ->join('status', 'status.id', '=', 'user_services.status_id')
+            ->join('user_profiles', 'user_profiles.user_datageneral_id', '=', 'user_datageneral.id')
+            ->join('user_proceedings as pro', 'pro.user_datageneral_id', '=', 'user_datageneral.id')
+
+            ->leftjoin('user_violences', 'user_violences.user_datageneral_id', '=', 'user_datageneral.id')
+            ->where('user_datageneral.module', 1)
+            ->whereNotExists(function ($query)  {
+                $query->select(DB::raw(1))
+                    ->from('expendents as ex')
+                    ->whereRaw('ex.procceding_id = pro.id');
+            })
+            ->orderBy('user_datageneral.id', 'asc')
+            ->get();
+
+            $response->data = ObjResponse::CorrectResponse();
+            $response->data["message"] = 'Peticion satisfactoria | Lista de tipos de violencia.';
+            $response->data["result"] = $list;
+
+        }
+        catch (\Exception $ex) {
+            $response->data = ObjResponse::CatchResponse($ex->getMessage());
+        }
+        return response()->json($response, $response->data["status_code"]);
+    }
+
+    
     public function allUsersModule2(Response $response)
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
             $list = UserData::where('user_datageneral.active', true)
-            ->select('user_workshops.id as id_taller','user_datageneral.id','user_datageneral.name as nombre', 'user_datageneral.lastName as apellido paterno', 'user_datageneral.secondName as apellido materno',
-            'user_comunities.dependece'
+            ->select('user_workshops.id as id_taller','user_datageneral.id','user_datageneral.name as Nombre', 'user_datageneral.lastName as Apellido paterno', 'user_datageneral.secondName as Apellido materno',
+            'user_comunities.dependece as Dependecia'
             )
             ->join('user_comunities', 'user_comunities.user_datageneral_id', '=', 'user_datageneral.id')
             ->join('user_workshops', 'user_workshops.user_datageneral_id', '=', 'user_datageneral.id')
@@ -876,6 +911,48 @@ class UserProfileImmController extends Controller
                 'axp.axisprogram',
                
             )
+            ->get();
+            $response->data = ObjResponse::CorrectResponse();
+            $response->data["message"] = 'Peticion satisfactoria | Lista de servicios del usuario.';
+            $response->data["result"] = $list;
+
+        }
+        catch (\Exception $ex) {
+            $response->data = ObjResponse::CatchResponse($ex->getMessage());
+        }
+        return response()->json($response, $response->data["status_code"]);
+    }
+    public function getUserData(Request $request, Response $response,int $id){
+        $response->data = ObjResponse::DefaultResponse();
+        try {
+
+            $list = UserData::from('user_datageneral as dt')
+            ->select(
+                'pro.id as Folio_id',        
+                'pro.procceding as Folio',
+                'dt.name as Nombre',
+                'dt.lastName as `Apellido Paterno`',
+                'dt.secondName as `Apellido Materno`',
+                'dt.age as Edad',
+                'dt.telephone as Telefono',
+                'com.street as `Calle`',
+                'com.number as `Numero`',
+                'com.colonies_id',
+                
+               
+              
+              
+             
+            )
+            ->join('user_proceedings as pro', 'pro.user_datageneral_id', '=', 'dt.id')
+            ->join('user_comunities as com', 'com.user_datageneral_id', '=', 'dt.id')
+            
+
+            ->where('dt.user_violence', null)
+            ->where('dt.active', 1)
+            ->where('dt.id', $id)
+           
+            
             ->get();
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'Peticion satisfactoria | Lista de servicios del usuario.';

@@ -35,7 +35,10 @@ class DatabaseImmSeeder extends Seeder
             imm\StatusSeeder::class,
             imm\ProblematicSeeder::class,
             imm\ClosuremotifSeeder::class,
-           
+            imm\ExpendentMotiveClosedSeeder::class,
+            imm\ExpendentProblemsSeeder::class,
+            imm\ExpendentTypeViolenceSeeder::class,
+
 
         ]);
        
