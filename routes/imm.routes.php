@@ -312,6 +312,11 @@ Route::controller(ExpendentImmController::class)->group(function () {
     Route::get('/expedentproblem','selectIndexProblem');
     Route::get('/expendentclose','selectIndexMotiveClosed');
     Route::get('/expendentviolence','selectIndexTypeViolece');
+    Route::get('/expendents','index');
+    Route::get('/expendent/{id}','show');
+    Route::get('/expendentpdf/{id}','pdf');
+    Route::post('/expendentupdate/{id}','update');
+    Route::delete('/expendent/{id}','destroy');
 
 });
 
