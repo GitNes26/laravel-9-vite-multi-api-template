@@ -80,7 +80,7 @@ class BecaController extends Controller
 
             $new_beca = Beca::create([
                 'folio' => (int)$folio + 1,
-                'user_id' => $request->tutor_id,
+                'user_id' => $request->user_id,
                 // 'single_mother' => $request->single_mother,
                 'tutor_data_id' => $tutor_data->id,
                 'student_data_id' => $student_data->id,

@@ -21,7 +21,7 @@ class Beca1StudentDataController extends Controller
     {
         try {
             $student_data = Beca1StudentData::where('curp', $request->curp)->first();
-            if (!$student_data) $student_data = new Beca();
+            if (!$student_data) $student_data = new Beca1StudentData();
 
             $student_data->curp = $request->curp;
             $student_data->name = $request->name;

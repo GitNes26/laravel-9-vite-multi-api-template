@@ -28,7 +28,7 @@ return new class extends Migration
             $table->decimal('monthly_income', 11, 2)->nullable();
 
             $table->decimal('total_expenses', 11, 2)->nullable();
-            $table->boolean('under_protest')->comment("aceptando bajo protesta");
+            $table->boolean('under_protest')->nullable()->comment("aceptando bajo protesta");
 
             $table->text('comments')->nullable();
 
