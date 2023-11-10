@@ -160,7 +160,10 @@ class Beca1TutorDataController extends Controller
                 $value = $request->tutor_curp;
             }
             // $tutor_data = Beca1TutorData::where('tutor_data.id', $request->id)
-            $tutor_data = Beca1TutorData::where("$field", "$value")->first();
+            $tutor_data = Beca1TutorData::where("beca_1_tutor_data.$field", "$value")
+                ->join('relationships', 'beca_1_tutor_data.tutor_relationship_id', '=', 'relationships.id')
+                ->select('beca_1_tutor_data.*', 'relationships.relationship')
+                ->first();
 
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = $tutor_data == null ? 'peticion satisfactoria | tutor encontrado.' : 'peticion satisfactoria | NO se encontro tutor.';
