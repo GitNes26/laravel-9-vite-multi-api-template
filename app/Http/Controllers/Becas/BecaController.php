@@ -9,7 +9,7 @@ use App\Models\ObjResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Becas\Beca1StudentDataController;
+use Illuminate\Support\Facades\Auth;
 use App\Models\becas\BecasView;
 
 class BecaController extends Controller
@@ -23,13 +23,6 @@ class BecaController extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-
-            // $list = Beca::where('becas.active', true)
-            //     // ->join("users", "becas.user_id", "=", "users.id")
-            //     ->join('student_data', 'becas.student_data_id', '=', 'student_data.id')
-            //     ->join('schools', 'becas.school_id', '=', 'schools.id')
-            //     ->select('*')
-            //     ->orderBy('becas.id', 'asc')->get();
             $list = BecasView::all();
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'Peticion satisfactoria | Lista de becas.';
@@ -183,6 +176,33 @@ class BecaController extends Controller
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'peticion satisfactoria | beca eliminada.';
             $response->data["alert_text"] = 'Beca eliminada';
+        } catch (\Exception $ex) {
+            $response->data = ObjResponse::CatchResponse($ex->getMessage());
+        }
+        return response()->json($response, $response->data["status_code"]);
+    }
+
+
+    /**
+     * Mostrar beca por folio.
+     * Mostrar solo si el usuario logeado es el correspondiente a la beca o eres admin
+     *
+     * @param   int $id
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response $response
+     */
+    public function getRequestBecasByUser(Request $request, Response $response)
+    {
+        $response->data = ObjResponse::DefaultResponse();
+        try {
+            $role_id = Auth::user()->role_id;
+            return "que tengo aqui? -> $role_id";
+            $beca = BecasView::where('folio', $request->folio)->first();
+            $beca = BecasView::where('folio', $request->folio)->first();
+
+            $response->data = ObjResponse::CorrectResponse();
+            $response->data["message"] = 'peticion satisfactoria | beca encontrada.';
+            $response->data["result"] = $beca;
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
