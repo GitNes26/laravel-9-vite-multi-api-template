@@ -38,6 +38,12 @@ Route::get('cp/colonia/{id}', [CodigoPostalController::class,'colonia']);
 Route::get('estados',[EstadosController::class,'index']);
 Route::get('estados/{id}',[EstadosController::class,'estadosFind']);
 
+Route::get('colonias/perimetro/{perimeter_id}',[CodigoPostalController::class,'coloniesByPerimeter']);
+Route::get('perimetros/{id?}',[CodigoPostalController::class,'perimeters']);
+Route::post('perimetros/create',[CodigoPostalController::class,'createOrUpdatePerimeter']);
+Route::post('perimetros/update/{id}',[CodigoPostalController::class,'createOrUpdatePerimeter']);
+
+
 
 
 Route::prefix('becas')->group(function () {
