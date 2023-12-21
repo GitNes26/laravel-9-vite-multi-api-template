@@ -7,6 +7,8 @@ use Exception;
 use Illuminate\Http\Request;
 use App\Models\Facturacion;
 use PhpParser\Node\Stmt\Catch_;
+use Illuminate\Support\Facades\DB;
+
 class FactuacionController extends Controller
 {
     public function index() {
@@ -80,7 +82,24 @@ class FactuacionController extends Controller
                                     if($this->ValidarFecha($dataRec["endlessDate"])){
                                         $FechaFin = $dataRec["endlessDate"];
                                         try{
+
+                                  
+                                            // $data = Facturacion::where('dpa_folio', 10253193)->where('dpa_fecha_doc', "2023-01-11 00:00:00.000")->get();
                                             $data = Facturacion::whereBetween('dpa_fecha_doc', [$FechaInicio, $FechaFin])->get();
+
+                                            //   $data = DB::connection('sqlsrv_ingresos')->table('vwPagosFacElectronica')
+                                            //   ->where('dpa_fecha_doc', '>=', $FechaInicio)
+                                            //   ->where('dpa_fecha_doc', '<', $FechaFin)
+                                            //   ->orderBy('dpa_fecha_doc','asc')
+                                            //   ->get();
+
+                                            // $data = DB::connection('sqlsrv_ingresos')->table('vwPagosFacElectronica')
+                                                        // ->whereBetween('dpa_fecha_doc', ["'$FechaInicio'", "'$FechaFin'"])->get();
+
+                                            // $data = Facturacion::where('dpa_fecha_doc', '>=', $FechaInicio)
+                                            // ->where('dpa_fecha_doc', '<=', $FechaFin)
+                                            // ->get();
+
                                             $result["result"] = true;
                                             $result["message"] = "Se buscaron los registros dentro del margen de fechas solicitado";
                                             $result["data"] = $data;
@@ -180,6 +199,8 @@ class FactuacionController extends Controller
             }else{
                 return false;
             }
+
+           
         }catch(\Exception){
             return false;
         }
