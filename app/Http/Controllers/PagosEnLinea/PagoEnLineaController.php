@@ -28,7 +28,7 @@ class PagoEnLineaController extends Controller
         } catch (Exception $e) {
             return json_encode(array(
                 "status" => true,
-                "message" => "API ONLINE",
+                "message" => "API OFFLINE",
                 "log" => $e->getMessage()
             ));
         }
