@@ -17,14 +17,15 @@ class PagoEnLineaController extends Controller
     public function index(Request $request, Response $response)
     {
         try {
-            $dataSend = json_decode($response->getContent(), true);
+            $dataSend = json_decode($request->getContent(), true);
+            // return $dataSend;
             if (isset($dataSend)) {
                 $op = $dataSend["op"];
                 $dataRec = $dataSend["data"];
-                $calveCat = $dataRec["$calveCat"];
+                $claveCat = $dataRec["claveCat"];
                 if ($op === 1) {
                     //BUSQUEDA POR CLAVE CATASTRAL
-                    $list = PREDIAL_MOVS::where('PMS_CVECAT', $calveCat)->orderBy('PMS_FECULTMOD', 'desc')
+                    $list = PREDIAL_MOVS::where('PMS_CVECAT', $claveCat)->orderBy('PMS_FECULTMOD', 'desc')
                         ->get();
                 } else {
                     $list = PREDIAL_MOVS::orderBy('PMS_FECULTMOD', 'desc')
