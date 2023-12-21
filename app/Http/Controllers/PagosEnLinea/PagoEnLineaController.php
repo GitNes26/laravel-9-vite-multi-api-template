@@ -14,12 +14,24 @@ use Illuminate\Support\Facades\DB;
 
 class PagoEnLineaController extends Controller
 {
-    public function index()
+    public function index(Request $request, Response $response)
     {
         try {
-            $list = PREDIAL_MOVS::orderBy('PMS_FECULTMOD', 'desc')
-                ->take(10)
-                ->get();
+            $dataSend = json_decode($response->getContent(), true);
+            if (isset($dataSend)) {
+                $op = $dataSend["op"];
+                $dataRec = $dataSend["data"];
+                $calveCat = $dataRec["$calveCat"];
+                if ($op === 1) {
+                    //BUSQUEDA POR CLAVE CATASTRAL
+                    $list = PREDIAL_MOVS::where('PMS_CVECAT', $calveCat)->orderBy('PMS_FECULTMOD', 'desc')
+                        ->get();
+                } else {
+                    $list = PREDIAL_MOVS::orderBy('PMS_FECULTMOD', 'desc')
+                        ->take(10)
+                        ->get();
+                }
+            }
             return json_encode(array(
                 "status" => true,
                 "message" => "API ONLINE",
