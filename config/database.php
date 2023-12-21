@@ -225,7 +225,20 @@ return [
             'encrypt' => env('DB_ENCRYPT_INGRESOS', 'yes'),
             'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE_INGRESOS', 'false'),
         ],
-
+        'sql_pagos_en_linea' => [
+            'driver' => 'sqlsrv',
+            'url' => env('DATABASE_URL_PAGOEL'),
+            'host' => env('DB_HOST_PAGOEL', 'localhost'),
+            'port' => env('DB_PORT_PAGOEL', '1433'),
+            'database' => env('DB_DATABASE_PAGOEL', 'forge'),
+            'username' => env('DB_USERNAME_PAGOEL', 'forge'),
+            'password' => env('DB_PASSWORD_PAGOEL', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'encrypt' => env('DB_ENCRYPT_PAGOEL', 'yes'),
+            'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE_PAGOEL', 'false'),
+        ],
     ],
 
     /*

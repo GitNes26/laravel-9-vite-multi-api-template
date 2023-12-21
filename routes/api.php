@@ -29,19 +29,19 @@ Route::post('pdf', [oficiosController::class, 'pdf']);
 Route::get('pdf', function () {
     return 1;
 });
-Route::get('test', [Websocketglobal::class,'socketGlobal']);
+Route::get('test', [Websocketglobal::class, 'socketGlobal']);
 
-Route::get('cp/{id}', [CodigoPostalController::class,'index']);
-Route::get('cp/colonia/{id}', [CodigoPostalController::class,'colonia']);
+Route::get('cp/{id}', [CodigoPostalController::class, 'index']);
+Route::get('cp/colonia/{id}', [CodigoPostalController::class, 'colonia']);
 
 
-Route::get('estados',[EstadosController::class,'index']);
-Route::get('estados/{id}',[EstadosController::class,'estadosFind']);
+Route::get('estados', [EstadosController::class, 'index']);
+Route::get('estados/{id}', [EstadosController::class, 'estadosFind']);
 
-Route::get('colonias/perimetro/{perimeter_id}',[CodigoPostalController::class,'coloniesByPerimeter']);
-Route::get('perimetros/{id?}',[CodigoPostalController::class,'perimeters']);
-Route::post('perimetros/create',[CodigoPostalController::class,'createOrUpdatePerimeter']);
-Route::post('perimetros/update/{id}',[CodigoPostalController::class,'createOrUpdatePerimeter']);
+Route::get('colonias/perimetro/{perimeter_id}', [CodigoPostalController::class, 'coloniesByPerimeter']);
+Route::get('perimetros/{id?}', [CodigoPostalController::class, 'perimeters']);
+Route::post('perimetros/create', [CodigoPostalController::class, 'createOrUpdatePerimeter']);
+Route::post('perimetros/update/{id}', [CodigoPostalController::class, 'createOrUpdatePerimeter']);
 
 
 
@@ -54,8 +54,10 @@ Route::prefix('becas')->group(function () {
 });
 
 Route::prefix('sidit/tramites')->group(function () {
-    Route::get("/",function(){return "sidit ONLINE";});
-    Route::post('/',[SiditController::class,'create']);
+    Route::get("/", function () {
+        return "sidit ONLINE";
+    });
+    Route::post('/', [SiditController::class, 'create']);
 });
 
 Route::prefix('gpCenter')->group(function () {
@@ -71,12 +73,16 @@ Route::prefix('gomezapp')->group(function () {
     });
     include_once "gomezapp.routes.php";
 });
-   
+
 
 Route::prefix('imm')->group(function () {
     include_once "imm.routes.php";
 });
 
-Route::prefix('facturacion')->group(function() {
+Route::prefix('facturacion')->group(function () {
     include_once("facturacion.routes.php");
+});
+
+Route::prefix('PagoEnLinea')->group(function () {
+    include_once("pagoenlinea.routes.php");
 });
