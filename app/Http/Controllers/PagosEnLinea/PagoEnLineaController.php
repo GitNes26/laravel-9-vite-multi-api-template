@@ -11,7 +11,7 @@ use App\Models\PagoEnLinea\Predial_PagosEnLinea;
 use App\Models\PagoEnLinea\Predial_Afiliacion;
 use App\Models\PagoEnLinea\Impuestos;
 use App\Models\PagoEnLinea\predial_estadoscuenta;
-
+use App\Models\PagoEnLinea\PAGPREDIAL;
 
 
 use Illuminate\Http\Request;
@@ -422,6 +422,36 @@ class PagoEnLineaController extends Controller
                 $resArr["recive"] = $dataRec;
                 $folio_edocta = $dataRec["folio_edocta"];
                 $list = Predial_PagosEnLinea::where('folio_edocta', $folio_edocta)
+                    ->get();
+                $resArr['status'] = true;
+                $resArr['message'] = 'Se encontraron un total de: ' . count($list) . "datos";
+                $resArr["data"] = $list;
+            } else {
+                $resArr['message'] = "No se recibio la informacion necesaria para los datos";
+            }
+        } catch (Exception $e) {
+            $resArr['message'] = "Ha ocurrido un error imesperado";
+            $resArr["log"] = "Mensaje de error: " . $e->getMessage() . "; Linea; " . $e->getLine() . "; Archivo: " . $e->getFile() . ".";
+        }
+        return json_encode($resArr);
+    }
+
+    public function GetPAGPREDIALCveCat(Request $request, Response $response)
+    {
+        $resArr = array(
+            "status" => false,
+            "message" => "Default Message",
+            "log" => "",
+            "data" => array(),
+            "recive" => array(),
+        );
+        try {
+            $dataSend = json_decode($request->getContent(), true);
+            if (isset($dataSend)) {
+                $dataRec = $dataSend["data"];
+                $resArr["recive"] = $dataRec;
+                $CVECATASTRAL = $dataRec["CVECATASTRAL"];
+                $list = PAGPREDIAL::where('CVECATASTRAL', $CVECATASTRAL)
                     ->get();
                 $resArr['status'] = true;
                 $resArr['message'] = 'Se encontraron un total de: ' . count($list) . "datos";

@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class PAGPREDIAL extends Model
 {
     use HasFactory;
+    protected $connection = "sql_pagos_en_linea";
+    protected $table = 'PAGPREDIAL';
+    public $timestamps = false;
 }
