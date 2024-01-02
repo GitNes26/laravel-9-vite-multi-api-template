@@ -12,7 +12,7 @@ Route::post('/PREDIAL', [PagoEnLineaController::class, 'GetPREDIALWhCveCat']);
 
 Route::post('/SPCalculo3', [PagoEnLineaController::class, 'spPredial_Calculo3']);
 
-Route::post('/SPCalculo3', [PagoEnLineaController::class, 'spPredial_EdoCta']);
+Route::post('/SPEdoCta', [PagoEnLineaController::class, 'spPredial_EdoCta']);
 
 Route::post('/GuardaInfConsultaInternet', [PagoEnLineaController::class, 'spPredial_GuardaInfConsultaInternet']);
 
