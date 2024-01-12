@@ -13,7 +13,6 @@ use App\Models\PagoEnLinea\Impuestos;
 use App\Models\PagoEnLinea\predial_estadoscuenta;
 use App\Models\PagoEnLinea\PAGPREDIAL;
 
-
 use Illuminate\Http\Request;
 use \Illuminate\Http\Response;
 use Exception;
@@ -465,4 +464,33 @@ class PagoEnLineaController extends Controller
         }
         return json_encode($resArr);
     }
+
+    // public function spObtenFolioPagoe(Request $request, Response $response)
+    // {
+    //     $resArr = array(
+    //         "status" => false,
+    //         "message" => "Default Message",
+    //         "log" => "",
+    //         "data" => array(),
+    //         "recive" => array(),
+    //     );
+    //     try {
+    //         $dataSend = json_decode($request->getContent(), true);
+    //         if (isset($dataSend)) {
+    //             $dataRec = $dataSend["data"];
+    //             $resArr["recive"] = $dataRec;
+    //             $Foliopago = $dataRec["Foliopago"];
+    //             $list = DB::connection('sql_pagos_en_linea')->statement("EXEC [dbo].[spObtenFolioPagoe] @Foliopago = ?", array($Foliopago));
+    //             $resArr['status'] = true;
+    //             $resArr['message'] = "Se ejecuto el procedimiento almacenado";
+    //             $resArr["data"] = $list;
+    //         } else {
+    //             $resArr['message'] = "No se recibio la informacion necesaria para los datos";
+    //         }
+    //     } catch (Exception $e) {
+    //         $resArr['message'] = "Ha ocurrido un error imesperado";
+    //         $resArr["log"] = "Mensaje de error: " . $e->getMessage() . "; Linea; " . $e->getLine() . "; Archivo: " . $e->getFile() . ".";
+    //     }
+    //     return json_encode($resArr);
+    // }
 }

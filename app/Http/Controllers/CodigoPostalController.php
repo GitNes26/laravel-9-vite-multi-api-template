@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\CodigoPostal;
+use App\Models\Colony;
+use App\Models\Community;
 use App\Models\ObjResponse;
 use App\Models\Perimeter;
 use Illuminate\Support\Facades\DB;
@@ -42,13 +44,33 @@ class CodigoPostalController extends Controller
     public function perimeters(Response $response, Request $request){
         try {
             $response->data = ObjResponse::DefaultResponse();
-            // $list =  Perimeter::all();
             $list = $request->id > 0 ? Perimeter::find($request->id) : Perimeter::all();
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = $request->id > 0 ? 'Peticion satisfactoria | Perimetro encontrado.' : 'Peticion satisfactoria | Perimetros encontrados.';
             $response->data["result"] = $list;
         
         }catch (\Exception $ex) {
+            $response->data = ObjResponse::CatchResponse($ex->getMessage());
+        }
+        return response()->json($response, $response->data["status_code"]);
+    }
+
+    /**
+     * Mostrar listado para un selector.
+     *
+     * @return \Illuminate\Http\Response $response
+     */
+    public function selectIndexPerimeters(Response $response)
+    {
+        $response->data = ObjResponse::DefaultResponse();
+        try {
+            $list = Perimeter::where('active', true)
+                ->select('perimeters.id as id', 'perimeters.perimeter as label')
+                ->orderBy('perimeters.perimeter', 'asc')->get();
+            $response->data = ObjResponse::CorrectResponse();
+            $response->data["message"] = 'Peticion satisfactoria | Lista de perimetros';
+            $response->data["result"] = $list;
+        } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
         return response()->json($response, $response->data["status_code"]);
@@ -65,9 +87,9 @@ class CodigoPostalController extends Controller
 
             $perimeter->save();
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = $request->id > 0 ? 'Peticion satisfactoria | Perímetro creado.' : 'Peticion satisfactoria | Perímetro actualizdo.';
-            $response->data["alert_title"] = $request->id > 0 ? 'Perímetro creado.' : 'Perímetro actualizdo.';
-            $response->data["alert_text"] = $request->id > 0 ? 'Perímetro creado.' : 'Perímetro actualizdo.';
+            $response->data["message"] = $request->id > 0 ? 'Peticion satisfactoria | Perímetro actualizdo.' : 'Peticion satisfactoria | Perímetro creado.';
+            $response->data["alert_title"] = $request->id > 0 ? 'Perímetro actualizdo.' : 'Perímetro creado.';
+            $response->data["alert_text"] = $request->id > 0 ? 'Perímetro actualizdo.' : 'Perímetro creado.';
             // $response->data["result"] = $perimeter;
             
         }catch (\Exception $ex) {
@@ -86,6 +108,36 @@ class CodigoPostalController extends Controller
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'Peticion satisfactoria | Perimetros encontrados.';
             $response->data["result"] = $list;
+        
+        }catch (\Exception $ex) {
+            $response->data = ObjResponse::CatchResponse($ex->getMessage());
+        }
+        return response()->json($response, $response->data["status_code"]);
+    }
+
+    public function assignPerimeterToCommunity(Response $response, Int $perimeter_id, Int $community_id,){
+        try {
+            $response->data= ObjResponse::DefaultResponse();
+            $community = Community::where('id', $request->community_id)->first();
+            if ($community) {
+                $community->perimeter_id = $request->perimeter_id;
+                $community->save();
+    
+                // $colony = Colony::where('id', $community->colony_id)->first();
+                // $colony->perimeter_id = $request->perimeter_id;
+                // $perimeter->save();
+    
+                $response->data = ObjResponse::CorrectResponse();
+                $response->data["message"] = 'Peticion satisfactoria | Perimetro asignado.';
+                $response->data["alert_title"] = 'Perímetro asignado.';
+                $response->data["alert_text"] = 'Perímetro asignado.';
+                // $response->data["result"] = $list;
+            } else {
+                $response->data["message"] = 'Peticion no satisfactoria | No se encontro communidad.';
+                $response->data["alert_title"] = 'No se encontro communidad.';
+                $response->data["alert_text"] = 'No se encontro communidad.';
+            }
+            
         
         }catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());

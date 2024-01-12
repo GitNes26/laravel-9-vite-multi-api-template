@@ -34,6 +34,9 @@ Route::post('/UpdateEstatEstadoDeCuenta', [PagoEnLineaController::class, 'Update
 
 Route::post('/PAGPREDIAL', [PagoEnLineaController::class, 'GetPAGPREDIALCveCat']);
 
+// Route::post('/SpObtenFolioPagoe', [PagoEnLineaController::class, 'spObtenFolioPagoe']);
+
+
 // Route::post('/get', [PagoEnLineaController::class, 'GetDataFacturacionPOST']);
 // Route::get('/get', [PagoEnLineaController::class, 'ErrorReturn']);
 // Route::post('/set', [PagoEnLineaController::class, 'SetDataFacturacionPOST']);

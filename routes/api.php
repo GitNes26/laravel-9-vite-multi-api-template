@@ -40,6 +40,8 @@ Route::get('estados/{id}', [EstadosController::class, 'estadosFind']);
 
 Route::get('colonias/perimetro/{perimeter_id}', [CodigoPostalController::class, 'coloniesByPerimeter']);
 Route::get('perimetros/{id?}', [CodigoPostalController::class, 'perimeters']);
+Route::get('perimetros/{id}/assignToCommunity/{community_id}', [CodigoPostalController::class, 'assignPerimeterToCommunity']);
+Route::get('perimetros/selectIndex', [CodigoPostalController::class, 'selectIndexPerimeters']);
 Route::post('perimetros/create', [CodigoPostalController::class, 'createOrUpdatePerimeter']);
 Route::post('perimetros/update/{id}', [CodigoPostalController::class, 'createOrUpdatePerimeter']);
 
