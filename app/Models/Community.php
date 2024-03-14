@@ -9,4 +9,5 @@ class Community extends Model
 {
     protected $connection = "mysql_communities";
     protected $table = 'communities';
+    public $timestamps = false;
 }

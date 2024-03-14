@@ -38,9 +38,13 @@ Route::get('cp/colonia/{id}', [CodigoPostalController::class, 'colonia']);
 Route::get('estados', [EstadosController::class, 'index']);
 Route::get('estados/{id}', [EstadosController::class, 'estadosFind']);
 
+Route::get('comunidades', [CodigoPostalController::class, 'indexCommunities']);
+Route::get('comunidades/municipio/{municipio_id}', [CodigoPostalController::class, 'indexCommunities']);
+Route::get('comunidades/id/{id}', [CodigoPostalController::class, 'showCommunity']);
 Route::get('colonias/perimetro/{perimeter_id}', [CodigoPostalController::class, 'coloniesByPerimeter']);
-Route::get('perimetros/{id?}', [CodigoPostalController::class, 'perimeters']);
-Route::get('perimetros/{id}/assignToCommunity/{community_id}', [CodigoPostalController::class, 'assignPerimeterToCommunity']);
+Route::get('comunidades/perimetro/{perimeter_id}', [CodigoPostalController::class, 'communitiesByPerimeter']);
+Route::get('perimetros/id/{id?}', [CodigoPostalController::class, 'perimeters']);
+Route::get('perimetros/{perimeter_id}/assignToCommunity/{community_id}', [CodigoPostalController::class, 'assignPerimeterToCommunity']);
 Route::get('perimetros/selectIndex', [CodigoPostalController::class, 'selectIndexPerimeters']);
 Route::post('perimetros/create', [CodigoPostalController::class, 'createOrUpdatePerimeter']);
 Route::post('perimetros/update/{id}', [CodigoPostalController::class, 'createOrUpdatePerimeter']);

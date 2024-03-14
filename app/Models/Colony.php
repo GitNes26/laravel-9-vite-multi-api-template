@@ -9,4 +9,5 @@ class Colony extends Model
 {
     protected $connection = "mysql_communities";
     protected $table = 'colonies';
+    public $timestamps = false;
 }

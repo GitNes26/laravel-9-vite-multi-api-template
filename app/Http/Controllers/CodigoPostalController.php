@@ -9,6 +9,7 @@ use App\Models\Colony;
 use App\Models\Community;
 use App\Models\ObjResponse;
 use App\Models\Perimeter;
+use Faker\Provider\sv_SE\Municipality;
 use Illuminate\Support\Facades\DB;
 
 class CodigoPostalController extends Controller
@@ -20,6 +21,35 @@ class CodigoPostalController extends Controller
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'Peticion satisfactoria | Lista de comunidades.';
             $response->data["result"] = $list;
+        
+        }catch (\Exception $ex) {
+            $response->data = ObjResponse::CatchResponse($ex->getMessage());
+        }
+        return response()->json($response, $response->data["status_code"]);
+    }
+
+    public function indexCommunities(Response $response, Int $municipio_id=null){
+        try {
+            $response->data = ObjResponse::DefaultResponse();
+            if ($municipio_id > 0) $list = CodigoPostal::select('Colonia')->where('MunicipioId', $municipio_id)->get();
+            else $list = CodigoPostal::all();
+            $response->data = ObjResponse::CorrectResponse();
+            $response->data["message"] = 'Peticion satisfactoria | Lista de comunidades.';
+            $response->data["result"] = $list;
+        
+        }catch (\Exception $ex) {
+            $response->data = ObjResponse::CatchResponse($ex->getMessage());
+        }
+        return response()->json($response, $response->data["status_code"]);
+    }
+
+    public function showCommunity(Response $response, $id){
+        try {
+            $response->data = ObjResponse::DefaultResponse();
+            $community = Community::where('id', $id)->first();
+            $response->data = ObjResponse::CorrectResponse();
+            $response->data["message"] = 'Peticion satisfactoria | Comunidad encontrada.';
+            $response->data["result"] = $community;
         
         }catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
@@ -101,12 +131,12 @@ class CodigoPostalController extends Controller
         return response()->json($response, $response->data["status_code"]);
     }
 
-    public function coloniesByPerimeter(Response $response, Int $perimeter_id){
+    public function communitiesByPerimeter(Response $response, Int $perimeter_id){
         try {
             $response->data= ObjResponse::DefaultResponse();
             $list = CodigoPostal::where('perimetroId', $perimeter_id)->get();
             $response->data = ObjResponse::CorrectResponse();
-            $response->data["message"] = 'Peticion satisfactoria | Perimetros encontrados.';
+            $response->data["message"] = 'Peticion satisfactoria | Comunidades por perimetro encontrados.';
             $response->data["result"] = $list;
         
         }catch (\Exception $ex) {
@@ -115,18 +145,14 @@ class CodigoPostalController extends Controller
         return response()->json($response, $response->data["status_code"]);
     }
 
-    public function assignPerimeterToCommunity(Response $response, Int $perimeter_id, Int $community_id,){
+    public function assignPerimeterToCommunity(Response $response, Int $perimeter_id, Int $community_id){
         try {
             $response->data= ObjResponse::DefaultResponse();
-            $community = Community::where('id', $request->community_id)->first();
+            $community = Community::where('id', $community_id)->first();
             if ($community) {
-                $community->perimeter_id = $request->perimeter_id;
+                $community->perimeter_id = $perimeter_id;
                 $community->save();
-    
-                // $colony = Colony::where('id', $community->colony_id)->first();
-                // $colony->perimeter_id = $request->perimeter_id;
-                // $perimeter->save();
-    
+                
                 $response->data = ObjResponse::CorrectResponse();
                 $response->data["message"] = 'Peticion satisfactoria | Perimetro asignado.';
                 $response->data["alert_title"] = 'Perímetro asignado.';
